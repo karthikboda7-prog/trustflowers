@@ -506,7 +506,7 @@ function guestLogin(){
 function adminLogin(){
   const u = document.getElementById('adminUser').value;
   const p = document.getElementById('adminPass').value;
-  if(u==='vignesh' && p==='trust@123'){
+  if(u==='karthik' && p==='trust@123'){
     currentUser = {name:'Admin',phone:'8555826192'};
     isAdmin = true;
     startApp();
@@ -610,11 +610,11 @@ function cardHTML(f,i){
   // Base Measurement Details
   let baseDetail = '';
   if(f.unit === 'bunch') {
-    baseDetail = `<div class="extra-detail">⚖️ Base Wt: 250 grams</div>`;
+    baseDetail = `<div class="extra-detail">⚖️  Wt: 250 grams</div>`;
   } else if (f.unit === 'garland') {
-    baseDetail = `<div class="extra-detail">📏 Base Len: 30 cm</div>`;
+    baseDetail = `<div class="extra-detail">📏  Len: 30 cm</div>`;
   } else if (f.unit === 'gram') {
-    baseDetail = `<div class="extra-detail">⚖️ Base Wt: 100 grams</div>`;
+    baseDetail = `<div class="extra-detail">⚖️  Wt: 100 grams</div>`;
   }
 
   return `
