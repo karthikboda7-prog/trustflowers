@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Trust Flowers Shop</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Noto+Sans+Telugu:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
   --primary:#ff6f91;
-  --secondary:#ffd6e0;
   --accent:#25D366;
 }
 
@@ -21,25 +21,19 @@ body{
 
 .header{
   text-align:center;
-  padding:40px 20px;
+  padding:40px;
   background:linear-gradient(135deg,#ff6f91,#ff8fab);
   color:#fff;
-  box-shadow:0 5px 20px rgba(0,0,0,0.1);
 }
-
-.sub{font-size:14px;margin-top:5px}
 
 .about{
   padding:30px;
   text-align:center;
   background:#fff;
-  border-radius:20px;
   margin:20px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.08);
+  border-radius:20px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
-
-.about h2{color:var(--primary)}
-.telugu{font-family:'Noto Sans Telugu';margin-top:10px}
 
 .container{padding:20px}
 
@@ -69,6 +63,12 @@ body{
   border-radius:15px;
 }
 
+.telugu{
+  font-family:'Noto Sans Telugu';
+  color:#666;
+  font-size:14px;
+}
+
 .qty{
   display:flex;
   justify-content:center;
@@ -78,7 +78,6 @@ body{
 
 .qty button{
   padding:6px 12px;
-  font-size:18px;
   border:none;
   background:var(--primary);
   color:#fff;
@@ -86,15 +85,10 @@ body{
   cursor:pointer;
 }
 
-.qty span{
-  margin:0 10px;
-  font-weight:bold;
-}
-
 .total{
+  color:var(--primary);
   font-weight:bold;
   margin-top:10px;
-  color:var(--primary);
 }
 
 .place-btn{
@@ -107,14 +101,8 @@ body{
   border-radius:30px;
   font-size:18px;
   cursor:pointer;
-  box-shadow:0 5px 15px rgba(0,0,0,0.2);
 }
 
-.place-btn:hover{
-  transform:scale(1.05);
-}
-
-/* MODAL */
 .modal{
   display:none;
   position:fixed;
@@ -122,43 +110,24 @@ body{
   left:0;
   width:100%;
   height:100%;
-  background:linear-gradient(135deg,rgba(0,0,0,0.5),rgba(0,0,0,0.7));
+  background:rgba(0,0,0,0.6);
   justify-content:center;
   align-items:center;
 }
 
 .modal-content{
-  background:linear-gradient(135deg,#fff,#ffe4ec);
+  background:#fff;
   padding:25px;
   border-radius:20px;
-  width:320px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.3);
-  animation:fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn{
-  from{transform:scale(0.8);opacity:0}
-  to{transform:scale(1);opacity:1}
-}
-
-.modal h3{
-  text-align:center;
-  color:var(--primary);
+  width:300px;
 }
 
 .modal input{
   width:100%;
-  padding:12px;
+  padding:10px;
   margin:8px 0;
   border-radius:10px;
-  border:1px solid #ddd;
-  outline:none;
-  transition:0.2s;
-}
-
-.modal input:focus{
-  border-color:var(--primary);
-  box-shadow:0 0 5px rgba(255,111,145,0.4);
+  border:1px solid #ccc;
 }
 
 .modal button{
@@ -168,14 +137,7 @@ body{
   color:#fff;
   border:none;
   border-radius:25px;
-  font-size:16px;
-  cursor:pointer;
 }
-
-.modal button:hover{
-  background:#ff4d79;
-}
-
 </style>
 </head>
 
@@ -184,18 +146,14 @@ body{
 <div class="header">
 <h1>🌸 Trust Flowers 🌸</h1>
 <p>Khammam | Fresh Flowers & Decorations</p>
-<div class="sub">📞 8555826192 | WhatsApp Available</div>
+<p>📞 8555826192</p>
 </div>
 
 <div class="about">
 <h2>About Us</h2>
 <p><b>Owner:</b> D. Vignesh</p>
 <p><b>Location:</b> Khammam</p>
-<p><b>Services:</b> Pooja Flowers, Wedding Decorations, Bouquets</p>
-<div class="telugu">🌼 పూలమాలలు, పూజా పూలు, ప్రత్యేక అలంకరణలు అందుబాటులో ఉన్నాయి</div>
-<p>🚚 Home Delivery Available</p>
-<p>📱 Order via WhatsApp / Call</p>
-<p>📷 Instagram Page: Trust Flowers</p>
+<p>🌼 పూజా పూలు, పూలమాలలు అందుబాటులో ఉన్నాయి</p>
 </div>
 
 <div class="container">
@@ -204,29 +162,28 @@ body{
 <button class="place-btn" onclick="openForm()">Place Order</button>
 </div>
 
-<!-- MODAL -->
 <div class="modal" id="formModal">
 <div class="modal-content">
 <h3>Delivery Details</h3>
-<input type="text" id="custName" placeholder="Your Name">
-<input type="text" id="custPhone" placeholder="Phone Number">
-<input type="text" id="custAddress" placeholder="Delivery Address">
+<input type="text" id="custName" placeholder="Name">
+<input type="text" id="custPhone" placeholder="Phone">
+<input type="text" id="custAddress" placeholder="Address">
 <button onclick="placeOrder()">Confirm Order</button>
 </div>
 </div>
 
 <script>
 const flowers=[
-{name:"Jasmine",telugu:"మల్లె పువ్వు",price:20,img:"https://images.unsplash.com/photo-1649674635709-a08fae8d64fb?q=80&w=687&auto=format&fit=crop"},
-{name:"Rose",telugu:"గులాబీ",price:10,img:"https://images.unsplash.com/photo-1616844868137-7ffaf43c2d80?w=600&auto=format&fit=crop"},
-{name:"Marigold",telugu:"బంతి పువ్వు",price:15,img:"https://images.unsplash.com/photo-1696324635500-10785ee184b5?w=600&auto=format&fit=crop"},
-{name:"Lotus",telugu:"తామర పువ్వు",price:30,img:"https://images.unsplash.com/photo-1534162802244-d6f69e9048da?w=600&auto=format&fit=crop"},
+{name:"Jasmine",telugu:"మల్లె పువ్వు",price:20,img:"https://images.unsplash.com/photo-1649674635709-a08fae8d64fb"},
+{name:"Rose",telugu:"గులాబీ",price:10,img:"https://images.unsplash.com/photo-1616844868137-7ffaf43c2d80"},
+{name:"Marigold",telugu:"బంతి పువ్వు",price:15,img:"https://images.unsplash.com/photo-1696324635500-10785ee184b5"},
+{name:"Lotus",telugu:"తామర పువ్వు",price:30,img:"https://images.unsplash.com/photo-1534162802244-d6f69e9048da"},
 {name:"Tulsi Leaves",telugu:"తులసి ఆకులు",price:10,img:"https://media.istockphoto.com/id/1355035460/photo/freshly-picked-tasty-thai-basil-or-also-known-as-holy-basil.webp"},
-{name:"Hibiscus",telugu:"మందారం",price:25,img:"https://images.unsplash.com/photo-1567990989224-6441e1483ac8?w=600&auto=format&fit=crop"},
-{name:"Kanakambaram",telugu:"కనకాంబరం",price:20,img:"https://images.unsplash.com/photo-1696613755416-6b60e780e6e9?w=600&auto=format&fit=crop"},
-{name:"Chrysanthemum",telugu:"చామంతి",price:18,img:"https://images.unsplash.com/photo-1697816683790-fdcc57fee696?w=600&auto=format&fit=crop"},
-{name:"Lily",telugu:"లిల్లీ",price:22,img:"https://images.unsplash.com/photo-1561897519-6e4fbd1fbc41?w=600&auto=format&fit=crop"},
-{name:"Temple Garland",telugu:"పూలమాల",price:50,img:"https://images.unsplash.com/photo-1560505605-f300b17028d6?q=80&w=1029&auto=format&fit=crop"}
+{name:"Hibiscus",telugu:"మందారం",price:25,img:"https://images.unsplash.com/photo-1567990989224-6441e1483ac8"},
+{name:"Kanakambaram",telugu:"కనకాంబరం",price:20,img:"https://images.unsplash.com/photo-1696613755416-6b60e780e6e9"},
+{name:"Chrysanthemum",telugu:"చామంతి",price:18,img:"https://images.unsplash.com/photo-1697816683790-fdcc57fee696"},
+{name:"Lily",telugu:"లిల్లీ",price:22,img:"https://images.unsplash.com/photo-1561897519-6e4fbd1fbc41"},
+{name:"Temple Garland",telugu:"పూలమాల",price:50,img:"https://images.unsplash.com/photo-1560505605-f300b17028d6"}
 ];
 
 let cart={};
@@ -235,16 +192,18 @@ function render(){
 let html="";
 flowers.forEach((f,i)=>{
 cart[i]=cart[i]||0;
-html+=`<div class="card">
+html+=`
+<div class="card">
 <img src="${f.img}">
 <h3>${f.name}</h3>
+<p class="telugu">${f.telugu}</p>
 <p>₹${f.price}</p>
 <div class="qty">
 <button onclick="updateQty(${i},-1)">-</button>
-<span id="qty${i}">${cart[i]}</span>
+<span>${cart[i]}</span>
 <button onclick="updateQty(${i},1)">+</button>
 </div>
-<div class="total">₹<span id="total${i}">${cart[i]*f.price}</span></div>
+<div class="total">₹${cart[i]*f.price}</div>
 </div>`;
 });
 document.getElementById("flowerGrid").innerHTML=html;
@@ -253,8 +212,7 @@ document.getElementById("flowerGrid").innerHTML=html;
 function updateQty(i,val){
 cart[i]+=val;
 if(cart[i]<0) cart[i]=0;
-document.getElementById("qty"+i).innerText=cart[i];
-document.getElementById("total"+i).innerText=cart[i]*flowers[i].price;
+render();
 }
 
 function openForm(){
