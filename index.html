@@ -3,243 +3,780 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trust Flowers Shop</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Noto+Sans+Telugu:wght@400;600&display=swap" rel="stylesheet">
-
+<title>Trust Flowers Shop 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 <style>
 :root{
   --primary:#ff6f91;
+  --primary-dark:#e85478;
   --accent:#25D366;
+  --accent2:#6c63ff;
+  --bg:#fff0f5;
+  --card:#fff;
+  --text:#333;
+  --muted:#888;
+  --gold:#f7b731;
+  --admin-bg:#1a1a2e;
+  --admin-card:#16213e;
+  --admin-accent:#6c63ff;
 }
+
+*{box-sizing:border-box;margin:0;padding:0}
 
 body{
-  font-family:Poppins;
-  margin:0;
+  font-family:'Poppins',sans-serif;
   background:linear-gradient(135deg,#fff0f5,#fef6f9);
+  color:var(--text);
+  min-height:100vh;
 }
 
-.header{
+/* ===== LOGIN SCREEN ===== */
+#loginScreen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#ff6f91,#ff8fab,#ffd3e0);
+}
+.login-card{
+  background:#fff;
+  padding:40px 35px;
+  border-radius:25px;
+  box-shadow:0 20px 60px rgba(255,111,145,0.3);
+  width:340px;
   text-align:center;
-  padding:40px;
+}
+.login-card h2{font-family:'Playfair Display',serif;color:var(--primary);font-size:28px;margin-bottom:5px}
+.login-card p{color:var(--muted);font-size:13px;margin-bottom:25px}
+.login-tabs{display:flex;gap:10px;margin-bottom:20px}
+.login-tab{flex:1;padding:8px;border:2px solid #eee;border-radius:10px;background:none;cursor:pointer;font-size:13px;font-family:'Poppins',sans-serif;transition:0.2s}
+.login-tab.active{border-color:var(--primary);background:var(--primary);color:#fff}
+.login-input{width:100%;padding:12px 15px;border:1.5px solid #eee;border-radius:12px;font-size:14px;margin-bottom:12px;font-family:'Poppins',sans-serif;transition:0.2s;outline:none}
+.login-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(255,111,145,0.1)}
+.login-btn{width:100%;padding:13px;background:linear-gradient(135deg,#ff6f91,#ff8fab);color:#fff;border:none;border-radius:12px;font-size:15px;font-family:'Poppins',sans-serif;font-weight:600;cursor:pointer;transition:0.2s}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,111,145,0.4)}
+.login-err{color:#e74c3c;font-size:12px;margin-top:5px;display:none}
+.guest-btn{margin-top:12px;background:none;border:1.5px solid #eee;color:var(--muted);width:100%;padding:10px;border-radius:12px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:13px;transition:0.2s}
+.guest-btn:hover{border-color:var(--primary);color:var(--primary)}
+
+/* ===== TOP NAV ===== */
+#mainApp{display:none}
+.topbar{
   background:linear-gradient(135deg,#ff6f91,#ff8fab);
   color:#fff;
-}
-
-.about{
-  padding:30px;
-  text-align:center;
-  background:#fff;
-  margin:20px;
-  border-radius:20px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-.container{padding:20px}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:25px;
-}
-
-.card{
-  background:#fff;
-  padding:15px;
-  border-radius:20px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.1);
-  text-align:center;
-  transition:0.3s;
-}
-
-.card:hover{
-  transform:translateY(-8px) scale(1.03);
-}
-
-.card img{
-  width:100%;
-  height:160px;
-  object-fit:cover;
-  border-radius:15px;
-}
-
-.telugu{
-  font-family:'Noto Sans Telugu';
-  color:#666;
-  font-size:14px;
-}
-
-.qty{
   display:flex;
-  justify-content:center;
   align-items:center;
-  margin-top:10px;
-}
-
-.qty button{
-  padding:6px 12px;
-  border:none;
-  background:var(--primary);
-  color:#fff;
-  border-radius:50%;
-  cursor:pointer;
-}
-
-.total{
-  color:var(--primary);
-  font-weight:bold;
-  margin-top:10px;
-}
-
-.place-btn{
-  margin:30px auto;
-  display:block;
-  padding:15px 25px;
-  background:var(--accent);
-  color:#fff;
-  border:none;
-  border-radius:30px;
-  font-size:18px;
-  cursor:pointer;
-}
-
-.modal{
-  display:none;
-  position:fixed;
+  justify-content:space-between;
+  padding:12px 20px;
+  position:sticky;
   top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.6);
-  justify-content:center;
-  align-items:center;
+  z-index:100;
+  box-shadow:0 4px 15px rgba(255,111,145,0.3);
 }
-
-.modal-content{
+.topbar-left{display:flex;align-items:center;gap:10px}
+.topbar-logo{font-family:'Playfair Display',serif;font-size:20px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.cart-pill{
   background:#fff;
-  padding:25px;
+  color:var(--primary);
+  padding:6px 14px;
   border-radius:20px;
-  width:300px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  display:flex;align-items:center;gap:5px;
+}
+.icon-btn{background:rgba(255,255,255,0.2);border:none;color:#fff;padding:7px 12px;border-radius:12px;cursor:pointer;font-size:13px;font-family:'Poppins',sans-serif;transition:0.2s}
+.icon-btn:hover{background:rgba(255,255,255,0.35)}
+
+/* ===== STICKY CART BAR ===== */
+#stickyCart{
+  background:#fff;
+  border-bottom:2px solid #ffd3e0;
+  padding:10px 20px;
+  display:none;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:54px;
+  z-index:90;
+  box-shadow:0 4px 12px rgba(255,111,145,0.1);
+}
+.sticky-total{font-weight:700;color:var(--primary);font-size:16px}
+.sticky-items{font-size:12px;color:var(--muted);margin-top:2px}
+.sticky-btn{background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:20px;cursor:pointer;font-size:14px;font-weight:600;font-family:'Poppins',sans-serif}
+
+/* ===== TABS ===== */
+.page-tabs{
+  display:flex;overflow-x:auto;gap:8px;padding:15px 20px;
+  background:#fff;border-bottom:1px solid #f0d0da;
+}
+.page-tab{
+  padding:7px 16px;white-space:nowrap;border-radius:20px;border:1.5px solid #eee;
+  background:none;cursor:pointer;font-size:13px;font-family:'Poppins',sans-serif;
+  transition:0.2s;
+}
+.page-tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* ===== CATEGORY TABS ===== */
+.cat-tabs{display:flex;gap:8px;padding:15px 20px;overflow-x:auto}
+.cat-tab{
+  padding:6px 16px;border-radius:20px;border:1.5px solid #ffd3e0;background:#fff;
+  cursor:pointer;font-size:13px;white-space:nowrap;transition:0.2s;font-family:'Poppins',sans-serif;
+}
+.cat-tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* ===== SEARCH ===== */
+.search-bar{padding:0 20px 15px}
+.search-input{
+  width:100%;padding:10px 15px;border:1.5px solid #ffd3e0;border-radius:25px;
+  font-size:14px;font-family:'Poppins',sans-serif;outline:none;transition:0.2s;
+  background:#fff;
+}
+.search-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(255,111,145,0.1)}
+
+/* ===== HEADER ===== */
+.header{
+  text-align:center;padding:30px 20px 20px;
+  background:linear-gradient(135deg,#ff6f91,#ff8fab);color:#fff;
+}
+.header h1{font-family:'Playfair Display',serif;font-size:28px}
+.header p{font-size:13px;opacity:0.9;margin-top:4px}
+
+/* ===== ABOUT ===== */
+.about{
+  padding:20px;text-align:center;background:#fff;
+  margin:15px;border-radius:20px;box-shadow:0 5px 15px rgba(0,0,0,0.07);
 }
 
-.modal input{
-  width:100%;
-  padding:10px;
-  margin:8px 0;
-  border-radius:10px;
-  border:1px solid #ccc;
-}
+/* ===== GRID ===== */
+.container{padding:10px 15px}
+.section-title{color:var(--primary);font-size:17px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:15px}
 
-.modal button{
-  width:100%;
-  padding:12px;
-  background:var(--primary);
-  color:#fff;
-  border:none;
-  border-radius:25px;
+/* ===== CARD ===== */
+.card{
+  background:#fff;padding:12px;border-radius:18px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);text-align:center;
+  transition:0.3s;position:relative;overflow:hidden;
 }
+.card:hover{transform:translateY(-6px);box-shadow:0 15px 30px rgba(255,111,145,0.2)}
+.card-img-wrap{position:relative;border-radius:13px;overflow:hidden;height:140px}
+.card img{width:100%;height:140px;object-fit:cover;border-radius:13px}
+.popular-badge{
+  position:absolute;top:8px;left:8px;background:var(--gold);color:#fff;
+  font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;
+}
+.unit-badge{
+  position:absolute;top:8px;right:8px;background:rgba(108,99,255,0.85);color:#fff;
+  font-size:10px;padding:3px 8px;border-radius:10px;
+}
+.card h3{font-size:14px;margin:8px 0 2px;font-weight:600}
+.telugu{font-family:'Noto Sans Telugu',sans-serif;color:var(--muted);font-size:12px;margin-bottom:4px}
+.price-row{display:flex;align-items:center;justify-content:center;gap:6px}
+.card-price{color:var(--primary);font-weight:700;font-size:15px}
+.unit-toggle{font-size:10px;color:var(--accent2);cursor:pointer;text-decoration:underline}
+.qty{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:8px}
+.qty button{width:28px;height:28px;border:none;background:var(--primary);color:#fff;border-radius:50%;cursor:pointer;font-size:16px;line-height:1;transition:0.2s}
+.qty button:hover{background:var(--primary-dark);transform:scale(1.1)}
+.qty span{font-weight:600;min-width:20px}
+.card-total{color:var(--primary);font-weight:700;font-size:13px;margin-top:5px}
+
+/* ===== UPLOAD ===== */
+.upload-section{margin:15px;background:#fff;border-radius:18px;padding:15px;box-shadow:0 5px 15px rgba(0,0,0,0.07)}
+.upload-section h3{color:var(--primary);margin-bottom:10px}
+.upload-area{
+  border:2px dashed #ffd3e0;border-radius:15px;padding:20px;text-align:center;
+  cursor:pointer;transition:0.2s;background:#fff8fb;
+}
+.upload-area:hover{border-color:var(--primary);background:#fff0f5}
+.upload-area input{display:none}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;margin-top:10px}
+.preview-img{width:100%;height:90px;object-fit:cover;border-radius:12px;box-shadow:0 3px 10px rgba(0,0,0,0.1)}
+
+/* ===== PLACE ORDER BTN ===== */
+.place-btn{
+  margin:20px auto 30px;display:block;padding:14px 28px;
+  background:linear-gradient(135deg,var(--accent),#1da851);color:#fff;border:none;
+  border-radius:30px;font-size:16px;font-weight:700;font-family:'Poppins',sans-serif;
+  cursor:pointer;box-shadow:0 8px 20px rgba(37,211,102,0.35);transition:0.2s;
+}
+.place-btn:hover{transform:translateY(-3px);box-shadow:0 12px 25px rgba(37,211,102,0.45)}
+
+/* ===== ORDER FORM MODAL ===== */
+.modal{
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.55);z-index:200;justify-content:center;align-items:center;
+}
+.modal.open{display:flex}
+.modal-content{
+  background:#fff;padding:25px;border-radius:22px;width:320px;max-width:90vw;
+  box-shadow:0 20px 60px rgba(0,0,0,0.2);
+}
+.modal-content h3{color:var(--primary);margin-bottom:15px;font-family:'Playfair Display',serif}
+.modal-input{
+  width:100%;padding:11px 14px;border:1.5px solid #eee;border-radius:12px;
+  font-size:14px;font-family:'Poppins',sans-serif;margin-bottom:10px;outline:none;transition:0.2s;
+}
+.modal-input:focus{border-color:var(--primary)}
+.order-summary{background:#fff8fb;border-radius:12px;padding:12px;margin-bottom:12px;font-size:13px}
+.order-summary-item{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #f5d0de}
+.order-total-row{display:flex;justify-content:space-between;font-weight:700;color:var(--primary);margin-top:6px}
+.modal-btn{width:100%;padding:12px;background:linear-gradient(135deg,#25D366,#1da851);color:#fff;border:none;border-radius:15px;font-size:15px;font-weight:700;font-family:'Poppins',sans-serif;cursor:pointer}
+.modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);margin-top:-5px}
+
+/* ===== ORDER HISTORY ===== */
+#historyPage{display:none;padding:15px}
+.history-card{
+  background:#fff;border-radius:18px;padding:15px;margin-bottom:12px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.07);
+}
+.history-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.history-id{font-weight:700;color:var(--primary)}
+.history-date{font-size:11px;color:var(--muted)}
+.history-status{font-size:11px;padding:3px 10px;border-radius:10px;font-weight:600}
+.status-confirmed{background:#d4edda;color:#155724}
+.status-pending{background:#fff3cd;color:#856404}
+.history-items{font-size:13px;color:#555;margin:5px 0}
+.history-total{font-weight:700;color:var(--primary-dark)}
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty-state .emoji{font-size:50px;margin-bottom:15px}
+
+/* ===== ADMIN PANEL ===== */
+#adminPage{display:none;background:var(--admin-bg);min-height:calc(100vh - 54px);padding:20px}
+.admin-header{text-align:center;margin-bottom:20px}
+.admin-header h2{color:#fff;font-family:'Playfair Display',serif;font-size:22px}
+.admin-header p{color:#aaa;font-size:13px}
+.admin-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
+.stat-card{background:var(--admin-card);border-radius:15px;padding:15px;text-align:center;border:1px solid #2a2a4a}
+.stat-val{font-size:22px;font-weight:700;color:var(--admin-accent)}
+.stat-label{font-size:11px;color:#aaa;margin-top:3px}
+.admin-section{background:var(--admin-card);border-radius:18px;padding:15px;margin-bottom:15px;border:1px solid #2a2a4a}
+.admin-section h3{color:#fff;margin-bottom:12px;font-size:15px;display:flex;align-items:center;gap:8px}
+.admin-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #2a2a4a}
+.admin-row:last-child{border-bottom:none}
+.admin-flower-name{color:#fff;font-size:14px}
+.admin-flower-tel{color:#888;font-size:11px}
+.admin-price-input{
+  width:80px;padding:6px 10px;border:1.5px solid #3a3a6a;border-radius:10px;
+  background:#1a1a2e;color:#fff;font-size:14px;font-family:'Poppins',sans-serif;text-align:center;outline:none;
+}
+.admin-price-input:focus{border-color:var(--admin-accent)}
+.admin-save-btn{
+  background:linear-gradient(135deg,var(--admin-accent),#8b7cf6);color:#fff;border:none;
+  padding:12px;border-radius:12px;font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;
+  cursor:pointer;width:100%;margin-top:10px;transition:0.2s;
+}
+.admin-save-btn:hover{opacity:0.9;transform:translateY(-1px)}
+.admin-orders-list{max-height:300px;overflow-y:auto}
+.admin-order-item{background:#1a1a2e;border-radius:12px;padding:10px 12px;margin-bottom:8px;border:1px solid #2a2a4a}
+.admin-order-top{display:flex;justify-content:space-between;margin-bottom:5px}
+.admin-order-id{color:var(--admin-accent);font-size:12px;font-weight:700}
+.admin-order-total{color:#4ade80;font-weight:700;font-size:14px}
+.admin-order-info{font-size:11px;color:#888}
+.toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:#333;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;
+  z-index:999;opacity:0;transition:0.3s;pointer-events:none;
+}
+.toast.show{opacity:1}
 </style>
 </head>
-
 <body>
 
-<div class="header">
-<h1>🌸 Trust Flowers 🌸</h1>
-<p>Khammam | Fresh Flowers & Decorations</p>
-<p>📞 8555826192</p>
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div style="font-size:40px;margin-bottom:10px">🌸</div>
+    <h2>Trust Flowers</h2>
+    <p>Khammam's Finest Flower Shop</p>
+    <div class="login-tabs">
+      <button class="login-tab active" onclick="switchLoginTab('customer')">Customer</button>
+      <button class="login-tab" onclick="switchLoginTab('admin')">Admin</button>
+    </div>
+    <div id="customerTab">
+      <input type="text" class="login-input" id="loginName" placeholder="Your Name">
+      <input type="tel" class="login-input" id="loginPhone" placeholder="Phone Number">
+      <button class="login-btn" onclick="customerLogin()">Login & Shop 🛍️</button>
+      <p class="login-err" id="loginErr">Please enter your name and phone</p>
+      <button class="guest-btn" onclick="guestLogin()">Continue as Guest</button>
+    </div>
+    <div id="adminTab" style="display:none">
+      <input type="text" class="login-input" id="adminUser" placeholder="Admin Username">
+      <input type="password" class="login-input" id="adminPass" placeholder="Password">
+      <button class="login-btn" onclick="adminLogin()">Login as Admin 🔑</button>
+      <p class="login-err" id="adminErr">Invalid credentials</p>
+    </div>
+  </div>
 </div>
 
-<div class="about">
-<h2>About Us</h2>
-<p><b>Owner:</b> D. Vignesh</p>
-<p><b>Location:</b> Khammam</p>
-<p>🌼 పూజా పూలు, పూలమాలలు అందుబాటులో ఉన్నాయి</p>
-</div>
+<!-- MAIN APP -->
+<div id="mainApp">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-logo">🌸 Trust Flowers</span>
+    </div>
+    <div class="topbar-right">
+      <div class="cart-pill" onclick="openOrderForm()">🛒 <span id="cartCount">0</span> | ₹<span id="cartTotal">0</span></div>
+      <button class="icon-btn" onclick="logout()">Logout</button>
+    </div>
+  </div>
 
-<div class="container">
-<h2 style="text-align:center;color:#ff6f91">Select Flowers</h2>
-<div class="grid" id="flowerGrid"></div>
-<button class="place-btn" onclick="openForm()">Place Order</button>
-</div>
+  <!-- STICKY CART BAR -->
+  <div id="stickyCart">
+    <div>
+      <div class="sticky-total">🛒 Cart Total: ₹<span id="stickyTotal">0</span></div>
+      <div class="sticky-items"><span id="stickyItemCount">0</span> items selected</div>
+    </div>
+    <button class="sticky-btn" onclick="openOrderForm()">Place Order via WhatsApp</button>
+  </div>
 
+  <!-- PAGE TABS -->
+  <div class="page-tabs">
+    <button class="page-tab active" onclick="showPage('shop')">🌺 Shop</button>
+    <button class="page-tab" onclick="showPage('upload')">📷 Upload Photo</button>
+    <button class="page-tab" onclick="showPage('history')">📋 My Orders</button>
+    <button class="page-tab admin-only" onclick="showPage('admin')" style="display:none">⚙️ Admin</button>
+  </div>
+
+  <!-- SHOP PAGE -->
+  <div id="shopPage">
+    <div class="header">
+      <h1>🌸 Trust Flowers 🌸</h1>
+      <p>Khammam | Fresh Flowers & Decorations</p>
+      <p>📞 8555826192</p>
+    </div>
+    <div class="about">
+      <h2>About Us</h2>
+      <p><b>Owner:</b> D. Vignesh</p>
+      <p><b>Location:</b> Khammam</p>
+      <p>🌼 పూజా పూలు, పూలమాలలు అందుబాటులో ఉన్నాయి</p>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="cat-tabs">
+      <button class="cat-tab active" onclick="filterCat('all')">🌸 All</button>
+      <button class="cat-tab" onclick="filterCat('pooja')">🪔 Pooja / పూజ</button>
+      <button class="cat-tab" onclick="filterCat('decoration')">🎊 Decoration</button>
+      <button class="cat-tab" onclick="filterCat('garland')">📿 Garlands / మాలలు</button>
+    </div>
+
+    <!-- Search -->
+    <div class="search-bar">
+      <input class="search-input" id="searchInput" placeholder="🔍 Search flowers... (e.g. rose, గులాబీ)" oninput="renderFlowers()">
+    </div>
+
+    <div class="container">
+      <div class="section-title">🌟 Popular Items</div>
+      <div class="grid" id="popularGrid"></div>
+      <div class="section-title" style="margin-top:20px">🌺 All Flowers</div>
+      <div class="grid" id="flowerGrid"></div>
+    </div>
+
+    <button class="place-btn" onclick="openOrderForm()">🛒 Place Order via WhatsApp</button>
+  </div>
+
+  <!-- UPLOAD PAGE -->
+  <div id="uploadPage" style="display:none;padding:15px">
+    <h2 style="color:var(--primary);margin-bottom:15px;font-family:'Playfair Display',serif">📷 Upload Flower Photos</h2>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:15px">Upload real photos of your flower stock to share with customers.</p>
+    <div class="upload-section">
+      <h3>Upload Photos</h3>
+      <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+        <input type="file" id="fileInput" accept="image/*" multiple onchange="previewImages(event)">
+        <p style="font-size:30px;margin-bottom:8px">📸</p>
+        <p style="color:var(--muted);font-size:14px">Click to upload or drag photos here</p>
+        <p style="color:var(--muted);font-size:12px">JPG, PNG, WebP supported</p>
+      </div>
+      <div class="preview-grid" id="previewGrid"></div>
+    </div>
+    <div class="upload-section" id="uploadedSection" style="display:none">
+      <h3>Uploaded Photos <span id="uploadCount" style="color:var(--muted);font-size:13px"></span></h3>
+      <div class="preview-grid" id="uploadedGrid"></div>
+    </div>
+  </div>
+
+  <!-- HISTORY PAGE -->
+  <div id="historyPage" style="display:none">
+    <h2 style="color:var(--primary);margin-bottom:15px;font-family:'Playfair Display',serif">📋 Order History</h2>
+    <div id="historyList"></div>
+  </div>
+
+  <!-- ADMIN PAGE -->
+  <div id="adminPage" style="display:none">
+    <div class="admin-header">
+      <h2>⚙️ Admin Panel</h2>
+      <p>Manage prices, view orders & stats</p>
+    </div>
+    <div class="admin-stats">
+      <div class="stat-card">
+        <div class="stat-val" id="statOrders">0</div>
+        <div class="stat-label">Total Orders</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" id="statRevenue">₹0</div>
+        <div class="stat-label">Total Revenue</div>
+      </div>
+    </div>
+    <div class="admin-section">
+      <h3>💰 Manage Prices</h3>
+      <div id="adminPriceList"></div>
+      <button class="admin-save-btn" onclick="savePrices()">✅ Save All Prices</button>
+    </div>
+    <div class="admin-section">
+      <h3>📦 All Orders</h3>
+      <div class="admin-orders-list" id="adminOrdersList"></div>
+    </div>
+  </div>
+
+</div><!-- end mainApp -->
+
+<!-- ORDER FORM MODAL -->
 <div class="modal" id="formModal">
-<div class="modal-content">
-<h3>Delivery Details</h3>
-<input type="text" id="custName" placeholder="Name">
-<input type="text" id="custPhone" placeholder="Phone">
-<input type="text" id="custAddress" placeholder="Address">
-<button onclick="placeOrder()">Confirm Order</button>
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3>🛍️ Confirm Order</h3>
+    <div class="order-summary" id="orderSummaryBox"></div>
+    <input type="text" class="modal-input" id="custName" placeholder="Your Name">
+    <input type="tel" class="modal-input" id="custPhone" placeholder="Phone Number">
+    <input type="text" class="modal-input" id="custAddress" placeholder="Delivery Address">
+    <button class="modal-btn" onclick="placeOrder()">📱 Send via WhatsApp</button>
+  </div>
 </div>
-</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-const flowers=[
-{name:"Jasmine",telugu:"మల్లె పువ్వు",price:20,img:"https://images.unsplash.com/photo-1649674635709-a08fae8d64fb"},
-{name:"Rose",telugu:"గులాబీ",price:10,img:"https://images.unsplash.com/photo-1616844868137-7ffaf43c2d80"},
-{name:"Marigold",telugu:"బంతి పువ్వు",price:15,img:"https://images.unsplash.com/photo-1696324635500-10785ee184b5"},
-{name:"Lotus",telugu:"తామర పువ్వు",price:30,img:"https://images.unsplash.com/photo-1534162802244-d6f69e9048da"},
-{name:"Tulsi Leaves",telugu:"తులసి ఆకులు",price:10,img:"https://images.unsplash.com/photo-1665479754958-1a8bdc47cc0d?w=600&auto=format&fit=crop&q=60"},
-{name:"Hibiscus",telugu:"మందారం",price:25,img:"https://images.unsplash.com/photo-1567990989224-6441e1483ac8"},
-{name:"Kanakambaram",telugu:"కనకాంబరం",price:20,img:"https://images.unsplash.com/photo-1696613755416-6b60e780e6e9"},
-{name:"Chrysanthemum",telugu:"చామంతి",price:18,img:"https://images.unsplash.com/photo-1697816683790-fdcc57fee696"},
-{name:"Lily",telugu:"లిల్లీ",price:22,img:"https://images.unsplash.com/photo-1561897519-6e4fbd1fbc41"},
-{name:"Temple Garland",telugu:"పూలమాల",price:50,img:"https://images.unsplash.com/photo-1560505605-f300b17028d6"}
+// ===== DATA =====
+let flowers = [
+  {name:"Jasmine",telugu:"మల్లె పువ్వు",price:20,img:"https://images.unsplash.com/photo-1649674635709-a08fae8d64fb",popular:true,cat:"pooja",unit:"bunch"},
+  {name:"Rose",telugu:"గులాబీ",price:10,img:"https://images.unsplash.com/photo-1616844868137-7ffaf43c2d80",popular:true,cat:"decoration",unit:"piece"},
+  {name:"Marigold",telugu:"బంతి పువ్వు",price:15,img:"https://images.unsplash.com/photo-1696324635500-10785ee184b5",popular:false,cat:"pooja",unit:"bunch"},
+  {name:"Lotus",telugu:"తామర పువ్వు",price:30,img:"https://images.unsplash.com/photo-1534162802244-d6f69e9048da",popular:true,cat:"pooja",unit:"piece"},
+  {name:"Tulsi Leaves",telugu:"తులసి ఆకులు",price:10,img:"https://images.unsplash.com/photo-1665479754958-1a8bdc47cc0d?w=600&auto=format&fit=crop&q=60",popular:false,cat:"pooja",unit:"bunch"},
+  {name:"Hibiscus",telugu:"మందారం",price:25,img:"https://images.unsplash.com/photo-1567990989224-6441e1483ac8",popular:false,cat:"pooja",unit:"piece"},
+  {name:"Kanakambaram",telugu:"కనకాంబరం",price:20,img:"https://images.unsplash.com/photo-1696613755416-6b60e780e6e9",popular:false,cat:"decoration",unit:"bunch"},
+  {name:"Chrysanthemum",telugu:"చామంతి",price:18,img:"https://images.unsplash.com/photo-1697816683790-fdcc57fee696",popular:false,cat:"decoration",unit:"bunch"},
+  {name:"Lily",telugu:"లిల్లీ",price:22,img:"https://images.unsplash.com/photo-1561897519-6e4fbd1fbc41",popular:false,cat:"decoration",unit:"piece"},
+  {name:"Temple Garland",telugu:"పూలమాల",price:50,img:"https://images.unsplash.com/photo-1560505605-f300b17028d6",popular:true,cat:"garland",unit:"garland"}
 ];
 
-let cart={};
+let cart = {};
+let currentUser = null;
+let isAdmin = false;
+let currentCat = 'all';
+let uploadedPhotos = [];
 
-function render(){
-let html="";
-flowers.forEach((f,i)=>{
-cart[i]=cart[i]||0;
-html+=`
-<div class="card">
-<img src="${f.img}">
-<h3>${f.name}</h3>
-<p class="telugu">${f.telugu}</p>
-<p>₹${f.price}</p>
-<div class="qty">
-<button onclick="updateQty(${i},-1)">-</button>
-<span>${cart[i]}</span>
-<button onclick="updateQty(${i},1)">+</button>
-</div>
-<div class="total">₹${cart[i]*f.price}</div>
-</div>`;
-});
-document.getElementById("flowerGrid").innerHTML=html;
+// ===== STORAGE HELPERS =====
+function saveToStorage(key, val){ try{localStorage.setItem(key,JSON.stringify(val))}catch(e){} }
+function getFromStorage(key){ try{return JSON.parse(localStorage.getItem(key))||null}catch(e){return null} }
+
+// ===== LOGIN =====
+function switchLoginTab(tab){
+  document.querySelectorAll('.login-tab').forEach((b,i)=>b.classList.toggle('active', (i===0&&tab==='customer')||(i===1&&tab==='admin')));
+  document.getElementById('customerTab').style.display = tab==='customer'?'block':'none';
+  document.getElementById('adminTab').style.display = tab==='admin'?'block':'none';
+}
+
+function customerLogin(){
+  const name = document.getElementById('loginName').value.trim();
+  const phone = document.getElementById('loginPhone').value.trim();
+  if(!name||!phone){ document.getElementById('loginErr').style.display='block'; return; }
+  currentUser = {name,phone};
+  isAdmin = false;
+  saveToStorage('trustFlowersUser',currentUser);
+  startApp();
+}
+
+function guestLogin(){
+  currentUser = {name:'Guest',phone:''};
+  isAdmin = false;
+  startApp();
+}
+
+function adminLogin(){
+  const u = document.getElementById('adminUser').value;
+  const p = document.getElementById('adminPass').value;
+  if(u==='vignesh' && p==='trust@123'){
+    currentUser = {name:'Admin',phone:'8555826192'};
+    isAdmin = true;
+    startApp();
+  } else {
+    document.getElementById('adminErr').style.display='block';
+  }
+}
+
+function startApp(){
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('mainApp').style.display='block';
+  if(isAdmin) document.querySelectorAll('.admin-only').forEach(el=>el.style.display='block');
+  // Load saved prices
+  const savedPrices = getFromStorage('trustFlowersPrices');
+  if(savedPrices) flowers.forEach((f,i)=>{ if(savedPrices[i]) f.price=savedPrices[i]; });
+  flowers.forEach((f,i)=>cart[i]=0);
+  renderFlowers();
+  if(currentUser.name !== 'Guest') document.getElementById('loginName').value='';
+}
+
+function logout(){
+  currentUser = null; isAdmin = false;
+  document.getElementById('mainApp').style.display='none';
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('loginErr').style.display='none';
+  document.getElementById('adminErr').style.display='none';
+  flowers.forEach((f,i)=>cart[i]=0);
+  updateCartUI();
+}
+
+// ===== PAGES =====
+function showPage(page){
+  document.querySelectorAll('.page-tab').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  ['shopPage','uploadPage','historyPage','adminPage'].forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById(page+'Page').style.display='block';
+  if(page==='history') renderHistory();
+  if(page==='admin') renderAdmin();
+}
+
+// ===== FILTER & SEARCH =====
+function filterCat(cat){
+  currentCat = cat;
+  document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderFlowers();
+}
+
+// ===== RENDER FLOWERS =====
+function renderFlowers(){
+  const search = (document.getElementById('searchInput')||{}).value||'';
+  let filtered = flowers.map((f,i)=>({...f,idx:i}));
+  if(currentCat!=='all') filtered = filtered.filter(f=>f.cat===currentCat);
+  if(search) filtered = filtered.filter(f=>f.name.toLowerCase().includes(search.toLowerCase())||f.telugu.includes(search));
+
+  const popular = filtered.filter(f=>f.popular);
+  const all = filtered;
+
+  document.getElementById('popularGrid').innerHTML = popular.map(f=>cardHTML(f,f.idx)).join('');
+  document.getElementById('flowerGrid').innerHTML = all.map(f=>cardHTML(f,f.idx)).join('');
+}
+
+function cardHTML(f,i){
+  return `
+  <div class="card">
+    <div class="card-img-wrap">
+      <img src="${f.img}" onerror="this.src='https://images.unsplash.com/photo-1560505605-f300b17028d6'">
+      ${f.popular?'<span class="popular-badge">⭐ Popular</span>':''}
+      <span class="unit-badge">per ${f.unit}</span>
+    </div>
+    <h3>${f.name}</h3>
+    <p class="telugu">${f.telugu}</p>
+    <div class="price-row"><span class="card-price">₹${f.price}</span></div>
+    <div class="qty">
+      <button onclick="updateQty(${i},-1)">-</button>
+      <span id="qty-${i}">${cart[i]}</span>
+      <button onclick="updateQty(${i},1)">+</button>
+    </div>
+    <div class="card-total" id="total-${i}">₹${cart[i]*f.price}</div>
+  </div>`;
 }
 
 function updateQty(i,val){
-cart[i]+=val;
-if(cart[i]<0) cart[i]=0;
-render();
+  cart[i]=(cart[i]||0)+val;
+  if(cart[i]<0) cart[i]=0;
+  const qEl=document.getElementById('qty-'+i);
+  const tEl=document.getElementById('total-'+i);
+  if(qEl) qEl.textContent=cart[i];
+  if(tEl) tEl.textContent='₹'+(cart[i]*flowers[i].price);
+  updateCartUI();
 }
 
-function openForm(){
-document.getElementById("formModal").style.display="flex";
+function updateCartUI(){
+  let totalItems=0, totalVal=0;
+  flowers.forEach((f,i)=>{ totalItems+=cart[i]; totalVal+=cart[i]*f.price; });
+  document.getElementById('cartCount').textContent=totalItems;
+  document.getElementById('cartTotal').textContent=totalVal;
+  const sc=document.getElementById('stickyCart');
+  if(totalItems>0){
+    sc.style.display='flex';
+    document.getElementById('stickyTotal').textContent=totalVal;
+    document.getElementById('stickyItemCount').textContent=totalItems;
+  } else {
+    sc.style.display='none';
+  }
 }
+
+// ===== ORDER FORM =====
+function openOrderForm(){
+  let total=0;
+  let hasItems=false;
+  flowers.forEach((f,i)=>{ if(cart[i]>0){ total+=cart[i]*f.price; hasItems=true; }});
+  if(!hasItems){ showToast('🛒 Add some flowers first!'); return; }
+
+  // Build summary
+  let summaryHTML='';
+  flowers.forEach((f,i)=>{ if(cart[i]>0){
+    summaryHTML+=`<div class="order-summary-item"><span>${f.name} x${cart[i]}</span><span>₹${cart[i]*f.price}</span></div>`;
+  }});
+  summaryHTML+=`<div class="order-total-row"><span>Total</span><span>₹${total}</span></div>`;
+  document.getElementById('orderSummaryBox').innerHTML=summaryHTML;
+  if(currentUser&&currentUser.name!=='Guest'){
+    document.getElementById('custName').value=currentUser.name;
+    document.getElementById('custPhone').value=currentUser.phone;
+  }
+  document.getElementById('formModal').classList.add('open');
+}
+
+function closeModal(){ document.getElementById('formModal').classList.remove('open'); }
 
 function placeOrder(){
-let name=document.getElementById("custName").value;
-let phone=document.getElementById("custPhone").value;
-let address=document.getElementById("custAddress").value;
+  const name=document.getElementById('custName').value.trim();
+  const phone=document.getElementById('custPhone').value.trim();
+  const address=document.getElementById('custAddress').value.trim();
+  if(!name||!phone){ showToast('⚠️ Please enter name & phone'); return; }
 
-let message=`Name: ${name}%0APhone: ${phone}%0AAddress: ${address}%0A%0AOrder:%0A`;
-let total=0;
+  let message=`🌸 *Trust Flowers - New Order*%0A%0A`;
+  message+=`👤 *Name:* ${name}%0A📞 *Phone:* ${phone}%0A📍 *Address:* ${address||'Pickup'}%0A%0A`;
+  message+=`🌺 *Order Details:*%0A`;
+  let total=0;
+  flowers.forEach((f,i)=>{ if(cart[i]>0){
+    message+=`${f.name} (${f.telugu}) x ${cart[i]} = ₹${cart[i]*f.price}%0A`;
+    total+=cart[i]*f.price;
+  }});
+  message+=`%0A💰 *Total: ₹${total}*`;
 
-flowers.forEach((f,i)=>{
-if(cart[i]>0){
-message+=`${f.name} x ${cart[i]} = ₹${cart[i]*f.price}%0A`;
-total+=cart[i]*f.price;
+  // Save to order history
+  const order = {
+    id:'ORD'+(Date.now()+'').slice(-6),
+    date:new Date().toLocaleString('en-IN'),
+    name,phone,address,
+    items:flowers.filter((f,i)=>cart[i]>0).map((f,i)=>({name:f.name,qty:cart[i],price:f.price})),
+    total,
+    status:'Confirmed'
+  };
+  const allOrders = getFromStorage('trustFlowersOrders')||[];
+  allOrders.unshift(order);
+  saveToStorage('trustFlowersOrders',allOrders);
+  // save user orders too
+  if(currentUser&&currentUser.phone){
+    const myOrders = getFromStorage('trustFlowersMyOrders_'+currentUser.phone)||[];
+    myOrders.unshift(order);
+    saveToStorage('trustFlowersMyOrders_'+currentUser.phone,myOrders);
+  }
+
+  window.open(`https://wa.me/918555826192?text=${message}`,'_blank');
+  closeModal();
+  flowers.forEach((f,i)=>cart[i]=0);
+  renderFlowers();
+  updateCartUI();
+  showToast('✅ Order placed! Opening WhatsApp...');
 }
-});
 
-message+=`Total: ₹${total}`;
-window.open(`https://wa.me/918555826192?text=${message}`,'_blank');
+// ===== ORDER HISTORY =====
+function renderHistory(){
+  const key = currentUser&&currentUser.phone ? 'trustFlowersMyOrders_'+currentUser.phone : null;
+  const orders = (key && getFromStorage(key)) || (isAdmin ? getFromStorage('trustFlowersOrders') : []);
+  const list = document.getElementById('historyList');
+  if(!orders||!orders.length){
+    list.innerHTML=`<div class="empty-state"><div class="emoji">📭</div><p>No orders yet</p><p style="font-size:13px;margin-top:8px">Your order history will appear here</p></div>`;
+    return;
+  }
+  list.innerHTML = orders.map(o=>`
+    <div class="history-card">
+      <div class="history-header">
+        <span class="history-id">#${o.id}</span>
+        <span class="history-status status-${o.status==='Confirmed'?'confirmed':'pending'}">${o.status}</span>
+      </div>
+      <div class="history-date">📅 ${o.date}</div>
+      <div class="history-items">${o.items.map(it=>`${it.name} x${it.qty}`).join(', ')}</div>
+      <div class="history-total">💰 Total: ₹${o.total}</div>
+      ${o.address?`<div style="font-size:12px;color:var(--muted);margin-top:4px">📍 ${o.address}</div>`:''}
+    </div>
+  `).join('');
 }
 
-render();
+// ===== ADMIN =====
+function renderAdmin(){
+  const orders = getFromStorage('trustFlowersOrders')||[];
+  const totalRev = orders.reduce((a,o)=>a+o.total,0);
+  document.getElementById('statOrders').textContent=orders.length;
+  document.getElementById('statRevenue').textContent='₹'+totalRev;
+
+  // Price editor
+  document.getElementById('adminPriceList').innerHTML = flowers.map((f,i)=>`
+    <div class="admin-row">
+      <div><div class="admin-flower-name">${f.name}</div><div class="admin-flower-tel">${f.telugu}</div></div>
+      <input type="number" class="admin-price-input" id="aprice-${i}" value="${f.price}" min="1">
+    </div>
+  `).join('');
+
+  // Orders
+  const ol=document.getElementById('adminOrdersList');
+  if(!orders.length){ ol.innerHTML='<p style="color:#888;text-align:center;padding:15px">No orders yet</p>'; return; }
+  ol.innerHTML = orders.map(o=>`
+    <div class="admin-order-item">
+      <div class="admin-order-top">
+        <span class="admin-order-id">#${o.id}</span>
+        <span class="admin-order-total">₹${o.total}</span>
+      </div>
+      <div class="admin-order-info">👤 ${o.name} | 📞 ${o.phone}</div>
+      <div class="admin-order-info">📅 ${o.date}</div>
+    </div>
+  `).join('');
+}
+
+function savePrices(){
+  const savedPrices = {};
+  flowers.forEach((f,i)=>{
+    const v=parseInt(document.getElementById('aprice-'+i).value)||f.price;
+    flowers[i].price=v;
+    savedPrices[i]=v;
+  });
+  saveToStorage('trustFlowersPrices',savedPrices);
+  showToast('✅ Prices updated successfully!');
+  renderFlowers();
+}
+
+// ===== UPLOAD =====
+function previewImages(e){
+  const files = Array.from(e.target.files);
+  const grid = document.getElementById('previewGrid');
+  const uploaded = document.getElementById('uploadedSection');
+  const uploadedGrid = document.getElementById('uploadedGrid');
+  document.getElementById('uploadCount').textContent='('+files.length+' photos)';
+  grid.innerHTML='';
+
+  files.forEach(file=>{
+    const reader = new FileReader();
+    reader.onload = ev=>{
+      uploadedPhotos.push(ev.target.result);
+      const img = document.createElement('img');
+      img.src=ev.target.result;
+      img.className='preview-img';
+      grid.appendChild(img.cloneNode());
+      uploadedGrid.appendChild(img);
+      uploaded.style.display='block';
+    };
+    reader.readAsDataURL(file);
+  });
+  showToast('📸 '+files.length+' photo(s) uploaded!');
+}
+
+// ===== TOAST =====
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ===== INIT =====
+// Auto-login if remembered
+const savedUser = getFromStorage('trustFlowersUser');
+if(savedUser){
+  document.getElementById('loginName').value=savedUser.name||'';
+  document.getElementById('loginPhone').value=savedUser.phone||'';
+}
 </script>
-
 </body>
 </html>
