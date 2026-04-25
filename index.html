@@ -318,13 +318,14 @@ body{
       <span class="topbar-logo">🌸 Trust Flowers</span>
     </div>
     <div class="topbar-right">
-      <div class="cart-pill" onclick="openOrderForm()">🛒 <span id="cartCount">0</span> | ₹<span id="cartTotal">0</span></div>
+      <div class="cart-pill customer-only" id="cartPill" onclick="openOrderForm()">🛒 <span id="cartCount">0</span> | ₹<span id="cartTotal">0</span></div>
+      <span id="adminLabel" style="display:none;background:rgba(255,255,255,0.2);padding:5px 12px;border-radius:10px;font-size:13px;font-weight:600">⚙️ Admin Mode</span>
       <button class="icon-btn" onclick="logout()">Logout</button>
     </div>
   </div>
 
-  <!-- STICKY CART BAR -->
-  <div id="stickyCart">
+  <!-- STICKY CART BAR (customers only) -->
+  <div id="stickyCart" class="customer-only">
     <div>
       <div class="sticky-total">🛒 Cart Total: ₹<span id="stickyTotal">0</span></div>
       <div class="sticky-items"><span id="stickyItemCount">0</span> items selected</div>
@@ -334,10 +335,10 @@ body{
 
   <!-- PAGE TABS -->
   <div class="page-tabs">
-    <button class="page-tab active" onclick="showPage('shop')">🌺 Shop</button>
-    <button class="page-tab" onclick="showPage('upload')">📷 Upload Photo</button>
-    <button class="page-tab" onclick="showPage('history')">📋 My Orders</button>
-    <button class="page-tab admin-only" onclick="showPage('admin')" style="display:none">⚙️ Admin</button>
+    <button class="page-tab active" id="tabShop" onclick="showPage('shop')">🌺 Shop</button>
+    <button class="page-tab customer-only" id="tabHistory" onclick="showPage('history')">📋 My Orders</button>
+    <button class="page-tab admin-only" id="tabUpload" onclick="showPage('upload')" style="display:none">📷 Upload Photo</button>
+    <button class="page-tab admin-only" id="tabAdmin" onclick="showPage('admin')" style="display:none">⚙️ Admin Panel</button>
   </div>
 
   <!-- SHOP PAGE -->
@@ -374,7 +375,7 @@ body{
       <div class="grid" id="flowerGrid"></div>
     </div>
 
-    <button class="place-btn" onclick="openOrderForm()">🛒 Place Order via WhatsApp</button>
+    <button class="place-btn customer-only" id="placeOrderBtn" onclick="openOrderForm()">🛒 Place Order via WhatsApp</button>
   </div>
 
   <!-- UPLOAD PAGE -->
@@ -510,11 +511,34 @@ function adminLogin(){
 function startApp(){
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('mainApp').style.display='block';
-  if(isAdmin) document.querySelectorAll('.admin-only').forEach(el=>el.style.display='block');
+
   // Load saved prices
   const savedPrices = getFromStorage('trustFlowersPrices');
   if(savedPrices) flowers.forEach((f,i)=>{ if(savedPrices[i]) f.price=savedPrices[i]; });
   flowers.forEach((f,i)=>cart[i]=0);
+
+  if(isAdmin){
+    // Show admin-only elements
+    document.querySelectorAll('.admin-only').forEach(el=>el.style.display='block');
+    // Hide customer-only elements
+    document.querySelectorAll('.customer-only').forEach(el=>el.style.display='none');
+    document.getElementById('adminLabel').style.display='block';
+    // Hide My Orders tab for admin (admin sees all orders in Admin Panel)
+    document.getElementById('tabHistory').style.display='none';
+  } else {
+    // Hide admin-only elements
+    document.querySelectorAll('.admin-only').forEach(el=>el.style.display='none');
+    // Show customer-only elements
+    document.querySelectorAll('.customer-only').forEach(el=>el.style.display='');
+    document.getElementById('adminLabel').style.display='none';
+    document.getElementById('cartPill').style.display='flex';
+    document.getElementById('tabHistory').style.display='';
+    // Guest: hide My Orders tab (no phone = no history)
+    if(currentUser.name==='Guest'){
+      document.getElementById('tabHistory').style.display='none';
+    }
+  }
+
   renderFlowers();
   if(currentUser.name !== 'Guest') document.getElementById('loginName').value='';
 }
@@ -525,12 +549,24 @@ function logout(){
   document.getElementById('loginScreen').style.display='flex';
   document.getElementById('loginErr').style.display='none';
   document.getElementById('adminErr').style.display='none';
+  // Reset tab visibility for next login
+  document.querySelectorAll('.admin-only').forEach(el=>el.style.display='none');
+  document.querySelectorAll('.customer-only').forEach(el=>el.style.display='');
   flowers.forEach((f,i)=>cart[i]=0);
   updateCartUI();
+  // Go back to shop tab
+  ['shopPage','uploadPage','historyPage','adminPage'].forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById('shopPage').style.display='block';
+  document.querySelectorAll('.page-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tabShop').classList.add('active');
 }
 
 // ===== PAGES =====
 function showPage(page){
+  // Access control
+  if((page==='admin'||page==='upload') && !isAdmin){ showToast('🔒 Admin access only'); return; }
+  if(page==='history' && isAdmin){ showToast('🔒 Admin uses Admin Panel'); return; }
+
   document.querySelectorAll('.page-tab').forEach(b=>b.classList.remove('active'));
   event.target.classList.add('active');
   ['shopPage','uploadPage','historyPage','adminPage'].forEach(id=>document.getElementById(id).style.display='none');
@@ -562,6 +598,7 @@ function renderFlowers(){
 }
 
 function cardHTML(f,i){
+  const adminView = isAdmin;
   return `
   <div class="card">
     <div class="card-img-wrap">
@@ -572,12 +609,14 @@ function cardHTML(f,i){
     <h3>${f.name}</h3>
     <p class="telugu">${f.telugu}</p>
     <div class="price-row"><span class="card-price">₹${f.price}</span></div>
+    ${adminView ? '' : `
     <div class="qty">
       <button onclick="updateQty(${i},-1)">-</button>
       <span id="qty-${i}">${cart[i]}</span>
       <button onclick="updateQty(${i},1)">+</button>
     </div>
     <div class="card-total" id="total-${i}">₹${cart[i]*f.price}</div>
+    `}
   </div>`;
 }
 
@@ -608,6 +647,7 @@ function updateCartUI(){
 
 // ===== ORDER FORM =====
 function openOrderForm(){
+  if(isAdmin){ showToast('🔒 Admin cannot place orders'); return; }
   let total=0;
   let hasItems=false;
   flowers.forEach((f,i)=>{ if(cart[i]>0){ total+=cart[i]*f.price; hasItems=true; }});
@@ -674,8 +714,10 @@ function placeOrder(){
 
 // ===== ORDER HISTORY =====
 function renderHistory(){
+  // Only customers can see this page - they see only their own orders
+  if(isAdmin) return;
   const key = currentUser&&currentUser.phone ? 'trustFlowersMyOrders_'+currentUser.phone : null;
-  const orders = (key && getFromStorage(key)) || (isAdmin ? getFromStorage('trustFlowersOrders') : []);
+  const orders = key ? (getFromStorage(key)||[]) : [];
   const list = document.getElementById('historyList');
   if(!orders||!orders.length){
     list.innerHTML=`<div class="empty-state"><div class="emoji">📭</div><p>No orders yet</p><p style="font-size:13px;margin-top:8px">Your order history will appear here</p></div>`;
