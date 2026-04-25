@@ -135,26 +135,23 @@ body{
 }
 .search-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(255,111,145,0.1)}
 
-/* ===== HEADER ===== */
+/* ===== HEADER & ABOUT ===== */
 .header{
   text-align:center;padding:30px 20px 20px;
   background:linear-gradient(135deg,#ff6f91,#ff8fab);color:#fff;
 }
 .header h1{font-family:'Playfair Display',serif;font-size:28px}
 .header p{font-size:13px;opacity:0.9;margin-top:4px}
-
-/* ===== ABOUT ===== */
 .about{
   padding:20px;text-align:center;background:#fff;
   margin:15px;border-radius:20px;box-shadow:0 5px 15px rgba(0,0,0,0.07);
 }
 
-/* ===== GRID ===== */
+/* ===== GRID & CARD ===== */
 .container{padding:10px 15px}
 .section-title{color:var(--primary);font-size:17px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:15px}
 
-/* ===== CARD ===== */
 .card{
   background:#fff;padding:12px;border-radius:18px;
   box-shadow:0 8px 20px rgba(0,0,0,0.08);text-align:center;
@@ -173,25 +170,23 @@ body{
 }
 .card h3{font-size:14px;margin:8px 0 2px;font-weight:600}
 .telugu{font-family:'Noto Sans Telugu',sans-serif;color:var(--muted);font-size:12px;margin-bottom:4px}
+.extra-detail { font-size: 11px; color: var(--accent2); background: #f0f0ff; display: inline-block; padding: 2px 8px; border-radius: 10px; margin-bottom: 8px; border: 1px solid #e0e0ff; }
 .price-row{display:flex;align-items:center;justify-content:center;gap:6px}
 .card-price{color:var(--primary);font-weight:700;font-size:15px}
-.unit-toggle{font-size:10px;color:var(--accent2);cursor:pointer;text-decoration:underline}
 .qty{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:8px}
 .qty button{width:28px;height:28px;border:none;background:var(--primary);color:#fff;border-radius:50%;cursor:pointer;font-size:16px;line-height:1;transition:0.2s}
 .qty button:hover{background:var(--primary-dark);transform:scale(1.1)}
 .qty span{font-weight:600;min-width:20px}
 .card-total{color:var(--primary);font-weight:700;font-size:13px;margin-top:5px}
 
-/* ===== PLACE ORDER BTN ===== */
 .place-btn{
   margin:20px auto 30px;display:block;padding:14px 28px;
   background:linear-gradient(135deg,var(--accent),#1da851);color:#fff;border:none;
   border-radius:30px;font-size:16px;font-weight:700;font-family:'Poppins',sans-serif;
   cursor:pointer;box-shadow:0 8px 20px rgba(37,211,102,0.35);transition:0.2s;
 }
-.place-btn:hover{transform:translateY(-3px);box-shadow:0 12px 25px rgba(37,211,102,0.45)}
 
-/* ===== ORDER FORM MODAL ===== */
+/* ===== MODALS & HISTORY ===== */
 .modal{
   display:none;position:fixed;top:0;left:0;width:100%;height:100%;
   background:rgba(0,0,0,0.55);z-index:200;justify-content:center;align-items:center;
@@ -206,32 +201,23 @@ body{
   width:100%;padding:11px 14px;border:1.5px solid #eee;border-radius:12px;
   font-size:14px;font-family:'Poppins',sans-serif;margin-bottom:10px;outline:none;transition:0.2s;
 }
-.modal-input:focus{border-color:var(--primary)}
 .order-summary{background:#fff8fb;border-radius:12px;padding:12px;margin-bottom:12px;font-size:13px}
 .order-summary-item{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #f5d0de}
 .order-total-row{display:flex;justify-content:space-between;font-weight:700;color:var(--primary);margin-top:6px}
 .modal-btn{width:100%;padding:12px;background:linear-gradient(135deg,#25D366,#1da851);color:#fff;border:none;border-radius:15px;font-size:15px;font-weight:700;font-family:'Poppins',sans-serif;cursor:pointer}
 .modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);margin-top:-5px}
 
-/* ===== ORDER HISTORY ===== */
 #historyPage{display:none;padding:15px}
-.history-card{
-  background:#fff;border-radius:18px;padding:15px;margin-bottom:12px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.07);
-}
+.history-card{background:#fff;border-radius:18px;padding:15px;margin-bottom:12px;box-shadow:0 5px 15px rgba(0,0,0,0.07);}
 .history-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .history-id{font-weight:700;color:var(--primary)}
 .history-date{font-size:11px;color:var(--muted)}
-.history-status{font-size:11px;padding:3px 10px;border-radius:10px;font-weight:600}
-.status-confirmed{background:#d4edda;color:#155724}
-.status-pending{background:#fff3cd;color:#856404}
+.status-confirmed{background:#d4edda;color:#155724;font-size:11px;padding:3px 10px;border-radius:10px;font-weight:600}
 .history-items{font-size:13px;color:#555;margin:5px 0}
 .history-total{font-weight:700;color:var(--primary-dark)}
-.empty-state{text-align:center;padding:40px 20px;color:var(--muted)}
-.empty-state .emoji{font-size:50px;margin-bottom:15px}
 
-/* ===== ADMIN PANEL ===== */
-#adminPage{display:none;background:var(--admin-bg);min-height:calc(100vh - 54px);padding:20px}
+/* ===== ADMIN PANEL & FORMS ===== */
+#adminPage, #adminOrdersPage{display:none;background:var(--admin-bg);min-height:calc(100vh - 54px);padding:20px}
 .admin-header{text-align:center;margin-bottom:20px}
 .admin-header h2{color:#fff;font-family:'Playfair Display',serif;font-size:22px}
 .admin-header p{color:#aaa;font-size:13px}
@@ -241,27 +227,26 @@ body{
 .stat-label{font-size:11px;color:#aaa;margin-top:3px}
 .admin-section{background:var(--admin-card);border-radius:18px;padding:15px;margin-bottom:15px;border:1px solid #2a2a4a}
 .admin-section h3{color:#fff;margin-bottom:12px;font-size:15px;display:flex;align-items:center;gap:8px}
+
 .admin-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #2a2a4a}
-.admin-row:last-child{border-bottom:none}
 .admin-flower-name{color:#fff;font-size:14px}
 .admin-flower-tel{color:#888;font-size:11px}
-.admin-price-input{
-  width:80px;padding:6px 10px;border:1.5px solid #3a3a6a;border-radius:10px;
-  background:#1a1a2e;color:#fff;font-size:14px;font-family:'Poppins',sans-serif;text-align:center;outline:none;
-}
-.admin-price-input:focus{border-color:var(--admin-accent)}
-.admin-save-btn{
-  background:linear-gradient(135deg,var(--admin-accent),#8b7cf6);color:#fff;border:none;
-  padding:12px;border-radius:12px;font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;
-  cursor:pointer;width:100%;margin-top:10px;transition:0.2s;
-}
-.admin-save-btn:hover{opacity:0.9;transform:translateY(-1px)}
-.admin-orders-list{max-height:300px;overflow-y:auto}
-.admin-order-item{background:#1a1a2e;border-radius:12px;padding:10px 12px;margin-bottom:8px;border:1px solid #2a2a4a}
-.admin-order-top{display:flex;justify-content:space-between;margin-bottom:5px}
-.admin-order-id{color:var(--admin-accent);font-size:12px;font-weight:700}
-.admin-order-total{color:#4ade80;font-weight:700;font-size:14px}
-.admin-order-info{font-size:11px;color:#888}
+.admin-price-input{width:80px;padding:6px 10px;border:1.5px solid #3a3a6a;border-radius:10px;background:#1a1a2e;color:#fff;font-size:14px;font-family:'Poppins',sans-serif;text-align:center;outline:none;}
+.admin-save-btn{background:linear-gradient(135deg,var(--admin-accent),#8b7cf6);color:#fff;border:none;padding:12px;border-radius:12px;font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;cursor:pointer;width:100%;margin-top:10px;transition:0.2s;}
+
+/* Admin Add Item Form */
+.admin-form-group { margin-bottom: 12px; text-align: left; }
+.admin-form-group label { display: block; color: #aaa; font-size: 12px; margin-bottom: 4px; }
+.admin-input-full { width: 100%; padding: 10px; border: 1px solid #3a3a6a; border-radius: 10px; background: #1a1a2e; color: #fff; font-size: 14px; font-family: 'Poppins', sans-serif; outline: none; }
+.admin-input-full:focus { border-color: var(--admin-accent); }
+
+/* Admin Orders Table */
+.admin-table-container { overflow-x: auto; margin-top: 10px; }
+.admin-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+.admin-table th { background: #2a2a4a; color: #fff; padding: 12px; font-size: 13px; text-align: left; }
+.admin-table td { border-bottom: 1px solid #2a2a4a; padding: 12px; font-size: 13px; color: #ddd; vertical-align: top; }
+.today-earning { background: rgba(37, 211, 102, 0.15); border: 1px solid var(--accent); color: #4ade80; padding: 15px; border-radius: 15px; text-align: center; margin-bottom: 20px; font-size: 16px; font-weight: 700; }
+
 .toast{
   position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
   background:#333;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;
@@ -272,7 +257,6 @@ body{
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-card">
     <div style="font-size:40px;margin-bottom:10px">🌸</div>
@@ -298,9 +282,7 @@ body{
   </div>
 </div>
 
-<!-- MAIN APP -->
 <div id="mainApp">
-  <!-- TOPBAR -->
   <div class="topbar">
     <div class="topbar-left">
       <span class="topbar-logo">🌸 Trust Flowers</span>
@@ -312,7 +294,6 @@ body{
     </div>
   </div>
 
-  <!-- STICKY CART BAR (customers only) -->
   <div id="stickyCart" class="customer-only">
     <div>
       <div class="sticky-total">🛒 Cart Total: ₹<span id="stickyTotal">0</span></div>
@@ -321,14 +302,13 @@ body{
     <button class="sticky-btn" onclick="openOrderForm()">Place Order via WhatsApp</button>
   </div>
 
-  <!-- PAGE TABS -->
   <div class="page-tabs">
     <button class="page-tab active" id="tabShop" onclick="showPage('shop')">🌺 Shop</button>
     <button class="page-tab customer-only" id="tabHistory" onclick="showPage('history')">📋 My Orders</button>
-    <button class="page-tab admin-only" id="tabAdmin" onclick="showPage('admin')" style="display:none">⚙️ Admin Panel</button>
+    <button class="page-tab admin-only" id="tabAdmin" onclick="showPage('admin')" style="display:none">⚙️ Dashboard</button>
+    <button class="page-tab admin-only" id="tabAdminOrders" onclick="showPage('adminOrders')" style="display:none">📊 Orders Table</button>
   </div>
 
-  <!-- SHOP PAGE -->
   <div id="shopPage">
     <div class="header">
       <h1>🌸 Trust Flowers 🌸</h1>
@@ -342,7 +322,6 @@ body{
       <p>🌼 పూజా పూలు, పూలమాలలు అందుబాటులో ఉన్నాయి</p>
     </div>
 
-    <!-- Category Tabs -->
     <div class="cat-tabs">
       <button class="cat-tab active" onclick="filterCat('all')">🌸 All</button>
       <button class="cat-tab" onclick="filterCat('pooja')">🪔 Pooja / పూజ</button>
@@ -350,7 +329,6 @@ body{
       <button class="cat-tab" onclick="filterCat('garland')">📿 Garlands / మాలలు</button>
     </div>
 
-    <!-- Search -->
     <div class="search-bar">
       <input class="search-input" id="searchInput" placeholder="🔍 Search flowers... (e.g. rose, గులాబీ)" oninput="renderFlowers()">
     </div>
@@ -365,17 +343,15 @@ body{
     <button class="place-btn customer-only" id="placeOrderBtn" onclick="openOrderForm()">🛒 Place Order via WhatsApp</button>
   </div>
 
-  <!-- HISTORY PAGE -->
   <div id="historyPage" style="display:none">
     <h2 style="color:var(--primary);margin-bottom:15px;font-family:'Playfair Display',serif">📋 Order History</h2>
     <div id="historyList"></div>
   </div>
 
-  <!-- ADMIN PAGE -->
   <div id="adminPage" style="display:none">
     <div class="admin-header">
-      <h2>⚙️ Admin Panel</h2>
-      <p>Manage prices, view orders & stats</p>
+      <h2>⚙️ Admin Dashboard</h2>
+      <p>Manage store prices & add new items</p>
     </div>
     <div class="admin-stats">
       <div class="stat-card">
@@ -387,21 +363,84 @@ body{
         <div class="stat-label">Total Revenue</div>
       </div>
     </div>
+    
+    <div class="admin-section">
+      <h3>➕ Add New Flower</h3>
+      <div class="admin-form-group">
+        <label>Flower Name</label>
+        <input type="text" id="newFlwName" class="admin-input-full" placeholder="e.g. White Rose">
+      </div>
+      <div class="admin-form-group">
+        <label>Telugu Name (Optional)</label>
+        <input type="text" id="newFlwTelugu" class="admin-input-full" placeholder="e.g. తెల్ల గులాబీ">
+      </div>
+      <div class="admin-form-group">
+        <label>Category</label>
+        <select id="newFlwCat" class="admin-input-full">
+          <option value="pooja">Pooja</option>
+          <option value="decoration">Decoration</option>
+          <option value="garland">Garland</option>
+        </select>
+      </div>
+      <div class="admin-form-group">
+        <label>Sell By (Unit)</label>
+        <select id="newFlwUnit" class="admin-input-full">
+          <option value="piece">Per Piece</option>
+          <option value="gram">Per Gram</option>
+          <option value="bunch">Per Bunch</option>
+          <option value="garland">Per Garland</option>
+        </select>
+      </div>
+      <div class="admin-form-group">
+        <label>Price (₹)</label>
+        <input type="number" id="newFlwPrice" class="admin-input-full" placeholder="e.g. 50">
+      </div>
+      <div class="admin-form-group">
+        <label>Upload Image</label>
+        <input type="file" id="newFlwImg" class="admin-input-full" accept="image/*" onchange="handleImageUpload(event)">
+        <input type="hidden" id="newFlwImgData">
+      </div>
+      <button class="admin-save-btn" style="background:var(--accent); margin-top:15px;" onclick="addNewItem()">✅ Add Item to Shop</button>
+    </div>
+
     <div class="admin-section">
       <h3>💰 Manage Prices</h3>
       <div id="adminPriceList"></div>
-      <button class="admin-save-btn" onclick="savePrices()">✅ Save All Prices</button>
-    </div>
-    <div class="admin-section">
-      <h3>📦 All Orders</h3>
-      <div class="admin-orders-list" id="adminOrdersList"></div>
+      <button class="admin-save-btn" onclick="savePrices()">💾 Save All Prices</button>
     </div>
   </div>
 
-</div><!-- end mainApp -->
+  <div id="adminOrdersPage" style="display:none">
+    <div class="admin-header">
+      <h2>📊 All Orders</h2>
+      <p>Detailed view of customer orders</p>
+    </div>
+    
+    <div class="today-earning">
+      Today's Total Earnings: <br><span id="todayEarningAmount" style="font-size:24px;">₹0</span>
+    </div>
 
-<!-- ORDER FORM MODAL -->
-<div class="modal" id="formModal">
+    <div class="admin-section">
+      <h3>📦 Orders Log</h3>
+      <div class="admin-table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Date & Time</th>
+              <th>Customer Info</th>
+              <th>Address</th>
+              <th>Order Details</th>
+              <th>Total (₹)</th>
+            </tr>
+          </thead>
+          <tbody id="adminOrdersTableBody">
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div><div class="modal" id="formModal">
   <div class="modal-content">
     <button class="modal-close" onclick="closeModal()">✕</button>
     <h3>🛍️ Confirm Order</h3>
@@ -417,7 +456,7 @@ body{
 
 <script>
 // ===== DATA =====
-let flowers = [
+const defaultFlowers = [
   {name:"Jasmine",telugu:"మల్లె పువ్వు",price:20,img:"https://images.unsplash.com/photo-1649674635709-a08fae8d64fb",popular:true,cat:"pooja",unit:"bunch"},
   {name:"Rose",telugu:"గులాబీ",price:10,img:"https://images.unsplash.com/photo-1616844868137-7ffaf43c2d80",popular:true,cat:"decoration",unit:"piece"},
   {name:"Marigold",telugu:"బంతి పువ్వు",price:15,img:"https://images.unsplash.com/photo-1696324635500-10785ee184b5",popular:false,cat:"pooja",unit:"bunch"},
@@ -430,6 +469,8 @@ let flowers = [
   {name:"Temple Garland",telugu:"పూలమాల",price:50,img:"https://images.unsplash.com/photo-1560505605-f300b17028d6",popular:true,cat:"garland",unit:"garland"}
 ];
 
+let customFlowers = [];
+let flowers = [];
 let cart = {};
 let currentUser = null;
 let isAdmin = false;
@@ -478,28 +519,26 @@ function startApp(){
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('mainApp').style.display='block';
 
+  // Load custom flowers added by admin
+  customFlowers = getFromStorage('trustFlowersCustom') || [];
+  flowers = [...defaultFlowers, ...customFlowers];
+
   // Load saved prices
   const savedPrices = getFromStorage('trustFlowersPrices');
   if(savedPrices) flowers.forEach((f,i)=>{ if(savedPrices[i]) f.price=savedPrices[i]; });
   flowers.forEach((f,i)=>cart[i]=0);
 
   if(isAdmin){
-    // Show admin-only elements
     document.querySelectorAll('.admin-only').forEach(el=>el.style.display='block');
-    // Hide customer-only elements
     document.querySelectorAll('.customer-only').forEach(el=>el.style.display='none');
     document.getElementById('adminLabel').style.display='block';
-    // Hide My Orders tab for admin (admin sees all orders in Admin Panel)
     document.getElementById('tabHistory').style.display='none';
   } else {
-    // Hide admin-only elements
     document.querySelectorAll('.admin-only').forEach(el=>el.style.display='none');
-    // Show customer-only elements
     document.querySelectorAll('.customer-only').forEach(el=>el.style.display='');
     document.getElementById('adminLabel').style.display='none';
     document.getElementById('cartPill').style.display='flex';
     document.getElementById('tabHistory').style.display='';
-    // Guest: hide My Orders tab (no phone = no history)
     if(currentUser.name==='Guest'){
       document.getElementById('tabHistory').style.display='none';
     }
@@ -515,13 +554,13 @@ function logout(){
   document.getElementById('loginScreen').style.display='flex';
   document.getElementById('loginErr').style.display='none';
   document.getElementById('adminErr').style.display='none';
-  // Reset tab visibility for next login
+  
   document.querySelectorAll('.admin-only').forEach(el=>el.style.display='none');
   document.querySelectorAll('.customer-only').forEach(el=>el.style.display='');
   flowers.forEach((f,i)=>cart[i]=0);
   updateCartUI();
-  // Go back to shop tab
-  ['shopPage','historyPage','adminPage'].forEach(id=>document.getElementById(id).style.display='none');
+  
+  ['shopPage','historyPage','adminPage', 'adminOrdersPage'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('shopPage').style.display='block';
   document.querySelectorAll('.page-tab').forEach(b=>b.classList.remove('active'));
   document.getElementById('tabShop').classList.add('active');
@@ -529,16 +568,18 @@ function logout(){
 
 // ===== PAGES =====
 function showPage(page){
-  // Access control
-  if(page==='admin' && !isAdmin){ showToast('🔒 Admin access only'); return; }
+  if((page==='admin' || page==='adminOrders') && !isAdmin){ showToast('🔒 Admin access only'); return; }
   if(page==='history' && isAdmin){ showToast('🔒 Admin uses Admin Panel'); return; }
 
   document.querySelectorAll('.page-tab').forEach(b=>b.classList.remove('active'));
   event.target.classList.add('active');
-  ['shopPage','historyPage','adminPage'].forEach(id=>document.getElementById(id).style.display='none');
+  
+  ['shopPage','historyPage','adminPage', 'adminOrdersPage'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById(page+'Page').style.display='block';
+  
   if(page==='history') renderHistory();
   if(page==='admin') renderAdmin();
+  if(page==='adminOrders') renderAdminOrdersTable();
 }
 
 // ===== FILTER & SEARCH =====
@@ -565,6 +606,17 @@ function renderFlowers(){
 
 function cardHTML(f,i){
   const adminView = isAdmin;
+  
+  // Base Measurement Details
+  let baseDetail = '';
+  if(f.unit === 'bunch') {
+    baseDetail = `<div class="extra-detail">⚖️ Base Wt: 250 grams</div>`;
+  } else if (f.unit === 'garland') {
+    baseDetail = `<div class="extra-detail">📏 Base Len: 30 cm</div>`;
+  } else if (f.unit === 'gram') {
+    baseDetail = `<div class="extra-detail">⚖️ Base Wt: 100 grams</div>`;
+  }
+
   return `
   <div class="card">
     <div class="card-img-wrap">
@@ -574,6 +626,7 @@ function cardHTML(f,i){
     </div>
     <h3>${f.name}</h3>
     <p class="telugu">${f.telugu}</p>
+    ${baseDetail}
     <div class="price-row"><span class="card-price">₹${f.price}</span></div>
     ${adminView ? '' : `
     <div class="qty">
@@ -619,7 +672,6 @@ function openOrderForm(){
   flowers.forEach((f,i)=>{ if(cart[i]>0){ total+=cart[i]*f.price; hasItems=true; }});
   if(!hasItems){ showToast('🛒 Add some flowers first!'); return; }
 
-  // Build summary
   let summaryHTML='';
   flowers.forEach((f,i)=>{ if(cart[i]>0){
     summaryHTML+=`<div class="order-summary-item"><span>${f.name} x${cart[i]}</span><span>₹${cart[i]*f.price}</span></div>`;
@@ -663,7 +715,7 @@ function placeOrder(){
   const allOrders = getFromStorage('trustFlowersOrders')||[];
   allOrders.unshift(order);
   saveToStorage('trustFlowersOrders',allOrders);
-  // save user orders too
+  
   if(currentUser&&currentUser.phone){
     const myOrders = getFromStorage('trustFlowersMyOrders_'+currentUser.phone)||[];
     myOrders.unshift(order);
@@ -680,7 +732,6 @@ function placeOrder(){
 
 // ===== ORDER HISTORY =====
 function renderHistory(){
-  // Only customers can see this page - they see only their own orders
   if(isAdmin) return;
   const key = currentUser&&currentUser.phone ? 'trustFlowersMyOrders_'+currentUser.phone : null;
   const orders = key ? (getFromStorage(key)||[]) : [];
@@ -693,7 +744,7 @@ function renderHistory(){
     <div class="history-card">
       <div class="history-header">
         <span class="history-id">#${o.id}</span>
-        <span class="history-status status-${o.status==='Confirmed'?'confirmed':'pending'}">${o.status}</span>
+        <span class="status-confirmed">${o.status}</span>
       </div>
       <div class="history-date">📅 ${o.date}</div>
       <div class="history-items">${o.items.map(it=>`${it.name} x${it.qty}`).join(', ')}</div>
@@ -703,7 +754,58 @@ function renderHistory(){
   `).join('');
 }
 
-// ===== ADMIN =====
+// ===== ADMIN FEATURES =====
+
+// Image Upload Handler (Converts file to Base64)
+function handleImageUpload(event) {
+  const file = event.target.files[0];
+  if(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) { 
+      document.getElementById('newFlwImgData').value = e.target.result; 
+    };
+    reader.readAsDataURL(file); // This converts the file so it can be saved in LocalStorage
+  }
+}
+
+// Add New Item Function
+function addNewItem() {
+  const name = document.getElementById('newFlwName').value.trim();
+  const telugu = document.getElementById('newFlwTelugu').value.trim();
+  const cat = document.getElementById('newFlwCat').value;
+  const unit = document.getElementById('newFlwUnit').value;
+  const price = parseInt(document.getElementById('newFlwPrice').value);
+  const imgBase64 = document.getElementById('newFlwImgData').value;
+
+  if(!name || isNaN(price) || !imgBase64) {
+    showToast('⚠️ Please provide Name, Price, and Image.');
+    return;
+  }
+
+  const newItem = {
+    name: name,
+    telugu: telugu || name,
+    price: price,
+    img: imgBase64,
+    popular: false,
+    cat: cat,
+    unit: unit
+  };
+
+  customFlowers.push(newItem);
+  saveToStorage('trustFlowersCustom', customFlowers);
+  
+  // Clear form
+  document.getElementById('newFlwName').value = '';
+  document.getElementById('newFlwTelugu').value = '';
+  document.getElementById('newFlwPrice').value = '';
+  document.getElementById('newFlwImg').value = '';
+  document.getElementById('newFlwImgData').value = '';
+
+  showToast('✅ New Flower Successfully Added!');
+  startApp(); // Re-initialize logic to load new item
+}
+
 function renderAdmin(){
   const orders = getFromStorage('trustFlowersOrders')||[];
   const totalRev = orders.reduce((a,o)=>a+o.total,0);
@@ -717,20 +819,40 @@ function renderAdmin(){
       <input type="number" class="admin-price-input" id="aprice-${i}" value="${f.price}" min="1">
     </div>
   `).join('');
+}
 
-  // Orders
-  const ol=document.getElementById('adminOrdersList');
-  if(!orders.length){ ol.innerHTML='<p style="color:#888;text-align:center;padding:15px">No orders yet</p>'; return; }
-  ol.innerHTML = orders.map(o=>`
-    <div class="admin-order-item">
-      <div class="admin-order-top">
-        <span class="admin-order-id">#${o.id}</span>
-        <span class="admin-order-total">₹${o.total}</span>
-      </div>
-      <div class="admin-order-info">👤 ${o.name} | 📞 ${o.phone}</div>
-      <div class="admin-order-info">📅 ${o.date}</div>
-    </div>
-  `).join('');
+// Admin Orders Table rendering
+function renderAdminOrdersTable() {
+  const orders = getFromStorage('trustFlowersOrders') || [];
+  const tbody = document.getElementById('adminOrdersTableBody');
+  
+  let todayTotal = 0;
+  const todayString = new Date().toLocaleDateString('en-IN'); // Helps filter today's orders
+
+  let tableHTML = '';
+  orders.forEach(o => {
+    // Calculate today's earnings
+    if(o.date.includes(todayString)) {
+      todayTotal += o.total;
+    }
+
+    const itemsStr = o.items.map(it => `• ${it.name} (x${it.qty})`).join('<br>');
+    
+    tableHTML += `
+      <tr>
+        <td>${o.date}</td>
+        <td><b>${o.name}</b><br><span style="font-size:11px;color:#aaa">📞 ${o.phone}</span></td>
+        <td>${o.address || '<span style="color:#666; font-style:italic">Pickup</span>'}</td>
+        <td>${itemsStr}</td>
+        <td style="color:#4ade80; font-weight:bold;">₹${o.total}</td>
+      </tr>
+    `;
+  });
+
+  document.getElementById('todayEarningAmount').textContent = '₹' + todayTotal;
+  
+  if(!tableHTML) tableHTML = '<tr><td colspan="5" style="text-align:center; padding:20px;">No orders found yet</td></tr>';
+  tbody.innerHTML = tableHTML;
 }
 
 function savePrices(){
@@ -754,7 +876,6 @@ function showToast(msg){
 }
 
 // ===== INIT =====
-// Auto-login if remembered
 const savedUser = getFromStorage('trustFlowersUser');
 if(savedUser){
   document.getElementById('loginName').value=savedUser.name||'';
