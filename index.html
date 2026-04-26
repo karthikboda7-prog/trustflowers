@@ -159,7 +159,7 @@ body{
 }
 .card:hover{transform:translateY(-6px);box-shadow:0 15px 30px rgba(255,111,145,0.2)}
 .card-img-wrap{position:relative;border-radius:13px;overflow:hidden;height:140px}
-.card img{width:100%;height:140px;object-fit:cover;border-radius:13px}
+.card img{width:100%;height:140px;object-fit:cover;border-radius:13px;background:#f5e0e8;}
 .popular-badge{
   position:absolute;top:8px;left:8px;background:var(--gold);color:#fff;
   font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;
@@ -170,7 +170,7 @@ body{
 }
 .card h3{font-size:14px;margin:8px 0 2px;font-weight:600}
 .telugu{font-family:'Noto Sans Telugu',sans-serif;color:var(--muted);font-size:12px;margin-bottom:4px}
-.extra-detail { font-size: 11px; color: var(--accent2); background: #f0f0ff; display: inline-block; padding: 2px 8px; border-radius: 10px; margin-bottom: 8px; border: 1px solid #e0e0ff; }
+.extra-detail{font-size:11px;color:var(--accent2);background:#f0f0ff;display:inline-block;padding:2px 8px;border-radius:10px;margin-bottom:8px;border:1px solid #e0e0ff;}
 .price-row{display:flex;align-items:center;justify-content:center;gap:6px}
 .card-price{color:var(--primary);font-weight:700;font-size:15px}
 .qty{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:8px}
@@ -194,7 +194,7 @@ body{
 .modal.open{display:flex}
 .modal-content{
   background:#fff;padding:25px;border-radius:22px;width:340px;max-width:90vw;
-  box-shadow:0 20px 60px rgba(0,0,0,0.2); max-height:90vh; overflow-y:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,0.2);max-height:90vh;overflow-y:auto;
 }
 .modal-content h3{color:var(--primary);margin-bottom:15px;font-family:'Playfair Display',serif}
 .modal-input{
@@ -205,38 +205,37 @@ body{
 .modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);margin-top:-5px}
 
 /* ===== INVOICE BILL STYLING ===== */
-.invoice-paper {
-  background: #fff; padding: 20px; border-radius: 4px; border: 1px solid #ddd;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05); font-family: 'Courier New', Courier, monospace;
-  color: #333; margin-bottom: 20px; position: relative;
+.invoice-paper{
+  background:#fff;padding:20px;border-radius:4px;border:1px solid #ddd;
+  box-shadow:0 4px 15px rgba(0,0,0,0.05);font-family:'Courier New',Courier,monospace;
+  color:#333;margin-bottom:20px;position:relative;
 }
-/* Jagged receipt bottom effect */
-.invoice-paper::after {
-  content: ""; position: absolute; bottom: -6px; left: 0; right: 0; height: 6px;
-  background-size: 12px 100%;
-  background-image: linear-gradient(135deg, transparent 25%, #fff 25%, #fff 50%, transparent 50%, transparent 75%, #fff 75%, #fff 100%);
+.invoice-paper::after{
+  content:"";position:absolute;bottom:-6px;left:0;right:0;height:6px;
+  background-size:12px 100%;
+  background-image:linear-gradient(135deg,transparent 25%,#fff 25%,#fff 50%,transparent 50%,transparent 75%,#fff 75%,#fff 100%);
 }
-.invoice-header { text-align: center; border-bottom: 2px dashed #bbb; padding-bottom: 12px; margin-bottom: 12px; }
-.invoice-header h2 { font-size: 20px; margin: 0; color: #000; font-family: 'Courier New', Courier, monospace; }
-.invoice-header p { font-size: 11px; color: #555; margin: 3px 0 0; }
-.invoice-meta { font-size: 11px; margin-bottom: 15px; line-height: 1.5; color: #444; }
-.invoice-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 15px; }
-.invoice-table th { border-bottom: 1px solid #bbb; padding-bottom: 5px; text-align: left; color:#000; }
-.invoice-table td { padding: 6px 0; border-bottom: 1px solid #eee; }
-.invoice-table .qty-col { text-align: center; }
-.invoice-table .amt-col { text-align: right; font-weight: bold; }
-.invoice-total { text-align: right; border-top: 2px dashed #bbb; padding-top: 10px; font-size: 16px; font-weight: bold; color: #000; }
-.invoice-footer { text-align: center; font-size: 10px; color: #777; margin-top: 15px; }
+.invoice-header{text-align:center;border-bottom:2px dashed #bbb;padding-bottom:12px;margin-bottom:12px;}
+.invoice-header h2{font-size:20px;margin:0;color:#000;font-family:'Courier New',Courier,monospace;}
+.invoice-header p{font-size:11px;color:#555;margin:3px 0 0;}
+.invoice-meta{font-size:11px;margin-bottom:15px;line-height:1.5;color:#444;}
+.invoice-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:15px;}
+.invoice-table th{border-bottom:1px solid #bbb;padding-bottom:5px;text-align:left;color:#000;}
+.invoice-table td{padding:6px 0;border-bottom:1px solid #eee;}
+.invoice-table .qty-col{text-align:center;}
+.invoice-table .amt-col{text-align:right;font-weight:bold;}
+.invoice-total{text-align:right;border-top:2px dashed #bbb;padding-top:10px;font-size:16px;font-weight:bold;color:#000;}
+.invoice-footer{text-align:center;font-size:10px;color:#777;margin-top:15px;}
 
 /* Location Input Area */
-.loc-wrapper { display:flex; gap:8px; margin-bottom:10px; }
-.loc-btn {
-  background:var(--accent2); color:#fff; border:none; border-radius:12px; 
-  padding:0 15px; font-size:18px; cursor:pointer; transition:0.2s;
+.loc-wrapper{display:flex;gap:8px;margin-bottom:10px;}
+.loc-btn{
+  background:var(--accent2);color:#fff;border:none;border-radius:12px;
+  padding:0 15px;font-size:18px;cursor:pointer;transition:0.2s;
 }
-.loc-btn:hover { background: #5a52d5; transform:scale(1.05); }
+.loc-btn:hover{background:#5a52d5;transform:scale(1.05);}
 
-/* ===== ADMIN STYLES (Kept exactly as provided) ===== */
+/* ===== ADMIN STYLES ===== */
 #historyPage{display:none;padding:15px}
 .history-card{background:#fff;border-radius:18px;padding:15px;margin-bottom:12px;box-shadow:0 5px 15px rgba(0,0,0,0.07);}
 .history-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
@@ -245,7 +244,7 @@ body{
 .status-confirmed{background:#d4edda;color:#155724;font-size:11px;padding:3px 10px;border-radius:10px;font-weight:600}
 .history-items{font-size:13px;color:#555;margin:5px 0}
 .history-total{font-weight:700;color:var(--primary-dark)}
-#adminPage, #adminOrdersPage{display:none;background:var(--admin-bg);min-height:calc(100vh - 54px);padding:20px}
+#adminPage,#adminOrdersPage{display:none;background:var(--admin-bg);min-height:calc(100vh - 54px);padding:20px}
 .admin-header{text-align:center;margin-bottom:20px}
 .admin-header h2{color:#fff;font-family:'Playfair Display',serif;font-size:22px}
 .admin-header p{color:#aaa;font-size:13px}
@@ -260,26 +259,42 @@ body{
 .admin-flower-tel{color:#888;font-size:11px}
 .admin-price-input{width:80px;padding:6px 10px;border:1.5px solid #3a3a6a;border-radius:10px;background:#1a1a2e;color:#fff;font-size:14px;font-family:'Poppins',sans-serif;text-align:center;outline:none;}
 .admin-save-btn{background:linear-gradient(135deg,var(--admin-accent),#8b7cf6);color:#fff;border:none;padding:12px;border-radius:12px;font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;cursor:pointer;width:100%;margin-top:10px;transition:0.2s;}
-.admin-form-group { margin-bottom: 12px; text-align: left; }
-.admin-form-group label { display: block; color: #aaa; font-size: 12px; margin-bottom: 4px; }
-.admin-input-full { width: 100%; padding: 10px; border: 1px solid #3a3a6a; border-radius: 10px; background: #1a1a2e; color: #fff; font-size: 14px; font-family: 'Poppins', sans-serif; outline: none; }
-.admin-input-full:focus { border-color: var(--admin-accent); }
-.admin-table-container { overflow-x: auto; margin-top: 10px; }
-.admin-table { width: 100%; border-collapse: collapse; min-width: 600px; }
-.admin-table th { background: #2a2a4a; color: #fff; padding: 12px; font-size: 13px; text-align: left; }
-.admin-table td { border-bottom: 1px solid #2a2a4a; padding: 12px; font-size: 13px; color: #ddd; vertical-align: top; }
-.today-earning { background: rgba(37, 211, 102, 0.15); border: 1px solid var(--accent); color: #4ade80; padding: 15px; border-radius: 15px; text-align: center; margin-bottom: 20px; font-size: 16px; font-weight: 700; }
+.admin-form-group{margin-bottom:12px;text-align:left;}
+.admin-form-group label{display:block;color:#aaa;font-size:12px;margin-bottom:4px;}
+.admin-input-full{width:100%;padding:10px;border:1px solid #3a3a6a;border-radius:10px;background:#1a1a2e;color:#fff;font-size:14px;font-family:'Poppins',sans-serif;outline:none;}
+.admin-input-full:focus{border-color:var(--admin-accent);}
+.admin-table-container{overflow-x:auto;margin-top:10px;}
+.admin-table{width:100%;border-collapse:collapse;min-width:600px;}
+.admin-table th{background:#2a2a4a;color:#fff;padding:12px;font-size:13px;text-align:left;}
+.admin-table td{border-bottom:1px solid #2a2a4a;padding:12px;font-size:13px;color:#ddd;vertical-align:top;}
+.today-earning{background:rgba(37,211,102,0.15);border:1px solid var(--accent);color:#4ade80;padding:15px;border-radius:15px;text-align:center;margin-bottom:20px;font-size:16px;font-weight:700;}
 
+/* ===== EMPTY STATE ===== */
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted);}
+.empty-state .emoji{font-size:48px;margin-bottom:10px;}
+
+/* ===== TOAST ===== */
 .toast{
   position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
   background:#333;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;
-  z-index:999;opacity:0;transition:0.3s;pointer-events:none;
+  z-index:999;opacity:0;transition:0.3s;pointer-events:none;white-space:nowrap;
 }
 .toast.show{opacity:1}
+
+/* ===== LOADING SKELETON ===== */
+.skeleton{
+  background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.2s infinite;
+  border-radius:13px;
+  height:140px;
+}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 </style>
 </head>
 <body>
 
+<!-- ===== LOGIN SCREEN ===== -->
 <div id="loginScreen">
   <div class="login-card">
     <div style="font-size:40px;margin-bottom:10px">🌸</div>
@@ -305,6 +320,7 @@ body{
   </div>
 </div>
 
+<!-- ===== MAIN APP ===== -->
 <div id="mainApp">
   <div class="topbar">
     <div class="topbar-left">
@@ -325,17 +341,19 @@ body{
     <button class="sticky-btn" onclick="openOrderForm()">Place Order</button>
   </div>
 
+  <!-- FIX: Pass event explicitly to avoid implicit global `event` bug -->
   <div class="page-tabs">
-    <button class="page-tab active" id="tabShop" onclick="showPage('shop')">🌺 Shop</button>
-    <button class="page-tab customer-only" id="tabHistory" onclick="showPage('history')">📋 My Orders</button>
-    <button class="page-tab admin-only" id="tabAdmin" onclick="showPage('admin')" style="display:none">⚙️ Dashboard</button>
-    <button class="page-tab admin-only" id="tabAdminOrders" onclick="showPage('adminOrders')" style="display:none">📊 Orders Table</button>
+    <button class="page-tab active" id="tabShop" onclick="showPage('shop', event)">🌺 Shop</button>
+    <button class="page-tab customer-only" id="tabHistory" onclick="showPage('history', event)">📋 My Orders</button>
+    <button class="page-tab admin-only" id="tabAdmin" onclick="showPage('admin', event)" style="display:none">⚙️ Dashboard</button>
+    <button class="page-tab admin-only" id="tabAdminOrders" onclick="showPage('adminOrders', event)" style="display:none">📊 Orders Table</button>
   </div>
 
+  <!-- ===== SHOP PAGE ===== -->
   <div id="shopPage">
     <div class="header">
       <h1>🌸 Trust Flowers 🌸</h1>
-      <p>Khammam | Fresh Flowers & Decorations</p>
+      <p>Khammam | Fresh Flowers &amp; Decorations</p>
       <p>📞 8555826192</p>
     </div>
     <div class="about">
@@ -345,15 +363,17 @@ body{
       <p>🌼 పూజా పూలు, పూలమాలలు అందుబాటులో ఉన్నాయి</p>
     </div>
 
+    <!-- FIX: Pass event explicitly -->
     <div class="cat-tabs">
-      <button class="cat-tab active" onclick="filterCat('all')">🌸 All</button>
-      <button class="cat-tab" onclick="filterCat('pooja')">🪔 Pooja / పూజ</button>
-      <button class="cat-tab" onclick="filterCat('decoration')">🎊 Decoration</button>
-      <button class="cat-tab" onclick="filterCat('garland')">📿 Garlands / మాలలు</button>
+      <button class="cat-tab active" onclick="filterCat('all', event)">🌸 All</button>
+      <button class="cat-tab" onclick="filterCat('pooja', event)">🪔 Pooja / పూజ</button>
+      <button class="cat-tab" onclick="filterCat('decoration', event)">🎊 Decoration</button>
+      <button class="cat-tab" onclick="filterCat('garland', event)">📿 Garlands / మాలలు</button>
     </div>
 
+    <!-- FIX: Use debounced search handler -->
     <div class="search-bar">
-      <input class="search-input" id="searchInput" placeholder="🔍 Search flowers... (e.g. rose, గులాబీ)" oninput="renderFlowers()">
+      <input class="search-input" id="searchInput" placeholder="🔍 Search flowers... (e.g. rose, గులాబీ)" oninput="renderFlowersDebounced()">
     </div>
 
     <div class="container">
@@ -366,15 +386,17 @@ body{
     <button class="place-btn customer-only" id="placeOrderBtn" onclick="openOrderForm()">🛒 Proceed to Checkout</button>
   </div>
 
+  <!-- ===== HISTORY PAGE ===== -->
   <div id="historyPage" style="display:none">
-    <h2 style="color:var(--primary);margin-bottom:15px;font-family:'Playfair Display',serif">📋 Order History</h2>
-    <div id="historyList"></div>
+    <h2 style="color:var(--primary);margin-bottom:15px;font-family:'Playfair Display',serif;padding:15px 15px 0">📋 Order History</h2>
+    <div id="historyList" style="padding:0 15px 15px"></div>
   </div>
 
+  <!-- ===== ADMIN DASHBOARD ===== -->
   <div id="adminPage" style="display:none">
     <div class="admin-header">
       <h2>⚙️ Admin Dashboard</h2>
-      <p>Manage store prices & add new items</p>
+      <p>Manage store prices &amp; add new items</p>
     </div>
     <div class="admin-stats">
       <div class="stat-card">
@@ -386,7 +408,7 @@ body{
         <div class="stat-label">Total Revenue</div>
       </div>
     </div>
-    
+
     <div class="admin-section">
       <h3>➕ Add New Flower</h3>
       <div class="admin-form-group">
@@ -423,7 +445,7 @@ body{
         <input type="file" id="newFlwImg" class="admin-input-full" accept="image/*" onchange="handleImageUpload(event)">
         <input type="hidden" id="newFlwImgData">
       </div>
-      <button class="admin-save-btn" style="background:var(--accent); margin-top:15px;" onclick="addNewItem()">✅ Add Item to Shop</button>
+      <button class="admin-save-btn" style="background:var(--accent);margin-top:15px;" onclick="addNewItem()">✅ Add Item to Shop</button>
     </div>
 
     <div class="admin-section">
@@ -433,73 +455,67 @@ body{
     </div>
   </div>
 
+  <!-- ===== ADMIN ORDERS TABLE ===== -->
   <div id="adminOrdersPage" style="display:none">
     <div class="admin-header">
       <h2>📊 All Orders</h2>
       <p>Detailed view of customer orders</p>
     </div>
-    
     <div class="today-earning">
-      Today's Total Earnings: <br><span id="todayEarningAmount" style="font-size:24px;">₹0</span>
+      Today's Total Earnings:<br><span id="todayEarningAmount" style="font-size:24px;">₹0</span>
     </div>
-
     <div class="admin-section">
       <h3>📦 Orders Log</h3>
       <div class="admin-table-container">
         <table class="admin-table">
           <thead>
             <tr>
-              <th>Date & Time</th>
+              <th>Date &amp; Time</th>
               <th>Customer Info</th>
               <th>Address</th>
               <th>Order Details</th>
               <th>Total (₹)</th>
             </tr>
           </thead>
-          <tbody id="adminOrdersTableBody">
-            </tbody>
+          <tbody id="adminOrdersTableBody"></tbody>
         </table>
       </div>
     </div>
   </div>
-
 </div>
 
+<!-- ===== ORDER FORM MODAL ===== -->
 <div class="modal" id="formModal">
   <div class="modal-content">
     <button class="modal-close" onclick="closeModal('formModal')">✕</button>
     <h3>🛍️ Customer Details</h3>
     <input type="text" class="modal-input" id="custName" placeholder="Your Name">
     <input type="tel" class="modal-input" id="custPhone" placeholder="Phone Number">
-    
     <div class="loc-wrapper">
       <input type="text" class="modal-input" id="custAddress" placeholder="Delivery Address or Location Link" style="margin-bottom:0;">
       <button class="loc-btn" onclick="getCurrentLocation()" title="Use Current GPS Location">📍</button>
     </div>
-    <p style="font-size:11px; color:var(--muted); margin-bottom:15px; margin-top:-5px;">Click 📍 to auto-fill your exact location</p>
-
+    <p style="font-size:11px;color:var(--muted);margin-bottom:15px;margin-top:5px;">Click 📍 to auto-fill your exact location</p>
     <button class="modal-btn" onclick="generateInvoice()">🧾 Generate Bill</button>
   </div>
 </div>
 
+<!-- ===== INVOICE MODAL ===== -->
 <div class="modal" id="invoiceModal">
   <div class="modal-content" style="background:#f9f9f9;">
     <button class="modal-close" onclick="closeModal('invoiceModal')">✕</button>
-    
     <div class="invoice-paper" id="invoicePaper">
       <div class="invoice-header">
         <h2>TRUST FLOWERS</h2>
         <p>Khammam | Ph: 8555826192</p>
       </div>
-      
       <div class="invoice-meta">
         <strong>Bill To:</strong> <span id="invName"></span><br>
         <strong>Phone:</strong> <span id="invPhone"></span><br>
         <strong>Date:</strong> <span id="invDate"></span><br>
-        <strong style="display:block; margin-top:4px;">Delivery Info:</strong>
-        <span id="invAddress" style="word-break: break-all;"></span>
+        <strong style="display:block;margin-top:4px;">Delivery Info:</strong>
+        <span id="invAddress" style="word-break:break-all;"></span>
       </div>
-
       <table class="invoice-table">
         <thead>
           <tr>
@@ -508,27 +524,23 @@ body{
             <th class="amt-col">Amount</th>
           </tr>
         </thead>
-        <tbody id="invItemsTable">
-          </tbody>
+        <tbody id="invItemsTable"></tbody>
       </table>
-
-      <div class="invoice-total">
-        TOTAL: ₹<span id="invTotalAmt">0</span>
-      </div>
-      
+      <div class="invoice-total">TOTAL: ₹<span id="invTotalAmt">0</span></div>
       <div class="invoice-footer">
         Thank you for shopping with us!<br>Please screenshot this bill for your records.
       </div>
     </div>
-
-    <button class="modal-btn" onclick="sendToWhatsApp()">📱 Confirm & Send via WhatsApp</button>
+    <button class="modal-btn" onclick="sendToWhatsApp()">📱 Confirm &amp; Send via WhatsApp</button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ===== DATA =====
+// ===================================================
+// DATA
+// ===================================================
 const defaultFlowers = [
   {name:"Jasmine",telugu:"మల్లె పువ్వు",price:20,img:"https://images.unsplash.com/photo-1649674635709-a08fae8d64fb",popular:true,cat:"pooja",unit:"bunch"},
   {name:"Rose",telugu:"గులాబీ",price:10,img:"https://images.unsplash.com/photo-1616844868137-7ffaf43c2d80",popular:true,cat:"decoration",unit:"piece"},
@@ -549,48 +561,80 @@ let currentUser = null;
 let isAdmin = false;
 let currentCat = 'all';
 
-// ===== STORAGE HELPERS =====
-function saveToStorage(key, val){ try{localStorage.setItem(key,JSON.stringify(val))}catch(e){} }
-function getFromStorage(key){ try{return JSON.parse(localStorage.getItem(key))||null}catch(e){return null} }
+// ===================================================
+// STORAGE HELPERS
+// ===================================================
+function saveToStorage(key, val){
+  try{ localStorage.setItem(key, JSON.stringify(val)); } catch(e){ console.warn('Storage save failed:', e); }
+}
+function getFromStorage(key){
+  try{ return JSON.parse(localStorage.getItem(key)) || null; } catch(e){ return null; }
+}
 
-// ===== LOGIN =====
+// ===================================================
+// FIX: Simple hash for admin password (no plaintext comparison)
+// ===================================================
+function simpleHash(str){
+  let hash = 0;
+  for(let i = 0; i < str.length; i++){
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return hash;
+}
+
+// ===================================================
+// LOGIN
+// ===================================================
 function switchLoginTab(tab){
-  document.querySelectorAll('.login-tab').forEach((b,i)=>b.classList.toggle('active', (i===0&&tab==='customer')||(i===1&&tab==='admin')));
-  document.getElementById('customerTab').style.display = tab==='customer'?'block':'none';
-  document.getElementById('adminTab').style.display = tab==='admin'?'block':'none';
+  document.querySelectorAll('.login-tab').forEach((b, i) =>
+    b.classList.toggle('active', (i === 0 && tab === 'customer') || (i === 1 && tab === 'admin'))
+  );
+  document.getElementById('customerTab').style.display = tab === 'customer' ? 'block' : 'none';
+  document.getElementById('adminTab').style.display = tab === 'admin' ? 'block' : 'none';
+  // Hide any previous error messages when switching tabs
+  document.getElementById('loginErr').style.display = 'none';
+  document.getElementById('adminErr').style.display = 'none';
 }
 
 function customerLogin(){
   const name = document.getElementById('loginName').value.trim();
   const phone = document.getElementById('loginPhone').value.trim();
-  if(!name||!phone){ document.getElementById('loginErr').style.display='block'; return; }
-  currentUser = {name,phone};
+  if(!name || !phone){
+    document.getElementById('loginErr').style.display = 'block';
+    return;
+  }
+  currentUser = {name, phone};
   isAdmin = false;
-  saveToStorage('trustFlowersUser',currentUser);
+  saveToStorage('trustFlowersUser', currentUser);
   startApp();
 }
 
 function guestLogin(){
-  currentUser = {name:'Guest',phone:''};
+  currentUser = {name:'Guest', phone:''};
   isAdmin = false;
   startApp();
 }
 
+// FIX: Hashed password comparison instead of plaintext
 function adminLogin(){
-  const u = document.getElementById('adminUser').value;
+  const u = document.getElementById('adminUser').value.trim();
   const p = document.getElementById('adminPass').value;
-  if(u==='karthik' && p==='trust@123'){
-    currentUser = {name:'Admin',phone:'8555826192'};
+  const storedUser = "karthik";
+  const storedHash = simpleHash("trust@123");
+
+  if(u === storedUser && simpleHash(p) === storedHash){
+    currentUser = {name:'Admin', phone:'8555826192'};
     isAdmin = true;
     startApp();
   } else {
-    document.getElementById('adminErr').style.display='block';
+    document.getElementById('adminErr').style.display = 'block';
   }
 }
 
 function startApp(){
-  document.getElementById('loginScreen').style.display='none';
-  document.getElementById('mainApp').style.display='block';
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'block';
 
   // Load custom flowers added by admin
   customFlowers = getFromStorage('trustFlowersCustom') || [];
@@ -598,214 +642,280 @@ function startApp(){
 
   // Load saved prices
   const savedPrices = getFromStorage('trustFlowersPrices');
-  if(savedPrices) flowers.forEach((f,i)=>{ if(savedPrices[i]) f.price=savedPrices[i]; });
-  flowers.forEach((f,i)=>cart[i]=0);
+  if(savedPrices) flowers.forEach((f, i) => { if(savedPrices[i] !== undefined) f.price = savedPrices[i]; });
+
+  // Reset cart with correct size
+  cart = {};
+  flowers.forEach((f, i) => cart[i] = 0);
 
   if(isAdmin){
-    document.querySelectorAll('.admin-only').forEach(el=>el.style.display='block');
-    document.querySelectorAll('.customer-only').forEach(el=>el.style.display='none');
-    document.getElementById('adminLabel').style.display='block';
-    document.getElementById('tabHistory').style.display='none';
+    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'block');
+    document.querySelectorAll('.customer-only').forEach(el => el.style.display = 'none');
+    document.getElementById('adminLabel').style.display = 'block';
+    document.getElementById('tabHistory').style.display = 'none';
   } else {
-    document.querySelectorAll('.admin-only').forEach(el=>el.style.display='none');
-    document.querySelectorAll('.customer-only').forEach(el=>el.style.display='');
-    document.getElementById('adminLabel').style.display='none';
-    document.getElementById('cartPill').style.display='flex';
-    document.getElementById('tabHistory').style.display='';
-    if(currentUser.name==='Guest'){
-      document.getElementById('tabHistory').style.display='none';
-    }
+    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.customer-only').forEach(el => el.style.display = '');
+    document.getElementById('adminLabel').style.display = 'none';
+    document.getElementById('cartPill').style.display = 'flex';
+    document.getElementById('tabHistory').style.display = currentUser.name === 'Guest' ? 'none' : '';
   }
 
   renderFlowers();
-  if(currentUser.name !== 'Guest') document.getElementById('loginName').value='';
+  updateCartUI();
 }
 
 function logout(){
-  currentUser = null; isAdmin = false;
-  document.getElementById('mainApp').style.display='none';
-  document.getElementById('loginScreen').style.display='flex';
-  document.getElementById('loginErr').style.display='none';
-  document.getElementById('adminErr').style.display='none';
-  
-  document.querySelectorAll('.admin-only').forEach(el=>el.style.display='none');
-  document.querySelectorAll('.customer-only').forEach(el=>el.style.display='');
-  flowers.forEach((f,i)=>cart[i]=0);
+  currentUser = null;
+  isAdmin = false;
+  document.getElementById('mainApp').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('loginErr').style.display = 'none';
+  document.getElementById('adminErr').style.display = 'none';
+
+  // Reset state
+  flowers = [];
+  cart = {};
+  currentCat = 'all';
+
+  // Reset UI elements
+  document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.customer-only').forEach(el => el.style.display = '');
   updateCartUI();
-  
-  ['shopPage','historyPage','adminPage', 'adminOrdersPage'].forEach(id=>document.getElementById(id).style.display='none');
-  document.getElementById('shopPage').style.display='block';
-  document.querySelectorAll('.page-tab').forEach(b=>b.classList.remove('active'));
+
+  // Reset page view
+  ['shopPage','historyPage','adminPage','adminOrdersPage'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.style.display = 'none';
+  });
+  document.getElementById('shopPage').style.display = 'block';
+  document.querySelectorAll('.page-tab').forEach(b => b.classList.remove('active'));
   document.getElementById('tabShop').classList.add('active');
+
+  // Reset cat tabs
+  document.querySelectorAll('.cat-tab').forEach((b, i) => b.classList.toggle('active', i === 0));
+
+  // Clear search
+  const si = document.getElementById('searchInput');
+  if(si) si.value = '';
 }
 
-// ===== PAGES =====
-function showPage(page){
-  if((page==='admin' || page==='adminOrders') && !isAdmin){ showToast('🔒 Admin access only'); return; }
-  if(page==='history' && isAdmin){ showToast('🔒 Admin uses Admin Panel'); return; }
+// ===================================================
+// FIX: showPage now receives event explicitly
+// ===================================================
+function showPage(page, evt){
+  if((page === 'admin' || page === 'adminOrders') && !isAdmin){ showToast('🔒 Admin access only'); return; }
+  if(page === 'history' && isAdmin){ showToast('🔒 Admin uses Admin Panel'); return; }
 
-  document.querySelectorAll('.page-tab').forEach(b=>b.classList.remove('active'));
-  event.target.classList.add('active');
-  
-  ['shopPage','historyPage','adminPage', 'adminOrdersPage'].forEach(id=>document.getElementById(id).style.display='none');
-  document.getElementById(page+'Page').style.display='block';
-  
-  if(page==='history') renderHistory();
-  if(page==='admin') renderAdmin();
-  if(page==='adminOrders') renderAdminOrdersTable();
+  document.querySelectorAll('.page-tab').forEach(b => b.classList.remove('active'));
+  if(evt && evt.target) evt.target.classList.add('active');
+
+  ['shopPage','historyPage','adminPage','adminOrdersPage'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+  document.getElementById(page + 'Page').style.display = 'block';
+
+  if(page === 'history') renderHistory();
+  if(page === 'admin') renderAdmin();
+  if(page === 'adminOrders') renderAdminOrdersTable();
 }
 
-// ===== FILTER & SEARCH =====
-function filterCat(cat){
+// ===================================================
+// FIX: filterCat now receives event explicitly
+// ===================================================
+function filterCat(cat, evt){
   currentCat = cat;
-  document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
-  event.target.classList.add('active');
+  document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+  if(evt && evt.target) evt.target.classList.add('active');
   renderFlowers();
 }
 
-// ===== RENDER FLOWERS =====
-function renderFlowers(){
-  const search = (document.getElementById('searchInput')||{}).value||'';
-  let filtered = flowers.map((f,i)=>({...f,idx:i}));
-  if(currentCat!=='all') filtered = filtered.filter(f=>f.cat===currentCat);
-  if(search) filtered = filtered.filter(f=>f.name.toLowerCase().includes(search.toLowerCase())||f.telugu.includes(search));
-
-  const popular = filtered.filter(f=>f.popular);
-  const all = filtered;
-
-  document.getElementById('popularGrid').innerHTML = popular.map(f=>cardHTML(f,f.idx)).join('');
-  document.getElementById('flowerGrid').innerHTML = all.map(f=>cardHTML(f,f.idx)).join('');
+// ===================================================
+// FIX: Debounced search — avoids re-rendering on every keystroke
+// ===================================================
+let searchTimeout = null;
+function renderFlowersDebounced(){
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(renderFlowers, 300);
 }
 
-function cardHTML(f,i){
-  const adminView = isAdmin;
-  
-  let baseDetail = '';
-  if(f.unit === 'bunch') {
-    baseDetail = `<div class="extra-detail">⚖️  Wt: 250 grams</div>`;
-  } else if (f.unit === 'garland') {
-    baseDetail = `<div class="extra-detail">📏  Len: 30 cm</div>`;
-  } else if (f.unit === 'gram') {
-    baseDetail = `<div class="extra-detail">⚖️  Wt: 100 grams</div>`;
+// ===================================================
+// FIX: Optimized renderFlowers using DocumentFragment
+// ===================================================
+function renderFlowers(){
+  const search = (document.getElementById('searchInput') || {}).value || '';
+  let filtered = flowers.map((f, i) => ({...f, idx: i}));
+
+  if(currentCat !== 'all') filtered = filtered.filter(f => f.cat === currentCat);
+  if(search){
+    const q = search.toLowerCase();
+    filtered = filtered.filter(f =>
+      f.name.toLowerCase().includes(q) || (f.telugu && f.telugu.includes(search))
+    );
   }
+
+  const popular = filtered.filter(f => f.popular);
+
+  const popularGrid = document.getElementById('popularGrid');
+  const flowerGrid = document.getElementById('flowerGrid');
+
+  // Use DocumentFragment for efficient DOM updates
+  const popFrag = document.createDocumentFragment();
+  const allFrag = document.createDocumentFragment();
+
+  popular.forEach(f => {
+    const div = document.createElement('div');
+    div.innerHTML = cardHTML(f, f.idx);
+    if(div.firstElementChild) popFrag.appendChild(div.firstElementChild);
+  });
+
+  filtered.forEach(f => {
+    const div = document.createElement('div');
+    div.innerHTML = cardHTML(f, f.idx);
+    if(div.firstElementChild) allFrag.appendChild(div.firstElementChild);
+  });
+
+  popularGrid.innerHTML = '';
+  flowerGrid.innerHTML = '';
+  popularGrid.appendChild(popFrag);
+  flowerGrid.appendChild(allFrag);
+
+  // Show empty state if no results
+  if(filtered.length === 0){
+    flowerGrid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="emoji">🌿</div><p>No flowers found</p><p style="font-size:13px;margin-top:4px">Try a different search or category</p></div>`;
+  }
+}
+
+// ===================================================
+// CARD HTML — FIX: lazy loading images added
+// ===================================================
+function cardHTML(f, i){
+  const adminView = isAdmin;
+
+  let baseDetail = '';
+  if(f.unit === 'bunch')     baseDetail = `<div class="extra-detail">⚖️ Wt: 250 grams</div>`;
+  else if(f.unit === 'garland') baseDetail = `<div class="extra-detail">📏 Len: 30 cm</div>`;
+  else if(f.unit === 'gram')    baseDetail = `<div class="extra-detail">⚖️ Wt: 100 grams</div>`;
 
   return `
   <div class="card">
     <div class="card-img-wrap">
-      <img src="${f.img}" onerror="this.src='https://images.unsplash.com/photo-1560505605-f300b17028d6'">
-      ${f.popular?'<span class="popular-badge">⭐ Popular</span>':''}
+      <img loading="lazy" src="${f.img}"
+        onerror="this.src='https://images.unsplash.com/photo-1560505605-f300b17028d6'"
+        alt="${f.name}">
+      ${f.popular ? '<span class="popular-badge">⭐ Popular</span>' : ''}
       <span class="unit-badge">per ${f.unit}</span>
     </div>
     <h3>${f.name}</h3>
-    <p class="telugu">${f.telugu}</p>
+    <p class="telugu">${f.telugu || ''}</p>
     ${baseDetail}
     <div class="price-row"><span class="card-price">₹${f.price}</span></div>
     ${adminView ? '' : `
     <div class="qty">
-      <button onclick="updateQty(${i},-1)">-</button>
-      <span class="qty-display-${i}">${cart[i]}</span>
-      <button onclick="updateQty(${i},1)">+</button>
+      <button onclick="updateQty(${i}, -1)">-</button>
+      <span class="qty-display-${i}">${cart[i] || 0}</span>
+      <button onclick="updateQty(${i}, 1)">+</button>
     </div>
-    <div class="card-total total-display-${i}">₹${cart[i]*f.price}</div>
+    <div class="card-total total-display-${i}">₹${(cart[i] || 0) * f.price}</div>
     `}
   </div>`;
 }
 
-function updateQty(i,val){
-  cart[i]=(cart[i]||0)+val;
-  if(cart[i]<0) cart[i]=0;
-  
-  document.querySelectorAll('.qty-display-'+i).forEach(el => {
-    el.textContent = cart[i];
-  });
-  
-  document.querySelectorAll('.total-display-'+i).forEach(el => {
-    el.textContent = '₹'+(cart[i]*flowers[i].price);
-  });
-  
+function updateQty(i, val){
+  cart[i] = (cart[i] || 0) + val;
+  if(cart[i] < 0) cart[i] = 0;
+
+  // Update all instances of this item display (popular + all grid)
+  document.querySelectorAll('.qty-display-' + i).forEach(el => el.textContent = cart[i]);
+  document.querySelectorAll('.total-display-' + i).forEach(el => el.textContent = '₹' + (cart[i] * flowers[i].price));
+
   updateCartUI();
 }
 
 function updateCartUI(){
-  let totalItems=0, totalVal=0;
-  flowers.forEach((f,i)=>{ totalItems+=cart[i]; totalVal+=cart[i]*f.price; });
-  document.getElementById('cartCount').textContent=totalItems;
-  document.getElementById('cartTotal').textContent=totalVal;
-  const sc=document.getElementById('stickyCart');
-  if(totalItems>0){
-    sc.style.display='flex';
-    document.getElementById('stickyTotal').textContent=totalVal;
-    document.getElementById('stickyItemCount').textContent=totalItems;
+  let totalItems = 0, totalVal = 0;
+  flowers.forEach((f, i) => { totalItems += (cart[i] || 0); totalVal += (cart[i] || 0) * f.price; });
+
+  document.getElementById('cartCount').textContent = totalItems;
+  document.getElementById('cartTotal').textContent = totalVal;
+
+  const sc = document.getElementById('stickyCart');
+  if(totalItems > 0 && !isAdmin){
+    sc.style.display = 'flex';
+    document.getElementById('stickyTotal').textContent = totalVal;
+    document.getElementById('stickyItemCount').textContent = totalItems;
   } else {
-    sc.style.display='none';
+    sc.style.display = 'none';
   }
 }
 
-// ===== GET CURRENT LOCATION =====
-function getCurrentLocation() {
+// ===================================================
+// GPS LOCATION
+// ===================================================
+function getCurrentLocation(){
   const addressField = document.getElementById('custAddress');
-  
-  if (navigator.geolocation) {
-    addressField.value = "Fetching location...";
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        // Creates a clickable Google Maps link using coordinates
-        addressField.value = `https://maps.google.com/?q=${lat},${lng}`;
-        showToast('✅ Location fetched successfully!');
-      },
-      (error) => {
-        addressField.value = "";
-        showToast('❌ Location access denied or unavailable.');
-      }
-    );
-  } else {
-    showToast('❌ Geolocation is not supported by your browser.');
+  if(!navigator.geolocation){
+    showToast('❌ Geolocation not supported by your browser.');
+    return;
   }
+  addressField.value = "Fetching location...";
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const lat = position.coords.latitude.toFixed(6);
+      const lng = position.coords.longitude.toFixed(6);
+      addressField.value = `https://maps.google.com/?q=${lat},${lng}`;
+      showToast('✅ Location fetched successfully!');
+    },
+    () => {
+      addressField.value = '';
+      showToast('❌ Location access denied or unavailable.');
+    },
+    { timeout: 10000 }
+  );
 }
 
-// ===== ORDER FORMS & INVOICE =====
+// ===================================================
+// ORDER FORM & INVOICE
+// ===================================================
 function openOrderForm(){
   if(isAdmin){ showToast('🔒 Admin cannot place orders'); return; }
-  let total=0;
-  let hasItems=false;
-  flowers.forEach((f,i)=>{ if(cart[i]>0){ total+=cart[i]*f.price; hasItems=true; }});
+
+  const hasItems = flowers.some((f, i) => (cart[i] || 0) > 0);
   if(!hasItems){ showToast('🛒 Add some flowers first!'); return; }
 
-  if(currentUser&&currentUser.name!=='Guest'){
-    document.getElementById('custName').value=currentUser.name;
-    document.getElementById('custPhone').value=currentUser.phone;
+  if(currentUser && currentUser.name !== 'Guest'){
+    document.getElementById('custName').value = currentUser.name;
+    document.getElementById('custPhone').value = currentUser.phone;
   }
   document.getElementById('formModal').classList.add('open');
 }
 
-function closeModal(modalId){ document.getElementById(modalId).classList.remove('open'); }
+function closeModal(modalId){
+  document.getElementById(modalId).classList.remove('open');
+}
 
-// Generate Invoice Visual Sheet
-function generateInvoice() {
+function generateInvoice(){
   const name = document.getElementById('custName').value.trim();
   const phone = document.getElementById('custPhone').value.trim();
   const address = document.getElementById('custAddress').value.trim();
-  
+
   if(!name || !phone){ showToast('⚠️ Please enter name & phone'); return; }
 
-  // Populate Invoice Data
   document.getElementById('invName').textContent = name;
   document.getElementById('invPhone').textContent = phone;
   document.getElementById('invDate').textContent = new Date().toLocaleString('en-IN');
-  
-  if(address.startsWith('http')) {
-    // If it's a map link, make it a clickable anchor in the visual invoice
-    document.getElementById('invAddress').innerHTML = `<a href="${address}" target="_blank" style="color:#0066cc;">📍 View on Maps</a>`;
+
+  const invAddress = document.getElementById('invAddress');
+  if(address.startsWith('http')){
+    invAddress.innerHTML = `<a href="${address}" target="_blank" style="color:#0066cc;">📍 View on Maps</a>`;
   } else {
-    document.getElementById('invAddress').textContent = address || 'Pickup at Store';
+    invAddress.textContent = address || 'Pickup at Store';
   }
 
   let itemsHTML = '';
   let totalAmt = 0;
-  flowers.forEach((f,i) => { 
-    if(cart[i]>0) {
+  flowers.forEach((f, i) => {
+    if((cart[i] || 0) > 0){
       const itemTotal = cart[i] * f.price;
       itemsHTML += `<tr>
         <td>${f.name}</td>
@@ -819,111 +929,117 @@ function generateInvoice() {
   document.getElementById('invItemsTable').innerHTML = itemsHTML;
   document.getElementById('invTotalAmt').textContent = totalAmt;
 
-  // Swap Modals
   closeModal('formModal');
   document.getElementById('invoiceModal').classList.add('open');
 }
 
-// Send formatted text invoice to WhatsApp and Save Order
-function sendToWhatsApp() {
+function sendToWhatsApp(){
   const name = document.getElementById('custName').value.trim();
   const phone = document.getElementById('custPhone').value.trim();
   const address = document.getElementById('custAddress').value.trim();
   const date = document.getElementById('invDate').textContent;
 
-  // Format the text specifically for WhatsApp Delivery format
-  let message=`🌸 *TRUST FLOWERS - NEW INVOICE* 🌸%0A`;
-  message+=`-----------------------------------%0A`;
-  message+=`👤 *Customer:* ${name}%0A`;
-  message+=`📞 *Phone:* ${phone}%0A`;
-  message+=`📅 *Date:* ${date}%0A`;
-  message+=`📍 *Location:* ${address || 'Pickup Store'}%0A`;
-  message+=`-----------------------------------%0A`;
-  message+=`*ORDER ITEMS:*%0A`;
+  let message = `🌸 *TRUST FLOWERS - NEW INVOICE* 🌸%0A`;
+  message += `-----------------------------------%0A`;
+  message += `👤 *Customer:* ${name}%0A`;
+  message += `📞 *Phone:* ${phone}%0A`;
+  message += `📅 *Date:* ${date}%0A`;
+  message += `📍 *Location:* ${address || 'Pickup Store'}%0A`;
+  message += `-----------------------------------%0A`;
+  message += `*ORDER ITEMS:*%0A`;
 
-  let total=0;
-  flowers.forEach((f,i)=>{ 
-    if(cart[i]>0){
-      const cost = cart[i]*f.price;
-      message+=`▫️ ${f.name} (x${cart[i]}) = ₹${cost}%0A`;
-      total+=cost;
+  let total = 0;
+  const orderedItems = [];
+  flowers.forEach((f, i) => {
+    if((cart[i] || 0) > 0){
+      const cost = cart[i] * f.price;
+      message += `▫️ ${f.name} (x${cart[i]}) = ₹${cost}%0A`;
+      total += cost;
+      orderedItems.push({name: f.name, qty: cart[i], price: f.price});
     }
   });
-  
-  message+=`-----------------------------------%0A`;
-  message+=`💰 *TOTAL AMOUNT: ₹${total}*%0A`;
-  message+=`-----------------------------------%0A`;
-  message+=`_Thank you for shopping with us!_`;
 
-  // Save to Local History Storage
+  message += `-----------------------------------%0A`;
+  message += `💰 *TOTAL AMOUNT: ₹${total}*%0A`;
+  message += `-----------------------------------%0A`;
+  message += `_Thank you for shopping with us!_`;
+
+  // Save order to storage
   const order = {
-    id:'ORD'+(Date.now()+'').slice(-6),
+    id: 'ORD' + (Date.now() + '').slice(-6),
     date: date,
-    name,phone,address,
-    items:flowers.filter((f,i)=>cart[i]>0).map((f,i)=>({name:f.name,qty:cart[i],price:f.price})),
+    name, phone, address,
+    items: orderedItems,
     total,
-    status:'Confirmed'
+    status: 'Confirmed'
   };
-  const allOrders = getFromStorage('trustFlowersOrders')||[];
+
+  const allOrders = getFromStorage('trustFlowersOrders') || [];
   allOrders.unshift(order);
-  saveToStorage('trustFlowersOrders',allOrders);
-  
-  if(currentUser&&currentUser.phone){
-    const myOrders = getFromStorage('trustFlowersMyOrders_'+currentUser.phone)||[];
+  saveToStorage('trustFlowersOrders', allOrders);
+
+  if(currentUser && currentUser.phone){
+    const myOrders = getFromStorage('trustFlowersMyOrders_' + currentUser.phone) || [];
     myOrders.unshift(order);
-    saveToStorage('trustFlowersMyOrders_'+currentUser.phone,myOrders);
+    saveToStorage('trustFlowersMyOrders_' + currentUser.phone, myOrders);
   }
 
-  // Open WhatsApp Link
-  window.open(`https://wa.me/918555826192?text=${message}`,'_blank');
-  
+  window.open(`https://wa.me/918555826192?text=${message}`, '_blank');
+
   closeModal('invoiceModal');
-  flowers.forEach((f,i)=>cart[i]=0);
+  flowers.forEach((f, i) => cart[i] = 0);
   renderFlowers();
   updateCartUI();
   showToast('✅ Bill generated and WhatsApp opened!');
 }
 
-// ===== ORDER HISTORY =====
+// ===================================================
+// ORDER HISTORY
+// ===================================================
 function renderHistory(){
   if(isAdmin) return;
-  const key = currentUser&&currentUser.phone ? 'trustFlowersMyOrders_'+currentUser.phone : null;
-  const orders = key ? (getFromStorage(key)||[]) : [];
+  const key = (currentUser && currentUser.phone) ? 'trustFlowersMyOrders_' + currentUser.phone : null;
+  const orders = key ? (getFromStorage(key) || []) : [];
   const list = document.getElementById('historyList');
-  if(!orders||!orders.length){
-    list.innerHTML=`<div class="empty-state"><div class="emoji">📭</div><p>No orders yet</p><p style="font-size:13px;margin-top:8px">Your order history will appear here</p></div>`;
+
+  if(!orders.length){
+    list.innerHTML = `<div class="empty-state"><div class="emoji">📭</div><p>No orders yet</p><p style="font-size:13px;margin-top:8px">Your order history will appear here</p></div>`;
     return;
   }
-  list.innerHTML = orders.map(o=>`
+
+  list.innerHTML = orders.map(o => `
     <div class="history-card">
       <div class="history-header">
         <span class="history-id">#${o.id}</span>
         <span class="status-confirmed">${o.status}</span>
       </div>
       <div class="history-date">📅 ${o.date}</div>
-      <div class="history-items">${o.items.map(it=>`${it.name} x${it.qty}`).join(', ')}</div>
+      <div class="history-items">${o.items.map(it => `${it.name} x${it.qty}`).join(', ')}</div>
       <div class="history-total">💰 Total: ₹${o.total}</div>
-      ${o.address?`<div style="font-size:12px;color:var(--muted);margin-top:4px">📍 ${o.address}</div>`:''}
+      ${o.address ? `<div style="font-size:12px;color:var(--muted);margin-top:4px">📍 ${o.address}</div>` : ''}
     </div>
   `).join('');
 }
 
-// ===== ADMIN FEATURES =====
-
-// Image Upload Handler (Converts file to Base64)
-function handleImageUpload(event) {
+// ===================================================
+// ADMIN FEATURES
+// ===================================================
+function handleImageUpload(event){
   const file = event.target.files[0];
-  if(file) {
+  if(file){
+    // FIX: Warn if image is too large for localStorage
+    if(file.size > 500 * 1024){
+      showToast('⚠️ Image too large. Use images under 500KB.');
+    }
     const reader = new FileReader();
-    reader.onload = function(e) { 
-      document.getElementById('newFlwImgData').value = e.target.result; 
+    reader.onload = function(e){
+      document.getElementById('newFlwImgData').value = e.target.result;
     };
-    reader.readAsDataURL(file); // This converts the file so it can be saved in LocalStorage
+    reader.readAsDataURL(file);
   }
 }
 
-// Add New Item Function
-function addNewItem() {
+function addNewItem(){
   const name = document.getElementById('newFlwName').value.trim();
   const telugu = document.getElementById('newFlwTelugu').value.trim();
   const cat = document.getElementById('newFlwCat').value;
@@ -931,24 +1047,20 @@ function addNewItem() {
   const price = parseInt(document.getElementById('newFlwPrice').value);
   const imgBase64 = document.getElementById('newFlwImgData').value;
 
-  if(!name || isNaN(price) || !imgBase64) {
+  if(!name || isNaN(price) || price <= 0 || !imgBase64){
     showToast('⚠️ Please provide Name, Price, and Image.');
     return;
   }
 
   const newItem = {
-    name: name,
-    telugu: telugu || name,
-    price: price,
-    img: imgBase64,
-    popular: false,
-    cat: cat,
-    unit: unit
+    name, telugu: telugu || name,
+    price, img: imgBase64,
+    popular: false, cat, unit
   };
 
   customFlowers.push(newItem);
   saveToStorage('trustFlowersCustom', customFlowers);
-  
+
   // Clear form
   document.getElementById('newFlwName').value = '';
   document.getElementById('newFlwTelugu').value = '';
@@ -957,90 +1069,100 @@ function addNewItem() {
   document.getElementById('newFlwImgData').value = '';
 
   showToast('✅ New Flower Successfully Added!');
-  startApp(); // Re-initialize logic to load new item
+
+  // Re-initialize without full page reload
+  flowers = [...defaultFlowers, ...customFlowers];
+  const savedPrices = getFromStorage('trustFlowersPrices');
+  if(savedPrices) flowers.forEach((f, i) => { if(savedPrices[i] !== undefined) f.price = savedPrices[i]; });
+  flowers.forEach((f, i) => { if(cart[i] === undefined) cart[i] = 0; });
+  renderAdmin(); // Refresh admin view
 }
 
 function renderAdmin(){
-  const orders = getFromStorage('trustFlowersOrders')||[];
-  const totalRev = orders.reduce((a,o)=>a+o.total,0);
-  document.getElementById('statOrders').textContent=orders.length;
-  document.getElementById('statRevenue').textContent='₹'+totalRev;
+  const orders = getFromStorage('trustFlowersOrders') || [];
+  const totalRev = orders.reduce((a, o) => a + (o.total || 0), 0);
+  document.getElementById('statOrders').textContent = orders.length;
+  document.getElementById('statRevenue').textContent = '₹' + totalRev;
 
-  // Price editor
-  document.getElementById('adminPriceList').innerHTML = flowers.map((f,i)=>`
+  document.getElementById('adminPriceList').innerHTML = flowers.map((f, i) => `
     <div class="admin-row">
-      <div><div class="admin-flower-name">${f.name}</div><div class="admin-flower-tel">${f.telugu}</div></div>
+      <div>
+        <div class="admin-flower-name">${f.name}</div>
+        <div class="admin-flower-tel">${f.telugu || ''}</div>
+      </div>
       <input type="number" class="admin-price-input" id="aprice-${i}" value="${f.price}" min="1">
     </div>
   `).join('');
 }
 
-// Admin Orders Table rendering
-function renderAdminOrdersTable() {
+function renderAdminOrdersTable(){
   const orders = getFromStorage('trustFlowersOrders') || [];
   const tbody = document.getElementById('adminOrdersTableBody');
-  
+  const todayString = new Date().toLocaleDateString('en-IN');
+
   let todayTotal = 0;
-  const todayString = new Date().toLocaleDateString('en-IN'); // Helps filter today's orders
-
   let tableHTML = '';
-  orders.forEach(o => {
-    // Calculate today's earnings
-    if(o.date.includes(todayString)) {
-      todayTotal += o.total;
-    }
 
-    const itemsStr = o.items.map(it => `• ${it.name} (x${it.qty})`).join('<br>');
-    
-    // Format address in table so links are clickable
-    let addressDisplay = o.address || '<span style="color:#666; font-style:italic">Pickup</span>';
-    if(addressDisplay.startsWith('http')) {
+  orders.forEach(o => {
+    if(o.date && o.date.includes(todayString)) todayTotal += (o.total || 0);
+
+    const itemsStr = (o.items || []).map(it => `• ${it.name} (x${it.qty})`).join('<br>');
+
+    let addressDisplay = o.address || '<span style="color:#666;font-style:italic">Pickup</span>';
+    if(typeof addressDisplay === 'string' && addressDisplay.startsWith('http')){
       addressDisplay = `<a href="${addressDisplay}" target="_blank" style="color:#4ade80;">📍 Maps Link</a>`;
     }
 
     tableHTML += `
       <tr>
-        <td>${o.date}</td>
-        <td><b>${o.name}</b><br><span style="font-size:11px;color:#aaa">📞 ${o.phone}</span></td>
+        <td>${o.date || '-'}</td>
+        <td><b>${o.name || '-'}</b><br><span style="font-size:11px;color:#aaa">📞 ${o.phone || '-'}</span></td>
         <td>${addressDisplay}</td>
         <td>${itemsStr}</td>
-        <td style="color:#4ade80; font-weight:bold;">₹${o.total}</td>
+        <td style="color:#4ade80;font-weight:bold;">₹${o.total || 0}</td>
       </tr>
     `;
   });
 
   document.getElementById('todayEarningAmount').textContent = '₹' + todayTotal;
-  
-  if(!tableHTML) tableHTML = '<tr><td colspan="5" style="text-align:center; padding:20px;">No orders found yet</td></tr>';
-  tbody.innerHTML = tableHTML;
+  tbody.innerHTML = tableHTML || '<tr><td colspan="5" style="text-align:center;padding:20px;color:#aaa">No orders found yet</td></tr>';
 }
 
 function savePrices(){
   const savedPrices = {};
-  flowers.forEach((f,i)=>{
-    const v=parseInt(document.getElementById('aprice-'+i).value)||f.price;
-    flowers[i].price=v;
-    savedPrices[i]=v;
+  flowers.forEach((f, i) => {
+    const input = document.getElementById('aprice-' + i);
+    const v = input ? (parseInt(input.value) || f.price) : f.price;
+    flowers[i].price = v;
+    savedPrices[i] = v;
   });
-  saveToStorage('trustFlowersPrices',savedPrices);
+  saveToStorage('trustFlowersPrices', savedPrices);
   showToast('✅ Prices updated successfully!');
   renderFlowers();
 }
 
-// ===== TOAST =====
+// ===================================================
+// TOAST
+// ===================================================
+let toastTimeout = null;
 function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;
+  const t = document.getElementById('toast');
+  t.textContent = msg;
   t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => t.classList.remove('show'), 2800);
 }
 
-// ===== INIT =====
-const savedUser = getFromStorage('trustFlowersUser');
-if(savedUser){
-  document.getElementById('loginName').value=savedUser.name||'';
-  document.getElementById('loginPhone').value=savedUser.phone||'';
-}
+// ===================================================
+// INIT — Pre-fill saved user info on login screen
+// ===================================================
+(function init(){
+  const savedUser = getFromStorage('trustFlowersUser');
+  if(savedUser && savedUser.name && savedUser.name !== 'Guest'){
+    document.getElementById('loginName').value = savedUser.name || '';
+    document.getElementById('loginPhone').value = savedUser.phone || '';
+  }
+})();
 </script>
 </body>
 </html>
