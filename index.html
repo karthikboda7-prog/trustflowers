@@ -193,20 +193,50 @@ body{
 }
 .modal.open{display:flex}
 .modal-content{
-  background:#fff;padding:25px;border-radius:22px;width:320px;max-width:90vw;
-  box-shadow:0 20px 60px rgba(0,0,0,0.2);
+  background:#fff;padding:25px;border-radius:22px;width:340px;max-width:90vw;
+  box-shadow:0 20px 60px rgba(0,0,0,0.2); max-height:90vh; overflow-y:auto;
 }
 .modal-content h3{color:var(--primary);margin-bottom:15px;font-family:'Playfair Display',serif}
 .modal-input{
   width:100%;padding:11px 14px;border:1.5px solid #eee;border-radius:12px;
   font-size:14px;font-family:'Poppins',sans-serif;margin-bottom:10px;outline:none;transition:0.2s;
 }
-.order-summary{background:#fff8fb;border-radius:12px;padding:12px;margin-bottom:12px;font-size:13px}
-.order-summary-item{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #f5d0de}
-.order-total-row{display:flex;justify-content:space-between;font-weight:700;color:var(--primary);margin-top:6px}
 .modal-btn{width:100%;padding:12px;background:linear-gradient(135deg,#25D366,#1da851);color:#fff;border:none;border-radius:15px;font-size:15px;font-weight:700;font-family:'Poppins',sans-serif;cursor:pointer}
 .modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);margin-top:-5px}
 
+/* ===== INVOICE BILL STYLING ===== */
+.invoice-paper {
+  background: #fff; padding: 20px; border-radius: 4px; border: 1px solid #ddd;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05); font-family: 'Courier New', Courier, monospace;
+  color: #333; margin-bottom: 20px; position: relative;
+}
+/* Jagged receipt bottom effect */
+.invoice-paper::after {
+  content: ""; position: absolute; bottom: -6px; left: 0; right: 0; height: 6px;
+  background-size: 12px 100%;
+  background-image: linear-gradient(135deg, transparent 25%, #fff 25%, #fff 50%, transparent 50%, transparent 75%, #fff 75%, #fff 100%);
+}
+.invoice-header { text-align: center; border-bottom: 2px dashed #bbb; padding-bottom: 12px; margin-bottom: 12px; }
+.invoice-header h2 { font-size: 20px; margin: 0; color: #000; font-family: 'Courier New', Courier, monospace; }
+.invoice-header p { font-size: 11px; color: #555; margin: 3px 0 0; }
+.invoice-meta { font-size: 11px; margin-bottom: 15px; line-height: 1.5; color: #444; }
+.invoice-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 15px; }
+.invoice-table th { border-bottom: 1px solid #bbb; padding-bottom: 5px; text-align: left; color:#000; }
+.invoice-table td { padding: 6px 0; border-bottom: 1px solid #eee; }
+.invoice-table .qty-col { text-align: center; }
+.invoice-table .amt-col { text-align: right; font-weight: bold; }
+.invoice-total { text-align: right; border-top: 2px dashed #bbb; padding-top: 10px; font-size: 16px; font-weight: bold; color: #000; }
+.invoice-footer { text-align: center; font-size: 10px; color: #777; margin-top: 15px; }
+
+/* Location Input Area */
+.loc-wrapper { display:flex; gap:8px; margin-bottom:10px; }
+.loc-btn {
+  background:var(--accent2); color:#fff; border:none; border-radius:12px; 
+  padding:0 15px; font-size:18px; cursor:pointer; transition:0.2s;
+}
+.loc-btn:hover { background: #5a52d5; transform:scale(1.05); }
+
+/* ===== ADMIN STYLES (Kept exactly as provided) ===== */
 #historyPage{display:none;padding:15px}
 .history-card{background:#fff;border-radius:18px;padding:15px;margin-bottom:12px;box-shadow:0 5px 15px rgba(0,0,0,0.07);}
 .history-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
@@ -215,8 +245,6 @@ body{
 .status-confirmed{background:#d4edda;color:#155724;font-size:11px;padding:3px 10px;border-radius:10px;font-weight:600}
 .history-items{font-size:13px;color:#555;margin:5px 0}
 .history-total{font-weight:700;color:var(--primary-dark)}
-
-/* ===== ADMIN PANEL & FORMS ===== */
 #adminPage, #adminOrdersPage{display:none;background:var(--admin-bg);min-height:calc(100vh - 54px);padding:20px}
 .admin-header{text-align:center;margin-bottom:20px}
 .admin-header h2{color:#fff;font-family:'Playfair Display',serif;font-size:22px}
@@ -227,20 +255,15 @@ body{
 .stat-label{font-size:11px;color:#aaa;margin-top:3px}
 .admin-section{background:var(--admin-card);border-radius:18px;padding:15px;margin-bottom:15px;border:1px solid #2a2a4a}
 .admin-section h3{color:#fff;margin-bottom:12px;font-size:15px;display:flex;align-items:center;gap:8px}
-
 .admin-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #2a2a4a}
 .admin-flower-name{color:#fff;font-size:14px}
 .admin-flower-tel{color:#888;font-size:11px}
 .admin-price-input{width:80px;padding:6px 10px;border:1.5px solid #3a3a6a;border-radius:10px;background:#1a1a2e;color:#fff;font-size:14px;font-family:'Poppins',sans-serif;text-align:center;outline:none;}
 .admin-save-btn{background:linear-gradient(135deg,var(--admin-accent),#8b7cf6);color:#fff;border:none;padding:12px;border-radius:12px;font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;cursor:pointer;width:100%;margin-top:10px;transition:0.2s;}
-
-/* Admin Add Item Form */
 .admin-form-group { margin-bottom: 12px; text-align: left; }
 .admin-form-group label { display: block; color: #aaa; font-size: 12px; margin-bottom: 4px; }
 .admin-input-full { width: 100%; padding: 10px; border: 1px solid #3a3a6a; border-radius: 10px; background: #1a1a2e; color: #fff; font-size: 14px; font-family: 'Poppins', sans-serif; outline: none; }
 .admin-input-full:focus { border-color: var(--admin-accent); }
-
-/* Admin Orders Table */
 .admin-table-container { overflow-x: auto; margin-top: 10px; }
 .admin-table { width: 100%; border-collapse: collapse; min-width: 600px; }
 .admin-table th { background: #2a2a4a; color: #fff; padding: 12px; font-size: 13px; text-align: left; }
@@ -299,7 +322,7 @@ body{
       <div class="sticky-total">🛒 Cart Total: ₹<span id="stickyTotal">0</span></div>
       <div class="sticky-items"><span id="stickyItemCount">0</span> items selected</div>
     </div>
-    <button class="sticky-btn" onclick="openOrderForm()">Place Order via WhatsApp</button>
+    <button class="sticky-btn" onclick="openOrderForm()">Place Order</button>
   </div>
 
   <div class="page-tabs">
@@ -340,7 +363,7 @@ body{
       <div class="grid" id="flowerGrid"></div>
     </div>
 
-    <button class="place-btn customer-only" id="placeOrderBtn" onclick="openOrderForm()">🛒 Place Order via WhatsApp</button>
+    <button class="place-btn customer-only" id="placeOrderBtn" onclick="openOrderForm()">🛒 Proceed to Checkout</button>
   </div>
 
   <div id="historyPage" style="display:none">
@@ -444,13 +467,61 @@ body{
 
 <div class="modal" id="formModal">
   <div class="modal-content">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <h3>🛍️ Confirm Order</h3>
-    <div class="order-summary" id="orderSummaryBox"></div>
+    <button class="modal-close" onclick="closeModal('formModal')">✕</button>
+    <h3>🛍️ Customer Details</h3>
     <input type="text" class="modal-input" id="custName" placeholder="Your Name">
     <input type="tel" class="modal-input" id="custPhone" placeholder="Phone Number">
-    <input type="text" class="modal-input" id="custAddress" placeholder="Delivery Address">
-    <button class="modal-btn" onclick="placeOrder()">📱 Send via WhatsApp</button>
+    
+    <div class="loc-wrapper">
+      <input type="text" class="modal-input" id="custAddress" placeholder="Delivery Address or Location Link" style="margin-bottom:0;">
+      <button class="loc-btn" onclick="getCurrentLocation()" title="Use Current GPS Location">📍</button>
+    </div>
+    <p style="font-size:11px; color:var(--muted); margin-bottom:15px; margin-top:-5px;">Click 📍 to auto-fill your exact location</p>
+
+    <button class="modal-btn" onclick="generateInvoice()">🧾 Generate Bill</button>
+  </div>
+</div>
+
+<div class="modal" id="invoiceModal">
+  <div class="modal-content" style="background:#f9f9f9;">
+    <button class="modal-close" onclick="closeModal('invoiceModal')">✕</button>
+    
+    <div class="invoice-paper" id="invoicePaper">
+      <div class="invoice-header">
+        <h2>TRUST FLOWERS</h2>
+        <p>Khammam | Ph: 8555826192</p>
+      </div>
+      
+      <div class="invoice-meta">
+        <strong>Bill To:</strong> <span id="invName"></span><br>
+        <strong>Phone:</strong> <span id="invPhone"></span><br>
+        <strong>Date:</strong> <span id="invDate"></span><br>
+        <strong style="display:block; margin-top:4px;">Delivery Info:</strong>
+        <span id="invAddress" style="word-break: break-all;"></span>
+      </div>
+
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th class="qty-col">Qty</th>
+            <th class="amt-col">Amount</th>
+          </tr>
+        </thead>
+        <tbody id="invItemsTable">
+          </tbody>
+      </table>
+
+      <div class="invoice-total">
+        TOTAL: ₹<span id="invTotalAmt">0</span>
+      </div>
+      
+      <div class="invoice-footer">
+        Thank you for shopping with us!<br>Please screenshot this bill for your records.
+      </div>
+    </div>
+
+    <button class="modal-btn" onclick="sendToWhatsApp()">📱 Confirm & Send via WhatsApp</button>
   </div>
 </div>
 
@@ -463,7 +534,7 @@ const defaultFlowers = [
   {name:"Rose",telugu:"గులాబీ",price:10,img:"https://images.unsplash.com/photo-1616844868137-7ffaf43c2d80",popular:true,cat:"decoration",unit:"piece"},
   {name:"Marigold",telugu:"బంతి పువ్వు",price:15,img:"https://images.unsplash.com/photo-1696324635500-10785ee184b5",popular:false,cat:"pooja",unit:"bunch"},
   {name:"Lotus",telugu:"తామర పువ్వు",price:30,img:"https://images.unsplash.com/photo-1534162802244-d6f69e9048da",popular:true,cat:"pooja",unit:"piece"},
-  {name:"Tulsi Leaves",telugu:"తులసి ਆకులు",price:10,img:"https://images.unsplash.com/photo-1665479754958-1a8bdc47cc0d?w=600&auto=format&fit=crop&q=60",popular:false,cat:"pooja",unit:"bunch"},
+  {name:"Tulsi Leaves",telugu:"తులసి ఆకులు",price:10,img:"https://images.unsplash.com/photo-1665479754958-1a8bdc47cc0d?w=600&auto=format&fit=crop&q=60",popular:false,cat:"pooja",unit:"bunch"},
   {name:"Hibiscus",telugu:"మందారం",price:25,img:"https://images.unsplash.com/photo-1567990989224-6441e1483ac8",popular:false,cat:"pooja",unit:"piece"},
   {name:"Kanakambaram",telugu:"కనకాంబరం",price:20,img:"https://images.unsplash.com/photo-1696613755416-6b60e780e6e9",popular:false,cat:"decoration",unit:"bunch"},
   {name:"Chrysanthemum",telugu:"చామంతి",price:18,img:"https://images.unsplash.com/photo-1697816683790-fdcc57fee696",popular:false,cat:"decoration",unit:"bunch"},
@@ -606,11 +677,9 @@ function renderFlowers(){
   document.getElementById('flowerGrid').innerHTML = all.map(f=>cardHTML(f,f.idx)).join('');
 }
 
-// FIXED: Using classes instead of IDs for quantity and total so both grids update simultaneously
 function cardHTML(f,i){
   const adminView = isAdmin;
   
-  // Base Measurement Details
   let baseDetail = '';
   if(f.unit === 'bunch') {
     baseDetail = `<div class="extra-detail">⚖️  Wt: 250 grams</div>`;
@@ -642,17 +711,14 @@ function cardHTML(f,i){
   </div>`;
 }
 
-// FIXED: Now loops through all instances of the classes to update every matching card on the screen
 function updateQty(i,val){
   cart[i]=(cart[i]||0)+val;
   if(cart[i]<0) cart[i]=0;
   
-  // Update all spans showing this item's quantity
   document.querySelectorAll('.qty-display-'+i).forEach(el => {
     el.textContent = cart[i];
   });
   
-  // Update all spans showing this item's total cost
   document.querySelectorAll('.total-display-'+i).forEach(el => {
     el.textContent = '₹'+(cart[i]*flowers[i].price);
   });
@@ -675,7 +741,31 @@ function updateCartUI(){
   }
 }
 
-// ===== ORDER FORM =====
+// ===== GET CURRENT LOCATION =====
+function getCurrentLocation() {
+  const addressField = document.getElementById('custAddress');
+  
+  if (navigator.geolocation) {
+    addressField.value = "Fetching location...";
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        // Creates a clickable Google Maps link using coordinates
+        addressField.value = `https://maps.google.com/?q=${lat},${lng}`;
+        showToast('✅ Location fetched successfully!');
+      },
+      (error) => {
+        addressField.value = "";
+        showToast('❌ Location access denied or unavailable.');
+      }
+    );
+  } else {
+    showToast('❌ Geolocation is not supported by your browser.');
+  }
+}
+
+// ===== ORDER FORMS & INVOICE =====
 function openOrderForm(){
   if(isAdmin){ showToast('🔒 Admin cannot place orders'); return; }
   let total=0;
@@ -683,12 +773,6 @@ function openOrderForm(){
   flowers.forEach((f,i)=>{ if(cart[i]>0){ total+=cart[i]*f.price; hasItems=true; }});
   if(!hasItems){ showToast('🛒 Add some flowers first!'); return; }
 
-  let summaryHTML='';
-  flowers.forEach((f,i)=>{ if(cart[i]>0){
-    summaryHTML+=`<div class="order-summary-item"><span>${f.name} x${cart[i]}</span><span>₹${cart[i]*f.price}</span></div>`;
-  }});
-  summaryHTML+=`<div class="order-total-row"><span>Total</span><span>₹${total}</span></div>`;
-  document.getElementById('orderSummaryBox').innerHTML=summaryHTML;
   if(currentUser&&currentUser.name!=='Guest'){
     document.getElementById('custName').value=currentUser.name;
     document.getElementById('custPhone').value=currentUser.phone;
@@ -696,28 +780,85 @@ function openOrderForm(){
   document.getElementById('formModal').classList.add('open');
 }
 
-function closeModal(){ document.getElementById('formModal').classList.remove('open'); }
+function closeModal(modalId){ document.getElementById(modalId).classList.remove('open'); }
 
-function placeOrder(){
-  const name=document.getElementById('custName').value.trim();
-  const phone=document.getElementById('custPhone').value.trim();
-  const address=document.getElementById('custAddress').value.trim();
-  if(!name||!phone){ showToast('⚠️ Please enter name & phone'); return; }
+// Generate Invoice Visual Sheet
+function generateInvoice() {
+  const name = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  const address = document.getElementById('custAddress').value.trim();
+  
+  if(!name || !phone){ showToast('⚠️ Please enter name & phone'); return; }
 
-  let message=`🌸 *Trust Flowers - New Order*%0A%0A`;
-  message+=`👤 *Name:* ${name}%0A📞 *Phone:* ${phone}%0A📍 *Address:* ${address||'Pickup'}%0A%0A`;
-  message+=`🌺 *Order Details:*%0A`;
+  // Populate Invoice Data
+  document.getElementById('invName').textContent = name;
+  document.getElementById('invPhone').textContent = phone;
+  document.getElementById('invDate').textContent = new Date().toLocaleString('en-IN');
+  
+  if(address.startsWith('http')) {
+    // If it's a map link, make it a clickable anchor in the visual invoice
+    document.getElementById('invAddress').innerHTML = `<a href="${address}" target="_blank" style="color:#0066cc;">📍 View on Maps</a>`;
+  } else {
+    document.getElementById('invAddress').textContent = address || 'Pickup at Store';
+  }
+
+  let itemsHTML = '';
+  let totalAmt = 0;
+  flowers.forEach((f,i) => { 
+    if(cart[i]>0) {
+      const itemTotal = cart[i] * f.price;
+      itemsHTML += `<tr>
+        <td>${f.name}</td>
+        <td class="qty-col">${cart[i]}</td>
+        <td class="amt-col">₹${itemTotal}</td>
+      </tr>`;
+      totalAmt += itemTotal;
+    }
+  });
+
+  document.getElementById('invItemsTable').innerHTML = itemsHTML;
+  document.getElementById('invTotalAmt').textContent = totalAmt;
+
+  // Swap Modals
+  closeModal('formModal');
+  document.getElementById('invoiceModal').classList.add('open');
+}
+
+// Send formatted text invoice to WhatsApp and Save Order
+function sendToWhatsApp() {
+  const name = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  const address = document.getElementById('custAddress').value.trim();
+  const date = document.getElementById('invDate').textContent;
+
+  // Format the text specifically for WhatsApp Delivery format
+  let message=`🌸 *TRUST FLOWERS - NEW INVOICE* 🌸%0A`;
+  message+=`-----------------------------------%0A`;
+  message+=`👤 *Customer:* ${name}%0A`;
+  message+=`📞 *Phone:* ${phone}%0A`;
+  message+=`📅 *Date:* ${date}%0A`;
+  message+=`📍 *Location:* ${address || 'Pickup Store'}%0A`;
+  message+=`-----------------------------------%0A`;
+  message+=`*ORDER ITEMS:*%0A`;
+
   let total=0;
-  flowers.forEach((f,i)=>{ if(cart[i]>0){
-    message+=`${f.name} (${f.telugu}) x ${cart[i]} = ₹${cart[i]*f.price}%0A`;
-    total+=cart[i]*f.price;
-  }});
-  message+=`%0A💰 *Total: ₹${total}*`;
+  flowers.forEach((f,i)=>{ 
+    if(cart[i]>0){
+      const cost = cart[i]*f.price;
+      message+=`▫️ ${f.name} (x${cart[i]}) = ₹${cost}%0A`;
+      total+=cost;
+    }
+  });
+  
+  message+=`-----------------------------------%0A`;
+  message+=`💰 *TOTAL AMOUNT: ₹${total}*%0A`;
+  message+=`-----------------------------------%0A`;
+  message+=`_Thank you for shopping with us!_`;
 
-  // Save to order history
+  // Save to Local History Storage
   const order = {
     id:'ORD'+(Date.now()+'').slice(-6),
-    date:new Date().toLocaleString('en-IN'),
+    date: date,
     name,phone,address,
     items:flowers.filter((f,i)=>cart[i]>0).map((f,i)=>({name:f.name,qty:cart[i],price:f.price})),
     total,
@@ -733,12 +874,14 @@ function placeOrder(){
     saveToStorage('trustFlowersMyOrders_'+currentUser.phone,myOrders);
   }
 
+  // Open WhatsApp Link
   window.open(`https://wa.me/918555826192?text=${message}`,'_blank');
-  closeModal();
+  
+  closeModal('invoiceModal');
   flowers.forEach((f,i)=>cart[i]=0);
   renderFlowers();
   updateCartUI();
-  showToast('✅ Order placed! Opening WhatsApp...');
+  showToast('✅ Bill generated and WhatsApp opened!');
 }
 
 // ===== ORDER HISTORY =====
@@ -849,11 +992,17 @@ function renderAdminOrdersTable() {
 
     const itemsStr = o.items.map(it => `• ${it.name} (x${it.qty})`).join('<br>');
     
+    // Format address in table so links are clickable
+    let addressDisplay = o.address || '<span style="color:#666; font-style:italic">Pickup</span>';
+    if(addressDisplay.startsWith('http')) {
+      addressDisplay = `<a href="${addressDisplay}" target="_blank" style="color:#4ade80;">📍 Maps Link</a>`;
+    }
+
     tableHTML += `
       <tr>
         <td>${o.date}</td>
         <td><b>${o.name}</b><br><span style="font-size:11px;color:#aaa">📞 ${o.phone}</span></td>
-        <td>${o.address || '<span style="color:#666; font-style:italic">Pickup</span>'}</td>
+        <td>${addressDisplay}</td>
         <td>${itemsStr}</td>
         <td style="color:#4ade80; font-weight:bold;">₹${o.total}</td>
       </tr>
