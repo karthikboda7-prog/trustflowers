@@ -400,10 +400,21 @@ body {
 
 <script>
 // ===================================================
+// 0. GLOBAL VARIABLES (MOVED TO TOP FOR SAFETY)
+// ===================================================
+let customFlowers = [];
+let flowers = [];
+let cart = {};
+let currentUser = null;
+let isAdmin = false;
+let currentCat = 'all';
+let toastTimeout = null;
+let searchTimeout = null;
+
+// ===================================================
 // 1. DATA & SECURITY & OOP ARCHITECTURE
 // ===================================================
 
-// Feature: OOP Class for creating new flowers securely
 class Flower {
   constructor(name, telugu, price, imgUrl, cat, unit) {
     this.name = sanitizeHTML(name);
@@ -416,14 +427,12 @@ class Flower {
   }
 }
 
-// Feature: Security - Prevent XSS Attacks
 function sanitizeHTML(str) {
   const temp = document.createElement('div');
   temp.textContent = str;
   return temp.innerHTML;
 }
 
-// Feature: Security - Validate Indian Phone Number
 function validatePhone(phone) {
   return /^[6-9]\d{9}$/.test(phone);
 }
@@ -441,13 +450,6 @@ const defaultFlowers = [
   {name:"Temple Garland",telugu:"పూలమాల",price:50,img:"https://images.unsplash.com/photo-1560505605-f300b17028d6",popular:true,cat:"garland",unit:"garland"},
   {name:"White Rose",telugu:"తెల్ల గులాబీ",price:8,img:"https://images.unsplash.com/photo-1502946262455-90059fbf6b22?w=600&auto=format&fit=crop&q=60",popular:false,cat:"decoration",unit:"piece"}
 ];
-
-let customFlowers = [];
-let flowers = [];
-let cart = {};
-let currentUser = null;
-let isAdmin = false;
-let currentCat = 'all';
 
 // ===================================================
 // 2. STORAGE & ENCRYPTION
@@ -517,7 +519,6 @@ function startApp() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('mainApp').style.display = 'block';
 
-  // Load preferences
   if(localStorage.getItem('trustFlowersDark') === 'true') document.body.classList.add('dark-mode');
 
   customFlowers = getFromStorage('trustFlowersCustom') || [];
@@ -566,14 +567,12 @@ function filterCat(cat, evt) {
   renderFlowers();
 }
 
-let searchTimeout = null;
 function renderFlowersDebounced() { clearTimeout(searchTimeout); searchTimeout = setTimeout(renderFlowers, 300); }
 
 function renderFlowers() {
   const popGrid = document.getElementById('popularGrid');
   const flwGrid = document.getElementById('flowerGrid');
   
-  // Feature: Skeleton Loading Effect
   popGrid.innerHTML = '<div class="card"><div class="skeleton"></div><div class="skeleton-text"></div></div>';
   flwGrid.innerHTML = '<div class="card"><div class="skeleton"></div><div class="skeleton-text"></div></div>';
 
@@ -600,7 +599,7 @@ function renderFlowers() {
     if(filtered.length === 0){
       flwGrid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="emoji">🌿</div><p>No flowers found</p></div>`;
     }
-  }, 600); // 600ms delay to show skeleton gracefully
+  }, 600);
 }
 
 function cardHTML(f, i) {
@@ -677,7 +676,6 @@ function openOrderForm() {
 
 function closeModal(modalId) { document.getElementById(modalId).classList.remove('open'); }
 
-// 📍 Feature: Auto Address using Free Reverse Geocoding API
 function getCurrentLocation() {
   const addressField = document.getElementById('custAddress');
   if(!navigator.geolocation) { showToast('❌ Geolocation not supported'); return; }
@@ -689,7 +687,6 @@ function getCurrentLocation() {
       const lat = position.coords.latitude;
       const lng = position.coords.longitude;
       
-      // OpenStreetMap Nominatim API (Free, no key needed)
       fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
         .then(res => res.json())
         .then(data => {
@@ -701,7 +698,6 @@ function getCurrentLocation() {
           }
         })
         .catch(err => {
-          // Fallback to coordinates link if API fails
           addressField.value = `https://maps.google.com/?q=${lat},${lng}`;
           showToast('⚠️ Could not fetch text address, saved GPS link instead.');
         });
@@ -741,16 +737,12 @@ function generateInvoice() {
   document.getElementById('invoiceModal').classList.add('open');
 }
 
-// ----------------------------------------------------
-// UPDATED sendToWhatsApp FUNCTION WITH URL ENCODING FIX
-// ----------------------------------------------------
 function sendToWhatsApp() {
   const name = document.getElementById('invName').textContent;
   const phone = document.getElementById('invPhone').textContent;
   const address = document.getElementById('custAddress').value.trim();
   const date = document.getElementById('invDate').textContent;
 
-  // Replaced %0A with standard \n for cleaner string building
   let message = `🌸 *TRUST FLOWERS - NEW ORDER* 🌸\n-----------------------------------\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n📅 *Date:* ${date}\n📍 *Location:* ${address || 'Pickup'}\n-----------------------------------\n*ORDER ITEMS:*\n`;
 
   let total = 0; const orderedItems = [];
@@ -765,7 +757,6 @@ function sendToWhatsApp() {
 
   message += `-----------------------------------\n💰 *TOTAL AMOUNT: ₹${total}*\n-----------------------------------`;
 
-  // Feature: Order Status Tracking
   const order = { id: 'ORD' + (Date.now() + '').slice(-6), date, name, phone, address, items: orderedItems, total, status: 'Pending' };
 
   if(currentUser && currentUser.phone){
@@ -774,10 +765,8 @@ function sendToWhatsApp() {
     saveToStorage('trustFlowersMyOrders_' + currentUser.phone, myOrders);
   }
 
-  // Feature: Notifications
   showToast('🔊 Order Placed! Opening WhatsApp...');
   
-  // FIX: Safely encode the message so emojis, spaces, and formatting don't break the URL
   const encodedMessage = encodeURIComponent(message);
   window.open(`https://wa.me/918555826192?text=${encodedMessage}`, '_blank');
   
@@ -785,9 +774,6 @@ function sendToWhatsApp() {
   flowers.forEach((f, i) => cart[i] = 0);
   renderFlowers(); updateCartUI();
 }
-// ----------------------------------------------------
-// END UPDATED FUNCTION
-// ----------------------------------------------------
 
 function renderHistory() {
   if(isAdmin) return;
@@ -797,7 +783,6 @@ function renderHistory() {
 
   if(!orders.length){ list.innerHTML = `<div class="empty-state"><div class="emoji">📭</div><p>No orders yet</p></div>`; return; }
 
-  // Status visual logic
   list.innerHTML = orders.map(o => {
     let statusClass = o.status === 'Pending' ? 'status-pending' : 'status-confirmed';
     return `
@@ -826,7 +811,6 @@ function addNewItem() {
 
   if(!name || isNaN(price) || price <= 0 || !imgUrl){ showToast('⚠️ Provide Name, Price, and Image Link.'); return; }
 
-  // OOP Usage
   const newItem = new Flower(name, telugu, price, imgUrl, cat, unit);
 
   customFlowers.push(newItem);
@@ -863,10 +847,9 @@ function savePrices() {
   showToast('✅ Prices updated successfully!'); renderFlowers();
 }
 
-// Feature: Analytics & Tracking Dashboard (MOCK due to Path A constraints)
 function renderAdminOrdersTable() {
   const tbody = document.getElementById('adminOrdersTableBody');
-  const localOrdersKey = 'trustFlowersMyOrders_8555826192'; // Looks for Admin's local tests
+  const localOrdersKey = 'trustFlowersMyOrders_8555826192'; 
   const myTests = getFromStorage(localOrdersKey) || [];
 
   if(myTests.length === 0) {
@@ -906,7 +889,6 @@ function updateLocalStatus(index, newStatus) {
   }
 }
 
-// Feature: Export Orders to CSV
 function exportCSV() {
   const myTests = getFromStorage('trustFlowersMyOrders_8555826192') || [];
   if(myTests.length === 0) { showToast('⚠️ No local data to export'); return; }
@@ -927,17 +909,19 @@ function exportCSV() {
 }
 
 // ===================================================
-// INIT
+// INIT (SAFELY RESTRUCTURED)
 // ===================================================
-let toastTimeout; // Added to prevent JS error on rapid toast calls
-
-(function init() {
+function initApp() {
   const savedUser = getFromStorage('trustFlowersUser');
   if(savedUser && savedUser.name && savedUser.name !== 'Guest'){
     document.getElementById('loginName').value = savedUser.name || '';
     document.getElementById('loginPhone').value = savedUser.phone || '';
   }
-})();
+}
+
+// Start the sequence safely
+initApp();
+
 </script>
 </body>
 </html>
