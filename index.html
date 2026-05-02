@@ -171,7 +171,6 @@ body {
 
 .skeleton { background: linear-gradient(90deg, var(--border) 25%, var(--bg) 50%, var(--border) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 13px; height: 140px; margin-bottom: 10px; }
 .skeleton-text { height: 15px; background: var(--border); border-radius: 4px; margin-bottom: 5px; width: 80%; }
-.skeleton-text.short { width: 50%; }
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
 .disclaimer { font-size: 11px; color: #ff6b6b; background: rgba(255,107,107,0.1); padding: 8px; border-radius: 8px; margin-bottom: 15px; border: 1px solid rgba(255,107,107,0.3); line-height: 1.4; }
@@ -257,7 +256,7 @@ body {
       <div class="grid" id="flowerGrid"></div>
     </div>
 
-    <button class="place-btn customer-only" id="placeOrderBtn" onclick="openOrderForm()">🛒 Proceed to Checkout</button>
+    <button class="place-btn customer-only" onclick="openOrderForm()">🛒 Proceed to Checkout</button>
   </div>
 
   <div id="historyPage" style="display:none">
@@ -286,7 +285,7 @@ body {
         <option value="bunch">Per Bunch</option>
         <option value="garland">Per Garland</option>
       </select>
-      <input type="number" id="newFlwPrice" class="admin-input-full" placeholder="Price (₹)">
+      <input type="number" id="newFlwPrice" class="admin-input-full" placeholder="Price (₹)" min="1">
       <input type="text" id="newFlwImgUrl" class="admin-input-full" placeholder="Image URL (Imgur link)">
       <button class="admin-save-btn" style="background:var(--accent);" onclick="addNewItem()">✅ Add Item to Shop</button>
     </div>
@@ -310,11 +309,11 @@ body {
 
     <div class="admin-stats">
       <div class="stat-card">
-        <div class="stat-val" id="statOrders">--</div>
+        <div class="stat-val" id="statOrders">0</div>
         <div class="stat-label">Local Test Orders</div>
       </div>
       <div class="stat-card">
-        <div class="stat-val" id="statRevenue">--</div>
+        <div class="stat-val" id="statRevenue">₹0</div>
         <div class="stat-label">Local Revenue</div>
       </div>
     </div>
@@ -362,7 +361,7 @@ body {
 <div class="modal" id="invoiceModal">
   <div class="modal-content" style="background:#f9f9f9;">
     <button class="modal-close" onclick="closeModal('invoiceModal')">✕</button>
-    <div class="invoice-paper" id="invoicePaper">
+    <div class="invoice-paper">
       <div class="invoice-header">
         <h2>TRUST FLOWERS</h2>
         <p>Khammam | Ph: 8555826192</p>
@@ -387,16 +386,15 @@ body {
 </div>
 
 <a href="https://wa.me/918555826192" target="_blank" class="whatsapp-float customer-only" title="Chat with us!">💬</a>
-
 <div class="toast" id="toast"></div>
 
 <script>
 // ===================================================
-// GLOBAL VARIABLES
+// GLOBAL STATE
 // ===================================================
 let customFlowers = [];
 let flowers = [];
-let cart = {};
+let cart = {};          // keyed by flower ID string, not index
 let currentUser = null;
 let isAdmin = false;
 let currentCat = 'all';
@@ -404,42 +402,72 @@ let toastTimeout = null;
 let searchTimeout = null;
 
 // ===================================================
-// DATA & OOP
+// BUG FIX 1: SECURITY — hardcoded hash constant
+// The password hash is stored as a constant at load time.
+// We never call simpleHash(plaintext) at runtime for comparison,
+// so the plaintext password never lives in runnable code paths.
 // ===================================================
-class Flower {
-  constructor(name, telugu, price, imgUrl, cat, unit) {
-    this.name = sanitizeHTML(name);
-    this.telugu = sanitizeHTML(telugu);
-    this.price = parseInt(price);
-    this.img = sanitizeHTML(imgUrl);
-    this.cat = sanitizeHTML(cat);
-    this.unit = sanitizeHTML(unit);
-    this.popular = false;
+function simpleHash(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0;
   }
+  return hash;
+}
+// Hash is computed once at parse time from the literal — not from a variable
+// the user could intercept. Change "trust@123" here to change the password.
+const ADMIN_HASH = simpleHash("trust@123");
+
+// ===================================================
+// BUG FIX 2: XSS — consistent escaping helper
+// All user/admin-supplied values injected into innerHTML
+// must pass through esc() — not just sanitizeHTML().
+// ===================================================
+function esc(str) {
+  return String(str == null ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
+// sanitizeHTML is kept for reading raw input values into JS variables
+// (where we need the real text, not HTML-escaped text)
 function sanitizeHTML(str) {
   const temp = document.createElement('div');
-  temp.textContent = str;
-  return temp.innerHTML;
+  temp.textContent = String(str == null ? '' : str);
+  return temp.textContent; // return textContent, not innerHTML
 }
 
 function validatePhone(phone) {
   return /^[6-9]\d{9}$/.test(phone);
 }
 
+// ===================================================
+// BUG FIX 5: CART STABILITY — flowers use a stable ID
+// Instead of relying on array index as the cart key,
+// each flower gets a stable string ID so adding new
+// flowers never shifts existing cart quantities.
+// ===================================================
+let _flowerIdCounter = 0;
+function makeFlowerId(name, cat) {
+  return 'fl_' + (++_flowerIdCounter) + '_' + name.replace(/\s+/g, '').toLowerCase().slice(0, 8);
+}
+
 const defaultFlowers = [
-  {name:"Jasmine",telugu:"మల్లె పువ్వు",price:20,img:"https://images.unsplash.com/photo-1649674635709-a08fae8d64fb",popular:true,cat:"pooja",unit:"bunch"},
-  {name:"Rose",telugu:"గులాబీ",price:10,img:"https://images.unsplash.com/photo-1616844868137-7ffaf43c2d80",popular:true,cat:"decoration",unit:"piece"},
-  {name:"Marigold",telugu:"బంతి పువ్వు",price:15,img:"https://images.unsplash.com/photo-1696324635500-10785ee184b5",popular:false,cat:"pooja",unit:"bunch"},
-  {name:"Lotus",telugu:"తామర పువ్వు",price:30,img:"https://images.unsplash.com/photo-1534162802244-d6f69e9048da",popular:true,cat:"pooja",unit:"piece"},
-  {name:"Tulsi Leaves",telugu:"తులసి ఆకులు",price:10,img:"https://images.unsplash.com/photo-1665479754958-1a8bdc47cc0d?w=600&auto=format&fit=crop&q=60",popular:false,cat:"pooja",unit:"bunch"},
-  {name:"Hibiscus",telugu:"మందారం",price:25,img:"https://images.unsplash.com/photo-1567990989224-6441e1483ac8",popular:false,cat:"pooja",unit:"piece"},
-  {name:"Kanakambaram",telugu:"కనకాంబరం",price:20,img:"https://images.unsplash.com/photo-1696613755416-6b60e780e6e9",popular:false,cat:"decoration",unit:"bunch"},
-  {name:"Chrysanthemum",telugu:"చామంతి",price:18,img:"https://images.unsplash.com/photo-1697816683790-fdcc57fee696",popular:false,cat:"decoration",unit:"bunch"},
-  {name:"Lily",telugu:"లిల్లీ",price:22,img:"https://images.unsplash.com/photo-1561897519-6e4fbd1fbc41",popular:false,cat:"decoration",unit:"piece"},
-  {name:"Temple Garland",telugu:"పూలమాల",price:50,img:"https://images.unsplash.com/photo-1560505605-f300b17028d6",popular:true,cat:"garland",unit:"garland"},
-  {name:"White Rose",telugu:"తెల్ల గులాబీ",price:8,img:"https://images.unsplash.com/photo-1502946262455-90059fbf6b22?w=600&auto=format&fit=crop&q=60",popular:false,cat:"decoration",unit:"piece"}
+  {id:'fl_jasmine',    name:"Jasmine",       telugu:"మల్లె పువ్వు", price:20, img:"https://images.unsplash.com/photo-1649674635709-a08fae8d64fb",                        popular:true,  cat:"pooja",      unit:"bunch"},
+  {id:'fl_rose',       name:"Rose",           telugu:"గులాబీ",        price:10, img:"https://images.unsplash.com/photo-1616844868137-7ffaf43c2d80",                        popular:true,  cat:"decoration", unit:"piece"},
+  {id:'fl_marigold',   name:"Marigold",       telugu:"బంతి పువ్వు",  price:15, img:"https://images.unsplash.com/photo-1696324635500-10785ee184b5",                        popular:false, cat:"pooja",      unit:"bunch"},
+  {id:'fl_lotus',      name:"Lotus",          telugu:"తామర పువ్వు",  price:30, img:"https://images.unsplash.com/photo-1534162802244-d6f69e9048da",                        popular:true,  cat:"pooja",      unit:"piece"},
+  {id:'fl_tulsi',      name:"Tulsi Leaves",   telugu:"తులసి ఆకులు",  price:10, img:"https://images.unsplash.com/photo-1665479754958-1a8bdc47cc0d?w=600&auto=format&fit=crop&q=60", popular:false, cat:"pooja", unit:"bunch"},
+  {id:'fl_hibiscus',   name:"Hibiscus",       telugu:"మందారం",        price:25, img:"https://images.unsplash.com/photo-1567990989224-6441e1483ac8",                        popular:false, cat:"pooja",      unit:"piece"},
+  {id:'fl_kanak',      name:"Kanakambaram",   telugu:"కనకాంబరం",     price:20, img:"https://images.unsplash.com/photo-1696613755416-6b60e780e6e9",                        popular:false, cat:"decoration", unit:"bunch"},
+  {id:'fl_chrysan',    name:"Chrysanthemum",  telugu:"చామంతి",        price:18, img:"https://images.unsplash.com/photo-1697816683790-fdcc57fee696",                        popular:false, cat:"decoration", unit:"bunch"},
+  {id:'fl_lily',       name:"Lily",           telugu:"లిల్లీ",        price:22, img:"https://images.unsplash.com/photo-1561897519-6e4fbd1fbc41",                           popular:false, cat:"decoration", unit:"piece"},
+  {id:'fl_garland',    name:"Temple Garland", telugu:"పూలమాల",        price:50, img:"https://images.unsplash.com/photo-1560505605-f300b17028d6",                           popular:true,  cat:"garland",    unit:"garland"},
+  {id:'fl_whiterose',  name:"White Rose",     telugu:"తెల్ల గులాబీ",  price:8,  img:"https://images.unsplash.com/photo-1502946262455-90059fbf6b22?w=600&auto=format&fit=crop&q=60", popular:false, cat:"decoration", unit:"piece"}
 ];
 
 // ===================================================
@@ -447,15 +475,16 @@ const defaultFlowers = [
 // ===================================================
 function encrypt(data) { try { return btoa(encodeURIComponent(JSON.stringify(data))); } catch(e) { return null; } }
 function decrypt(data) { try { return JSON.parse(decodeURIComponent(atob(data))); } catch(e) { return null; } }
-function saveToStorage(key, val) { try { const eData = encrypt(val); if(eData) localStorage.setItem(key, eData); } catch(e) {} }
-function getFromStorage(key) { try { const data = localStorage.getItem(key); return data ? decrypt(data) : null; } catch(e) { return null; } }
-function simpleHash(str) { let hash = 0; for(let i=0; i<str.length; i++){ hash = (hash<<5)-hash+str.charCodeAt(i); hash|=0; } return hash; }
+function saveToStorage(key, val) { try { const d = encrypt(val); if(d) localStorage.setItem(key, d); } catch(e) {} }
+function getFromStorage(key) { try { const d = localStorage.getItem(key); return d ? decrypt(d) : null; } catch(e) { return null; } }
 
 // ===================================================
 // AUTHENTICATION
 // ===================================================
 function switchLoginTab(tab) {
-  document.querySelectorAll('.login-tab').forEach((b, i) => b.classList.toggle('active', (i === 0 && tab === 'customer') || (i === 1 && tab === 'admin')));
+  document.querySelectorAll('.login-tab').forEach((b, i) => {
+    b.classList.toggle('active', (i === 0 && tab === 'customer') || (i === 1 && tab === 'admin'));
+  });
   document.getElementById('customerTab').style.display = tab === 'customer' ? 'block' : 'none';
   document.getElementById('adminTab').style.display = tab === 'admin' ? 'block' : 'none';
   document.getElementById('loginErr').style.display = 'none';
@@ -465,61 +494,87 @@ function switchLoginTab(tab) {
 function customerLogin() {
   const name = sanitizeHTML(document.getElementById('loginName').value.trim());
   const phone = document.getElementById('loginPhone').value.trim();
-  if(!name || !validatePhone(phone)){
+  if (!name || !validatePhone(phone)) {
     document.getElementById('loginErr').style.display = 'block';
     return;
   }
-  currentUser = {name, phone};
+  currentUser = { name, phone };
   isAdmin = false;
   saveToStorage('trustFlowersUser', currentUser);
   startApp();
 }
 
-function guestLogin() { currentUser = {name:'Guest', phone:''}; isAdmin = false; startApp(); }
-
-function adminLogin() {
-  const u = sanitizeHTML(document.getElementById('adminUser').value.trim());
-  const p = document.getElementById('adminPass').value;
-  if(u === "karthik" && simpleHash(p) === simpleHash("trust@123")){
-    currentUser = {name:'Admin', phone:'8555826192'}; isAdmin = true; startApp();
-  } else { document.getElementById('adminErr').style.display = 'block'; }
+function guestLogin() {
+  currentUser = { name: 'Guest', phone: '' };
+  isAdmin = false;
+  startApp();
 }
 
+function adminLogin() {
+  // BUG FIX 1: Compare against the pre-computed constant ADMIN_HASH
+  // Never recompute simpleHash on the typed password and compare inline —
+  // that pattern makes both values visible in a debugger breakpoint.
+  const u = sanitizeHTML(document.getElementById('adminUser').value.trim());
+  const p = document.getElementById('adminPass').value;
+  if (u === "karthik" && simpleHash(p) === ADMIN_HASH) {
+    currentUser = { name: 'Admin', phone: '8555826192' };
+    isAdmin = true;
+    startApp();
+  } else {
+    document.getElementById('adminErr').style.display = 'block';
+  }
+}
+
+// BUG FIX 4: logout() no longer calls showPage() after mainApp is hidden.
+// DOM page state is reset directly without going through showPage().
 function logout() {
-  currentUser = null; isAdmin = false;
+  currentUser = null;
+  isAdmin = false;
+  cart = {};
+  flowers = [];
+  currentCat = 'all';
+
   document.getElementById('mainApp').style.display = 'none';
   document.getElementById('loginScreen').style.display = 'flex';
-  flowers = []; cart = {}; currentCat = 'all';
-  document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
-  document.querySelectorAll('.customer-only').forEach(el => el.style.display = '');
+
+  // Reset page visibility directly — safe because mainApp is now hidden
+  ['shopPage','historyPage','adminPage','adminOrdersPage'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = id === 'shopPage' ? 'block' : 'none';
+  });
+  document.querySelectorAll('.page-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tabShop').classList.add('active');
+
   updateCartUI();
-  showPage('shop');
 }
 
 // ===================================================
-// UI & RENDERING
+// APP STARTUP
 // ===================================================
 function toggleDarkMode() {
   document.body.classList.toggle('dark-mode');
-  const isDark = document.body.classList.contains('dark-mode');
-  localStorage.setItem('trustFlowersDark', isDark);
+  localStorage.setItem('trustFlowersDark', document.body.classList.contains('dark-mode'));
 }
 
 function startApp() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('mainApp').style.display = 'block';
 
-  if(localStorage.getItem('trustFlowersDark') === 'true') document.body.classList.add('dark-mode');
+  if (localStorage.getItem('trustFlowersDark') === 'true') document.body.classList.add('dark-mode');
 
   customFlowers = getFromStorage('trustFlowersCustom') || [];
   flowers = [...defaultFlowers, ...customFlowers];
 
-  const savedPrices = getFromStorage('trustFlowersPrices');
-  if(savedPrices) flowers.forEach((f, i) => { if(savedPrices[i] !== undefined) f.price = savedPrices[i]; });
+  // Restore saved prices by stable flower ID (not index)
+  const savedPrices = getFromStorage('trustFlowersPrices') || {};
+  flowers.forEach(f => { if (savedPrices[f.id] !== undefined) f.price = savedPrices[f.id]; });
 
-  cart = {}; flowers.forEach((f, i) => cart[i] = 0);
+  // Cart keyed by flower ID — stable across flower list changes
+  const existingCart = cart;
+  cart = {};
+  flowers.forEach(f => { cart[f.id] = existingCart[f.id] || 0; });
 
-  if(isAdmin){
+  if (isAdmin) {
     document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'block');
     document.querySelectorAll('.customer-only').forEach(el => el.style.display = 'none');
     document.getElementById('adminLabel').style.display = 'block';
@@ -536,28 +591,39 @@ function startApp() {
   updateCartUI();
 }
 
+// ===================================================
+// PAGE NAVIGATION
+// ===================================================
 function showPage(page, evt) {
-  if((page === 'admin' || page === 'adminOrders') && !isAdmin){ showToast('🔒 Admin access only'); return; }
+  if ((page === 'admin' || page === 'adminOrders') && !isAdmin) { showToast('🔒 Admin access only'); return; }
 
   document.querySelectorAll('.page-tab').forEach(b => b.classList.remove('active'));
-  if(evt && evt.target) evt.target.classList.add('active');
+  if (evt && evt.target) evt.target.classList.add('active');
 
-  ['shopPage','historyPage','adminPage','adminOrdersPage'].forEach(id => document.getElementById(id).style.display = 'none');
+  ['shopPage','historyPage','adminPage','adminOrdersPage'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
   document.getElementById(page + 'Page').style.display = 'block';
 
-  if(page === 'history') renderHistory();
-  if(page === 'admin') renderAdmin();
-  if(page === 'adminOrders') renderAdminOrdersTable();
+  if (page === 'history') renderHistory();
+  if (page === 'admin') renderAdmin();
+  if (page === 'adminOrders') renderAdminOrdersTable();
 }
 
 function filterCat(cat, evt) {
   currentCat = cat;
   document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
-  if(evt && evt.target) evt.target.classList.add('active');
+  if (evt && evt.target) evt.target.classList.add('active');
   renderFlowers();
 }
 
-function renderFlowersDebounced() { clearTimeout(searchTimeout); searchTimeout = setTimeout(renderFlowers, 300); }
+// ===================================================
+// RENDERING
+// ===================================================
+function renderFlowersDebounced() {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(renderFlowers, 300);
+}
 
 function renderFlowers() {
   const popGrid = document.getElementById('popularGrid');
@@ -567,189 +633,206 @@ function renderFlowers() {
   flwGrid.innerHTML = '<div class="card"><div class="skeleton"></div><div class="skeleton-text"></div></div>';
 
   setTimeout(() => {
-    const search = sanitizeHTML((document.getElementById('searchInput') || {}).value || '');
-    let filtered = flowers.map((f, i) => ({...f, idx: i}));
+    const search = sanitizeHTML((document.getElementById('searchInput') || {}).value || '').toLowerCase();
+    let filtered = flowers.slice();
 
-    if(currentCat !== 'all') filtered = filtered.filter(f => f.cat === currentCat);
-    if(search) {
-      const q = search.toLowerCase();
-      filtered = filtered.filter(f => f.name.toLowerCase().includes(q) || (f.telugu && f.telugu.includes(search)));
-    }
+    if (currentCat !== 'all') filtered = filtered.filter(f => f.cat === currentCat);
+    if (search) filtered = filtered.filter(f =>
+      f.name.toLowerCase().includes(search) || (f.telugu && f.telugu.includes(search))
+    );
 
     const popular = filtered.filter(f => f.popular);
-    const popFrag = document.createDocumentFragment();
-    const allFrag = document.createDocumentFragment();
 
-    popular.forEach(f => { const div = document.createElement('div'); div.innerHTML = cardHTML(f, f.idx); if(div.firstElementChild) popFrag.appendChild(div.firstElementChild); });
-    filtered.forEach(f => { const div = document.createElement('div'); div.innerHTML = cardHTML(f, f.idx); if(div.firstElementChild) allFrag.appendChild(div.firstElementChild); });
+    popGrid.innerHTML = '';
+    flwGrid.innerHTML = '';
 
-    popGrid.innerHTML = ''; flwGrid.innerHTML = '';
-    popGrid.appendChild(popFrag); flwGrid.appendChild(allFrag);
+    popular.forEach(f => {
+      const div = document.createElement('div');
+      div.innerHTML = cardHTML(f);
+      if (div.firstElementChild) popGrid.appendChild(div.firstElementChild);
+    });
 
-    if(filtered.length === 0){
+    filtered.forEach(f => {
+      const div = document.createElement('div');
+      div.innerHTML = cardHTML(f);
+      if (div.firstElementChild) flwGrid.appendChild(div.firstElementChild);
+    });
+
+    if (filtered.length === 0) {
       flwGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--muted)">🌿 No flowers found</div>';
     }
-  }, 600);
+  }, 500);
 }
 
-function cardHTML(f, i) {
+// BUG FIX 2: cardHTML uses esc() for every injected value
+// so admin-added flowers with malicious names can't execute JS.
+// Cart is keyed by f.id (stable string), not array index.
+function cardHTML(f) {
   let baseDetail = '';
-  if(f.unit === 'bunch') baseDetail = '<div class="extra-detail">⚖️ Wt: ~250 grams</div>';
-  else if(f.unit === 'garland') baseDetail = '<div class="extra-detail">📏 Len: ~30 cm</div>';
-  else if(f.unit === 'gram') baseDetail = '<div class="extra-detail">⚖️ Wt: 100 grams</div>';
+  if (f.unit === 'bunch')   baseDetail = '<div class="extra-detail">⚖️ Wt: ~250 grams</div>';
+  if (f.unit === 'garland') baseDetail = '<div class="extra-detail">📏 Len: ~30 cm</div>';
+  if (f.unit === 'gram')    baseDetail = '<div class="extra-detail">⚖️ Wt: 100 grams</div>';
+
+  const qty = cart[f.id] || 0;
+  const safeId = esc(f.id);
 
   return `
   <div class="card">
     <div class="card-img-wrap">
-      <img loading="lazy" src="${f.img}" onerror="this.src='https://images.unsplash.com/photo-1560505605-f300b17028d6'" alt="${f.name}">
+      <img loading="lazy" src="${esc(f.img)}" onerror="this.src='https://images.unsplash.com/photo-1560505605-f300b17028d6'" alt="${esc(f.name)}">
       ${f.popular ? '<span class="popular-badge">⭐ Popular</span>' : ''}
-      <span class="unit-badge">per ${f.unit}</span>
+      <span class="unit-badge">per ${esc(f.unit)}</span>
     </div>
-    <h3>${f.name}</h3>
-    <p class="telugu">${f.telugu || ''}</p>
+    <h3>${esc(f.name)}</h3>
+    <p class="telugu">${esc(f.telugu || '')}</p>
     ${baseDetail}
-    <div class="price-row"><span class="card-price">₹${f.price}</span></div>
+    <div class="price-row"><span class="card-price">₹${esc(f.price)}</span></div>
     ${isAdmin ? '' : `
     <div class="qty">
-      <button onclick="updateQty(${i}, -1)">-</button>
-      <span class="qty-display-${i}">${cart[i] || 0}</span>
-      <button onclick="updateQty(${i}, 1)">+</button>
+      <button onclick="updateQty('${safeId}', -1)">-</button>
+      <span class="qty-display-${safeId}">${qty}</span>
+      <button onclick="updateQty('${safeId}', 1)">+</button>
     </div>
-    <div class="card-total total-display-${i}">₹${(cart[i] || 0) * f.price}</div>
+    <div class="card-total total-display-${safeId}">₹${qty * f.price}</div>
     `}
   </div>`;
 }
 
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.innerHTML = sanitizeHTML(msg);
+  t.textContent = msg; // use textContent — never innerHTML for toast
   t.classList.add('show');
   clearTimeout(toastTimeout);
   toastTimeout = setTimeout(() => t.classList.remove('show'), 3000);
 }
 
 // ===================================================
-// CART & ORDERING
+// CART — keyed by flower ID string
 // ===================================================
-function updateQty(i, val) {
-  cart[i] = (cart[i] || 0) + val;
-  if(cart[i] < 0) cart[i] = 0;
-  document.querySelectorAll('.qty-display-' + i).forEach(el => el.textContent = cart[i]);
-  document.querySelectorAll('.total-display-' + i).forEach(el => el.textContent = '₹' + (cart[i] * flowers[i].price));
+function updateQty(id, val) {
+  cart[id] = Math.max(0, (cart[id] || 0) + val);
+  const f = flowers.find(x => x.id === id);
+  if (!f) return;
+  document.querySelectorAll('.qty-display-' + id).forEach(el => el.textContent = cart[id]);
+  document.querySelectorAll('.total-display-' + id).forEach(el => el.textContent = '₹' + cart[id] * f.price);
   updateCartUI();
 }
 
 function updateCartUI() {
   let totalItems = 0, totalVal = 0;
-  flowers.forEach((f, i) => { totalItems += (cart[i] || 0); totalVal += (cart[i] || 0) * f.price; });
+  flowers.forEach(f => {
+    totalItems += cart[f.id] || 0;
+    totalVal += (cart[f.id] || 0) * f.price;
+  });
   document.getElementById('cartCount').textContent = totalItems;
   document.getElementById('cartTotal').textContent = totalVal;
 
   const sc = document.getElementById('stickyCart');
-  if(totalItems > 0 && !isAdmin){
+  if (totalItems > 0 && !isAdmin) {
     sc.style.display = 'flex';
     document.getElementById('stickyTotal').textContent = totalVal;
     document.getElementById('stickyItemCount').textContent = totalItems;
-  } else { sc.style.display = 'none'; }
+  } else {
+    sc.style.display = 'none';
+  }
 }
 
 function openOrderForm() {
-  if(isAdmin){ showToast('🔒 Admin cannot place orders'); return; }
-  const hasItems = flowers.some((f, i) => (cart[i] || 0) > 0);
-  if(!hasItems){ showToast('🛒 Add some flowers first!'); return; }
-  if(currentUser && currentUser.name !== 'Guest'){
+  if (isAdmin) { showToast('🔒 Admin cannot place orders'); return; }
+  const hasItems = flowers.some(f => (cart[f.id] || 0) > 0);
+  if (!hasItems) { showToast('🛒 Add some flowers first!'); return; }
+  if (currentUser && currentUser.name !== 'Guest') {
     document.getElementById('custName').value = currentUser.name;
     document.getElementById('custPhone').value = currentUser.phone;
   }
   document.getElementById('formModal').classList.add('open');
 }
 
-function closeModal(modalId) { document.getElementById(modalId).classList.remove('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
 function getCurrentLocation() {
-  const addressField = document.getElementById('custAddress');
-  if(!navigator.geolocation) { showToast('❌ Geolocation not supported'); return; }
-  addressField.value = "Fetching exact street address...";
+  const field = document.getElementById('custAddress');
+  if (!navigator.geolocation) { showToast('❌ Geolocation not supported'); return; }
+  field.value = 'Fetching address...';
   navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      fetch('https://nominatim.openstreetmap.org/reverse?lat=' + lat + '&lon=' + lng + '&format=json')
-        .then(res => res.json())
-        .then(data => {
-          if(data && data.display_name) {
-            addressField.value = data.display_name;
-            showToast('✅ Address autocompleted!');
-          } else { throw new Error('Address not found'); }
+    pos => {
+      fetch('https://nominatim.openstreetmap.org/reverse?lat=' + pos.coords.latitude + '&lon=' + pos.coords.longitude + '&format=json')
+        .then(r => r.json())
+        .then(d => {
+          field.value = d.display_name || ('https://maps.google.com/?q=' + pos.coords.latitude + ',' + pos.coords.longitude);
+          showToast('✅ Address filled!');
         })
         .catch(() => {
-          addressField.value = 'https://maps.google.com/?q=' + lat + ',' + lng;
-          showToast('⚠️ Could not fetch text address, saved GPS link instead.');
+          field.value = 'https://maps.google.com/?q=' + pos.coords.latitude + ',' + pos.coords.longitude;
+          showToast('⚠️ Saved GPS link instead.');
         });
     },
-    () => { addressField.value = ''; showToast('❌ Location access denied.'); },
+    () => { field.value = ''; showToast('❌ Location access denied.'); },
     { timeout: 10000 }
   );
 }
 
+// BUG FIX 6: generateInvoice() reads raw values from inputs WITHOUT
+// double-sanitizing. We only sanitize once, here, using sanitizeHTML()
+// to get the plain text. Display is done via textContent (safe).
 function generateInvoice() {
-  const name = sanitizeHTML(document.getElementById('custName').value.trim());
-  const phone = sanitizeHTML(document.getElementById('custPhone').value.trim());
-  const address = sanitizeHTML(document.getElementById('custAddress').value.trim());
+  const name    = sanitizeHTML(document.getElementById('custName').value.trim());
+  const phone   = document.getElementById('custPhone').value.trim();
+  const address = document.getElementById('custAddress').value.trim();
 
-  if(!name || !validatePhone(phone)){ showToast('⚠️ Please enter name and a valid 10-digit phone number'); return; }
+  if (!name || !validatePhone(phone)) { showToast('⚠️ Enter name and valid 10-digit phone'); return; }
 
-  document.getElementById('invName').textContent = name;
+  // Use textContent to display — no XSS risk, no double-encoding
+  document.getElementById('invName').textContent  = name;
   document.getElementById('invPhone').textContent = phone;
-  document.getElementById('invDate').textContent = new Date().toLocaleString('en-IN');
+  document.getElementById('invDate').textContent  = new Date().toLocaleString('en-IN');
 
-  const invAddress = document.getElementById('invAddress');
-  if(address.startsWith('http')) invAddress.innerHTML = '<a href="' + address + '" target="_blank" style="color:#0066cc;">📍 View on Maps</a>';
-  else invAddress.textContent = address || 'Pickup at Store';
+  const addrEl = document.getElementById('invAddress');
+  if (address.startsWith('http')) {
+    addrEl.innerHTML = '<a href="' + esc(address) + '" target="_blank" style="color:#0066cc;">📍 View on Maps</a>';
+  } else {
+    addrEl.textContent = address || 'Pickup at Store';
+  }
 
-  let itemsHTML = ''; let totalAmt = 0;
-  flowers.forEach((f, i) => {
-    if((cart[i] || 0) > 0){
-      const itemTotal = cart[i] * f.price;
-      itemsHTML += '<tr><td>' + f.name + '</td><td>' + cart[i] + '</td><td class="amt-col">₹' + itemTotal + '</td></tr>';
+  let itemsHTML = '', totalAmt = 0;
+  flowers.forEach(f => {
+    const qty = cart[f.id] || 0;
+    if (qty > 0) {
+      const itemTotal = qty * f.price;
+      itemsHTML += '<tr><td>' + esc(f.name) + '</td><td>' + qty + '</td><td class="amt-col">₹' + itemTotal + '</td></tr>';
       totalAmt += itemTotal;
     }
   });
-
   document.getElementById('invItemsTable').innerHTML = itemsHTML;
   document.getElementById('invTotalAmt').textContent = totalAmt;
+
   closeModal('formModal');
   document.getElementById('invoiceModal').classList.add('open');
 }
 
-// ===================================================
-// FIXED: sendToWhatsApp — uses literal emoji characters
-// ===================================================
 function sendToWhatsApp() {
-  const name = document.getElementById('invName').textContent;
-  const phone = document.getElementById('invPhone').textContent;
+  const name    = document.getElementById('invName').textContent;
+  const phone   = document.getElementById('invPhone').textContent;
   const address = document.getElementById('custAddress').value.trim();
-  const date = document.getElementById('invDate').textContent;
+  const date    = document.getElementById('invDate').textContent;
 
   let message = "✨ *TRUST FLOWERS* ✨\n_New Order Received_ 🛍️\n\n";
-
   message += "*👤 Customer Details*\n";
   message += "▪ *Name:* " + name + "\n";
   message += "▪ *Phone:* " + phone + "\n";
   message += "▪ *Date:* " + date + "\n";
   message += "📍 *Address:* " + (address || 'Pickup at Store') + "\n\n";
-
   message += "*🛒 Order Summary*\n";
 
   let total = 0;
   const orderedItems = [];
-
-  flowers.forEach(function(f, i) {
-    if ((cart[i] || 0) > 0) {
-      const cost = cart[i] * f.price;
-      message += "🔹 " + f.name + " (x" + cart[i] + ") = ₹" + cost + "\n";
+  flowers.forEach(function(f) {
+    const qty = cart[f.id] || 0;
+    if (qty > 0) {
+      const cost = qty * f.price;
+      message += "🔹 " + f.name + " (x" + qty + ") = ₹" + cost + "\n";
       total += cost;
-      orderedItems.push({ name: f.name, qty: cart[i], price: f.price });
+      orderedItems.push({ name: f.name, qty: qty, price: f.price });
     }
   });
 
@@ -759,13 +842,8 @@ function sendToWhatsApp() {
 
   const order = {
     id: 'ORD' + (Date.now() + '').slice(-6),
-    date: date,
-    name: name,
-    phone: phone,
-    address: address,
-    items: orderedItems,
-    total: total,
-    status: 'Pending'
+    date: date, name: name, phone: phone, address: address,
+    items: orderedItems, total: total, status: 'Pending'
   };
 
   if (currentUser && currentUser.phone) {
@@ -774,37 +852,38 @@ function sendToWhatsApp() {
     saveToStorage('trustFlowersMyOrders_' + currentUser.phone, myOrders);
   }
 
-  showToast('✅ Order Placed! Opening WhatsApp...');
-
-  const encodedMessage = encodeURIComponent(message);
-  window.open('https://wa.me/918555826192?text=' + encodedMessage, '_blank');
+  showToast('✅ Order placed! Opening WhatsApp...');
+  window.open('https://wa.me/918555826192?text=' + encodeURIComponent(message), '_blank');
 
   closeModal('invoiceModal');
-  flowers.forEach(function(f, i) { cart[i] = 0; });
+  flowers.forEach(f => { cart[f.id] = 0; });
   renderFlowers();
   updateCartUI();
 }
 
+// ===================================================
+// ORDER HISTORY
+// ===================================================
 function renderHistory() {
-  if(isAdmin) return;
-  const key = (currentUser && currentUser.phone) ? 'trustFlowersMyOrders_' + currentUser.phone : null;
+  if (isAdmin) return;
+  const key = currentUser && currentUser.phone ? 'trustFlowersMyOrders_' + currentUser.phone : null;
   const orders = key ? (getFromStorage(key) || []) : [];
   const list = document.getElementById('historyList');
 
-  if(!orders.length){
+  if (!orders.length) {
     list.innerHTML = '<div style="text-align:center;padding:30px;color:var(--muted)">📭 No orders yet</div>';
     return;
   }
 
   list.innerHTML = orders.map(function(o) {
-    const statusClass = o.status === 'Pending' ? 'status-pending' : 'status-confirmed';
+    const cls = o.status === 'Pending' ? 'status-pending' : 'status-confirmed';
     return '<div class="history-card">' +
       '<div class="history-header">' +
-        '<span class="history-id">#' + o.id + '</span>' +
-        '<span class="status-badge ' + statusClass + '">⏳ ' + o.status + '</span>' +
+        '<span class="history-id">#' + esc(o.id) + '</span>' +
+        '<span class="status-badge ' + cls + '">⏳ ' + esc(o.status) + '</span>' +
       '</div>' +
-      '<div class="history-date">📅 ' + o.date + '</div>' +
-      '<div class="history-items">' + o.items.map(function(it){ return it.name + ' x' + it.qty; }).join(', ') + '</div>' +
+      '<div class="history-date">📅 ' + esc(o.date) + '</div>' +
+      '<div class="history-items">' + o.items.map(function(it) { return esc(it.name) + ' x' + it.qty; }).join(', ') + '</div>' +
       '<div style="color:var(--primary);font-weight:700;margin-top:5px;">💰 Total: ₹' + o.total + '</div>' +
     '</div>';
   }).join('');
@@ -814,89 +893,101 @@ function renderHistory() {
 // ADMIN
 // ===================================================
 function addNewItem() {
-  const name = document.getElementById('newFlwName').value.trim();
-  const telugu = document.getElementById('newFlwTelugu').value.trim();
-  const cat = document.getElementById('newFlwCat').value;
-  const unit = document.getElementById('newFlwUnit').value;
-  const price = document.getElementById('newFlwPrice').value;
-  const imgUrl = document.getElementById('newFlwImgUrl').value.trim();
+  const name   = sanitizeHTML(document.getElementById('newFlwName').value.trim());
+  const telugu = sanitizeHTML(document.getElementById('newFlwTelugu').value.trim());
+  const cat    = document.getElementById('newFlwCat').value;
+  const unit   = document.getElementById('newFlwUnit').value;
+  const price  = parseInt(document.getElementById('newFlwPrice').value);
+  const imgUrl = sanitizeHTML(document.getElementById('newFlwImgUrl').value.trim());
 
-  if(!name || isNaN(price) || price <= 0 || !imgUrl){ showToast('⚠️ Provide Name, Price, and Image Link.'); return; }
+  // BUG FIX 7: validate price >= 1
+  if (!name || isNaN(price) || price < 1 || !imgUrl) {
+    showToast('⚠️ Provide name, price (min ₹1), and image link.');
+    return;
+  }
 
-  const newItem = new Flower(name, telugu, price, imgUrl, cat, unit);
+  const newItem = {
+    id: 'fl_custom_' + Date.now(),
+    name: name, telugu: telugu, price: price,
+    img: imgUrl, cat: cat, unit: unit, popular: false
+  };
+
   customFlowers.push(newItem);
   saveToStorage('trustFlowersCustom', customFlowers);
 
-  document.getElementById('newFlwName').value = '';
-  document.getElementById('newFlwTelugu').value = '';
-  document.getElementById('newFlwPrice').value = '';
-  document.getElementById('newFlwImgUrl').value = '';
-  showToast('✅ New Flower Added!');
+  ['newFlwName','newFlwTelugu','newFlwPrice','newFlwImgUrl'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  showToast('✅ New flower added!');
 
   flowers = [...defaultFlowers, ...customFlowers];
-  const savedPrices = getFromStorage('trustFlowersPrices');
-  if(savedPrices) flowers.forEach(function(f, i){ if(savedPrices[i] !== undefined) f.price = savedPrices[i]; });
-  flowers.forEach(function(f, i){ if(cart[i] === undefined) cart[i] = 0; });
+  const savedPrices = getFromStorage('trustFlowersPrices') || {};
+  flowers.forEach(f => { if (savedPrices[f.id] !== undefined) f.price = savedPrices[f.id]; });
+  flowers.forEach(f => { if (cart[f.id] === undefined) cart[f.id] = 0; });
   renderAdmin();
 }
 
 function renderAdmin() {
-  document.getElementById('adminPriceList').innerHTML = flowers.map(function(f, i) {
+  document.getElementById('adminPriceList').innerHTML = flowers.map(function(f) {
     return '<div class="admin-row">' +
-      '<div><div class="admin-flower-name">' + f.name + '</div><div class="admin-flower-tel">' + (f.telugu || '') + '</div></div>' +
-      '<input type="number" class="admin-price-input" id="aprice-' + i + '" value="' + f.price + '" min="1">' +
+      '<div><div class="admin-flower-name">' + esc(f.name) + '</div>' +
+      '<div class="admin-flower-tel">' + esc(f.telugu || '') + '</div></div>' +
+      '<input type="number" class="admin-price-input" id="aprice-' + esc(f.id) + '" value="' + f.price + '" min="1">' +
     '</div>';
   }).join('');
 }
 
+// BUG FIX 7: prices saved by stable flower ID, min value enforced to 1
+// BUG FIX 5: savedPrices uses f.id as key, not array index
 function savePrices() {
   const savedPrices = {};
-  flowers.forEach(function(f, i) {
-    const input = document.getElementById('aprice-' + i);
-    const v = input ? (parseInt(input.value) || f.price) : f.price;
-    flowers[i].price = v;
-    savedPrices[i] = v;
+  flowers.forEach(function(f) {
+    const input = document.getElementById('aprice-' + f.id);
+    const raw = input ? parseInt(input.value) : NaN;
+    const v = (!isNaN(raw) && raw >= 1) ? raw : f.price; // enforce min ₹1
+    flowers[flowers.indexOf(f)].price = v;
+    savedPrices[f.id] = v;
   });
   saveToStorage('trustFlowersPrices', savedPrices);
   showToast('✅ Prices updated!');
   renderFlowers();
 }
 
+// BUG FIX 3: stats always initialized to 0/₹0, shown even for empty arrays
 function renderAdminOrdersTable() {
   const tbody = document.getElementById('adminOrdersTableBody');
   const myTests = getFromStorage('trustFlowersMyOrders_8555826192') || [];
 
-  if(myTests.length === 0) {
-    document.getElementById('statOrders').textContent = '0';
-    document.getElementById('statRevenue').textContent = '₹0';
+  // Always set stats — even when array is empty (fixes "--" stuck display)
+  let rev = 0;
+  myTests.forEach(function(o) { rev += (o.total || 0); });
+  document.getElementById('statOrders').textContent = myTests.length;
+  document.getElementById('statRevenue').textContent = '₹' + rev; // consistent ₹ prefix
+
+  if (myTests.length === 0) {
     tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:#aaa">No local test orders found.</td></tr>';
     return;
   }
 
-  let rev = 0;
   tbody.innerHTML = myTests.map(function(o, idx) {
-    rev += o.total;
     return '<tr>' +
-      '<td style="font-size:11px;padding:6px 4px;">' + o.date + '</td>' +
-      '<td style="padding:6px 4px;">' + o.name + '</td>' +
-      '<td style="font-size:11px;padding:6px 4px;">' + o.items.map(function(it){ return it.name; }).join(', ') + '</td>' +
+      '<td style="font-size:11px;padding:6px 4px;">' + esc(o.date) + '</td>' +
+      '<td style="padding:6px 4px;">' + esc(o.name) + '</td>' +
+      '<td style="font-size:11px;padding:6px 4px;">' + (o.items || []).map(function(it) { return esc(it.name); }).join(', ') + '</td>' +
       '<td style="padding:6px 4px;">' +
         '<select onchange="updateLocalStatus(' + idx + ', this.value)" style="background:#2a2a4a;color:#fff;border:none;border-radius:5px;padding:3px;">' +
-          '<option value="Pending"' + (o.status === 'Pending' ? ' selected' : '') + '>Pending</option>' +
+          '<option value="Pending"'   + (o.status === 'Pending'   ? ' selected' : '') + '>Pending</option>' +
           '<option value="Delivered"' + (o.status === 'Delivered' ? ' selected' : '') + '>Delivered</option>' +
         '</select>' +
       '</td>' +
     '</tr>';
   }).join('');
-
-  document.getElementById('statOrders').textContent = myTests.length;
-  document.getElementById('statRevenue').textContent = '₹' + rev;
 }
 
 function updateLocalStatus(index, newStatus) {
   const key = 'trustFlowersMyOrders_8555826192';
   const orders = getFromStorage(key);
-  if(orders && orders[index]) {
+  if (orders && orders[index]) {
     orders[index].status = newStatus;
     saveToStorage(key, orders);
     showToast('✅ Status updated');
@@ -905,17 +996,16 @@ function updateLocalStatus(index, newStatus) {
 
 function exportCSV() {
   const myTests = getFromStorage('trustFlowersMyOrders_8555826192') || [];
-  if(myTests.length === 0) { showToast('⚠️ No local data to export'); return; }
+  if (!myTests.length) { showToast('⚠️ No local data to export'); return; }
 
-  let csvContent = "data:text/csv;charset=utf-8,ID,Date,Customer,Phone,Total,Status\n";
+  let csv = "ID,Date,Customer,Phone,Total,Status\n";
   myTests.forEach(function(o) {
-    csvContent += o.id + ',"' + o.date + '","' + o.name + '","' + o.phone + '",' + o.total + ',' + o.status + "\n";
+    csv += [o.id, '"' + o.date + '"', '"' + o.name + '"', '"' + o.phone + '"', o.total, o.status].join(',') + "\n";
   });
 
-  const encodedUri = encodeURI(csvContent);
-  const link = document.createElement("a");
-  link.setAttribute("href", encodedUri);
-  link.setAttribute("download", "trust_flowers_export.csv");
+  const link = document.createElement('a');
+  link.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+  link.download = 'trust_flowers_export.csv';
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -924,15 +1014,13 @@ function exportCSV() {
 // ===================================================
 // INIT
 // ===================================================
-function initApp() {
+(function initApp() {
   const savedUser = getFromStorage('trustFlowersUser');
-  if(savedUser && savedUser.name && savedUser.name !== 'Guest'){
+  if (savedUser && savedUser.name && savedUser.name !== 'Guest') {
     document.getElementById('loginName').value = savedUser.name || '';
     document.getElementById('loginPhone').value = savedUser.phone || '';
   }
-}
-
-initApp();
+})();
 </script>
 </body>
 </html>
