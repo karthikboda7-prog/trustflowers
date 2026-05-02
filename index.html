@@ -737,7 +737,6 @@ function generateInvoice() {
   document.getElementById('invoiceModal').classList.add('open');
 }
 
-// PREMIUM WHATSAPP LAYOUT INCLUDED HERE
 function sendToWhatsApp() {
   const name = document.getElementById('invName').textContent;
   const phone = document.getElementById('invPhone').textContent;
@@ -790,17 +789,6 @@ function sendToWhatsApp() {
   renderFlowers(); updateCartUI();
 }
 
-  showToast('🔊 Order Placed! Opening WhatsApp...');
-  
-  // Safely encode for the URL
-  const encodedMessage = encodeURIComponent(message);
-  window.open(`https://wa.me/918555826192?text=${encodedMessage}`, '_blank');
-  
-  closeModal('invoiceModal');
-  flowers.forEach((f, i) => cart[i] = 0);
-  renderFlowers(); updateCartUI();
-}
-
 function renderHistory() {
   if(isAdmin) return;
   const key = (currentUser && currentUser.phone) ? 'trustFlowersMyOrders_' + currentUser.phone : null;
@@ -819,7 +807,7 @@ function renderHistory() {
       </div>
       <div class="history-date">📅 ${o.date}</div>
       <div class="history-items">${o.items.map(it => `${it.name} x${it.qty}`).join(', ')}</div>
-      <div class="history-total">💰 Total: ₹${o.total}</div>
+      <div class="history-total">💰 Total: \u20B9${o.total}</div>
     </div>`
   }).join('');
 }
@@ -880,7 +868,7 @@ function renderAdminOrdersTable() {
 
   if(myTests.length === 0) {
     document.getElementById('statOrders').textContent = '0';
-    document.getElementById('statRevenue').textContent = '₹0';
+    document.getElementById('statRevenue').textContent = '\u20B90';
     tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:#aaa">No local test orders found. Customer orders are on WhatsApp.</td></tr>';
     return;
   }
@@ -902,7 +890,7 @@ function renderAdminOrdersTable() {
   }).join('');
 
   document.getElementById('statOrders').textContent = myTests.length;
-  document.getElementById('statRevenue').textContent = '₹' + rev;
+  document.getElementById('statRevenue').textContent = '\u20B9' + rev;
 }
 
 function updateLocalStatus(index, newStatus) {
