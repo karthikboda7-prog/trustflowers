@@ -744,30 +744,31 @@ function sendToWhatsApp() {
   const address = document.getElementById('custAddress').value.trim();
   const date = document.getElementById('invDate').textContent;
 
-  // Premium, clean WhatsApp Layout
-  let message = `✨ *TRUST FLOWERS* ✨\n_New Order Received_ 🛍️\n\n`;
+  // Using Safe Unicode Escapes so emojis NEVER break again!
+  let message = "\u2728 *TRUST FLOWERS* \u2728\n_New Order Received_ \uD83D\uDECD\n\n";
   
-  message += `*🧑‍💼 Customer Details*\n`;
-  message += `▪️ *Name:* ${name}\n`;
-  message += `▪️ *Phone:* ${phone}\n`;
-  message += `▪️ *Date:* ${date}\n`;
-  message += `▪️ *Address:* ${address || 'Pickup at Store'}\n\n`;
+  message += "*\uD83D\uDC64 Customer Details*\n";
+  message += "\u25AA *Name:* " + name + "\n";
+  message += "\u25AA *Phone:* " + phone + "\n";
+  message += "\u25AA *Date:* " + date + "\n";
+  message += "\uD83D\uDCCD *Address:* " + (address || 'Pickup at Store') + "\n\n";
   
-  message += `*🛒 Order Summary*\n`;
+  message += "*\uD83D\uDED2 Order Summary*\n";
 
   let total = 0; const orderedItems = [];
   flowers.forEach((f, i) => {
     if((cart[i] || 0) > 0){
       const cost = cart[i] * f.price;
-      message += `🔹 ${f.name} (x${cart[i]}) = ₹${cost}\n`;
+      // \uD83D\uDD39 is the blue diamond emoji, \u20B9 is the Rupee symbol
+      message += "\uD83D\uDD39 " + f.name + " (x" + cart[i] + ") = \u20B9" + cost + "\n";
       total += cost;
       orderedItems.push({name: f.name, qty: cart[i], price: f.price});
     }
   });
 
-  message += `\n🧾 *Total Amount: ₹${total}*\n`;
-  message += `-----------------------------------\n`;
-  message += `_Thank you for choosing Trust Flowers!_ 🌸`;
+  message += "\n\uD83E\uDDFE *Total Amount: \u20B9" + total + "*\n";
+  message += "-----------------------------------\n";
+  message += "_Thank you for choosing Trust Flowers!_ \uD83C\uDF38";
 
   // Feature: Order Status Tracking
   const order = { id: 'ORD' + (Date.now() + '').slice(-6), date, name, phone, address, items: orderedItems, total, status: 'Pending' };
@@ -777,6 +778,17 @@ function sendToWhatsApp() {
     myOrders.unshift(order);
     saveToStorage('trustFlowersMyOrders_' + currentUser.phone, myOrders);
   }
+
+  showToast('\uD83D\uDD0A Order Placed! Opening WhatsApp...');
+  
+  // Safely encode for the URL
+  const encodedMessage = encodeURIComponent(message);
+  window.open(`https://wa.me/918555826192?text=${encodedMessage}`, '_blank');
+  
+  closeModal('invoiceModal');
+  flowers.forEach((f, i) => cart[i] = 0);
+  renderFlowers(); updateCartUI();
+}
 
   showToast('🔊 Order Placed! Opening WhatsApp...');
   
