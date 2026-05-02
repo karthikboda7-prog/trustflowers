@@ -741,6 +741,9 @@ function generateInvoice() {
   document.getElementById('invoiceModal').classList.add('open');
 }
 
+// ----------------------------------------------------
+// UPDATED sendToWhatsApp FUNCTION WITH URL ENCODING FIX
+// ----------------------------------------------------
 function sendToWhatsApp() {
   const name = document.getElementById('invName').textContent;
   const phone = document.getElementById('invPhone').textContent;
@@ -782,14 +785,9 @@ function sendToWhatsApp() {
   flowers.forEach((f, i) => cart[i] = 0);
   renderFlowers(); updateCartUI();
 }
-  // Feature: Notifications
-  showToast('🔊 Order Placed! Opening WhatsApp...');
-  
-  window.open(`https://wa.me/918555826192?text=${message}`, '_blank');
-  closeModal('invoiceModal');
-  flowers.forEach((f, i) => cart[i] = 0);
-  renderFlowers(); updateCartUI();
-}
+// ----------------------------------------------------
+// END UPDATED FUNCTION
+// ----------------------------------------------------
 
 function renderHistory() {
   if(isAdmin) return;
@@ -931,6 +929,8 @@ function exportCSV() {
 // ===================================================
 // INIT
 // ===================================================
+let toastTimeout; // Added to prevent JS error on rapid toast calls
+
 (function init() {
   const savedUser = getFromStorage('trustFlowersUser');
   if(savedUser && savedUser.name && savedUser.name !== 'Guest'){
