@@ -747,19 +747,20 @@ function sendToWhatsApp() {
   const address = document.getElementById('custAddress').value.trim();
   const date = document.getElementById('invDate').textContent;
 
-  let message = `🌸 *TRUST FLOWERS - NEW ORDER* 🌸%0A-----------------------------------%0A👤 *Name:* ${name}%0A📞 *Phone:* ${phone}%0A📅 *Date:* ${date}%0A📍 *Location:* ${address || 'Pickup'}%0A-----------------------------------%0A*ORDER ITEMS:*%0A`;
+  // Replaced %0A with standard \n for cleaner string building
+  let message = `🌸 *TRUST FLOWERS - NEW ORDER* 🌸\n-----------------------------------\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n📅 *Date:* ${date}\n📍 *Location:* ${address || 'Pickup'}\n-----------------------------------\n*ORDER ITEMS:*\n`;
 
   let total = 0; const orderedItems = [];
   flowers.forEach((f, i) => {
     if((cart[i] || 0) > 0){
       const cost = cart[i] * f.price;
-      message += `▫️ ${f.name} (x${cart[i]}) = ₹${cost}%0A`;
+      message += `▫️ ${f.name} (x${cart[i]}) = ₹${cost}\n`;
       total += cost;
       orderedItems.push({name: f.name, qty: cart[i], price: f.price});
     }
   });
 
-  message += `-----------------------------------%0A💰 *TOTAL AMOUNT: ₹${total}*%0A-----------------------------------`;
+  message += `-----------------------------------\n💰 *TOTAL AMOUNT: ₹${total}*\n-----------------------------------`;
 
   // Feature: Order Status Tracking
   const order = { id: 'ORD' + (Date.now() + '').slice(-6), date, name, phone, address, items: orderedItems, total, status: 'Pending' };
@@ -770,6 +771,17 @@ function sendToWhatsApp() {
     saveToStorage('trustFlowersMyOrders_' + currentUser.phone, myOrders);
   }
 
+  // Feature: Notifications
+  showToast('🔊 Order Placed! Opening WhatsApp...');
+  
+  // FIX: Safely encode the message so emojis, spaces, and formatting don't break the URL
+  const encodedMessage = encodeURIComponent(message);
+  window.open(`https://wa.me/918555826192?text=${encodedMessage}`, '_blank');
+  
+  closeModal('invoiceModal');
+  flowers.forEach((f, i) => cart[i] = 0);
+  renderFlowers(); updateCartUI();
+}
   // Feature: Notifications
   showToast('🔊 Order Placed! Opening WhatsApp...');
   
