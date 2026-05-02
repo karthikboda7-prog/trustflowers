@@ -400,7 +400,7 @@ body {
 
 <script>
 // ===================================================
-// 0. GLOBAL VARIABLES (MOVED TO TOP FOR SAFETY)
+// 0. GLOBAL VARIABLES 
 // ===================================================
 let customFlowers = [];
 let flowers = [];
@@ -737,26 +737,39 @@ function generateInvoice() {
   document.getElementById('invoiceModal').classList.add('open');
 }
 
+// PREMIUM WHATSAPP LAYOUT INCLUDED HERE
 function sendToWhatsApp() {
   const name = document.getElementById('invName').textContent;
   const phone = document.getElementById('invPhone').textContent;
   const address = document.getElementById('custAddress').value.trim();
   const date = document.getElementById('invDate').textContent;
 
-  let message = `🌸 *TRUST FLOWERS - NEW ORDER* 🌸\n-----------------------------------\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n📅 *Date:* ${date}\n📍 *Location:* ${address || 'Pickup'}\n-----------------------------------\n*ORDER ITEMS:*\n`;
+  // Premium, clean WhatsApp Layout
+  let message = `✨ *TRUST FLOWERS* ✨\n_New Order Received_ 🛍️\n\n`;
+  
+  message += `*🧑‍💼 Customer Details*\n`;
+  message += `▪️ *Name:* ${name}\n`;
+  message += `▪️ *Phone:* ${phone}\n`;
+  message += `▪️ *Date:* ${date}\n`;
+  message += `▪️ *Address:* ${address || 'Pickup at Store'}\n\n`;
+  
+  message += `*🛒 Order Summary*\n`;
 
   let total = 0; const orderedItems = [];
   flowers.forEach((f, i) => {
     if((cart[i] || 0) > 0){
       const cost = cart[i] * f.price;
-      message += `▫️ ${f.name} (x${cart[i]}) = ₹${cost}\n`;
+      message += `🔹 ${f.name} (x${cart[i]}) = ₹${cost}\n`;
       total += cost;
       orderedItems.push({name: f.name, qty: cart[i], price: f.price});
     }
   });
 
-  message += `-----------------------------------\n💰 *TOTAL AMOUNT: ₹${total}*\n-----------------------------------`;
+  message += `\n🧾 *Total Amount: ₹${total}*\n`;
+  message += `-----------------------------------\n`;
+  message += `_Thank you for choosing Trust Flowers!_ 🌸`;
 
+  // Feature: Order Status Tracking
   const order = { id: 'ORD' + (Date.now() + '').slice(-6), date, name, phone, address, items: orderedItems, total, status: 'Pending' };
 
   if(currentUser && currentUser.phone){
@@ -767,6 +780,7 @@ function sendToWhatsApp() {
 
   showToast('🔊 Order Placed! Opening WhatsApp...');
   
+  // Safely encode for the URL
   const encodedMessage = encodeURIComponent(message);
   window.open(`https://wa.me/918555826192?text=${encodedMessage}`, '_blank');
   
@@ -909,7 +923,7 @@ function exportCSV() {
 }
 
 // ===================================================
-// INIT (SAFELY RESTRUCTURED)
+// INIT 
 // ===================================================
 function initApp() {
   const savedUser = getFromStorage('trustFlowersUser');
